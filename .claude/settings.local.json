@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)",
+      "Bash(git push *)",
+      "Bash(python -c ' *)",
+      "PowerShell($bytes = [System.IO.File]::ReadAllBytes\\(\"c:\\\\Users\\\\conkh\\\\OneDrive\\\\Documents\\\\Claude\\\\Projects\\\\Wedding Invitiation\\\\Crystal-Jack-RSVP\\\\ALO_2023_WR_PlatedMenus_Dinner_100923.pdf\"\\); $text = [System.Text.Encoding]::ASCII.GetString\\($bytes\\); $text -replace '[^\\\\x20-\\\\x7E\\\\r\\\\n]', ' ' | Select-String -Pattern '\\(chicken|bass|prime|rib|beef|truffle|potato|apple|chocolate|romaine|artichoke|strudel|brulee|tart|mushroom|horseradish|sauce|cream|glaze|served|lemon|herb|pancetta|boursin|demi|wine|shallot|citrus|crab\\)' -Context 2,2 -AllMatches | Select-Object -First 60)",
+      "PowerShell($bytes = [System.IO.File]::ReadAllBytes\\(\"c:\\\\Users\\\\conkh\\\\OneDrive\\\\Documents\\\\Claude\\\\Projects\\\\Wedding Invitiation\\\\Crystal-Jack-RSVP\\\\ALO_2023_WR_PlatedMenus_Dinner_100923.pdf\"\\); $text = [System.Text.Encoding]::Latin1.GetString\\($bytes\\); $matches = [regex]::Matches\\($text, '[A-Za-z][A-Za-z ,\\\\-\\\\r\\\\n]{15,}'\\); $matches | ForEach-Object { $_.Value.Trim\\(\\) } | Where-Object { $_ -match '[a-z]{3}' -and $_.Length -gt 20 } | Select-Object -Unique | Select-Object -First 80)"
+    ]
+  }
+}
