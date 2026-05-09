@@ -26,7 +26,8 @@ function doPost(e) {
       data.guests      || "",            // Number of guests
       data.guestNames  || "",            // All guest names (pipe-separated)
       data.meals       || "",            // Per-guest meal choices (pipe-separated)
-      data.notes       || "",            // Dietary needs / notes
+      data.dietary     || "",            // Per-guest dietary restrictions (pipe-separated)
+      data.notes       || "",            // Additional notes
     ]);
 
     // Send notification email
@@ -60,10 +61,11 @@ function getOrCreateSheet() {
       "Guests",
       "Guest Names",
       "Meal Selections",
+      "Dietary Restrictions",
       "Notes",
     ]);
     // Bold + freeze the header
-    sheet.getRange(1, 1, 1, 8).setFontWeight("bold");
+    sheet.getRange(1, 1, 1, 9).setFontWeight("bold");
     sheet.setFrozenRows(1);
   }
 
@@ -105,6 +107,7 @@ Attending: ${label}
 Guests:    ${data.guests     || "—"}
 Names:     ${data.guestNames || "—"}
 Meals:     ${mealLabel(data.meals)}
+Dietary:   ${data.dietary    || "—"}
 Notes:     ${data.notes      || "—"}
 ──────────────────────────
 Received:  ${timestamp.toLocaleString()}

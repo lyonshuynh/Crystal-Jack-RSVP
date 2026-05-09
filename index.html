@@ -7,7 +7,7 @@
 @import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Jost:wght@200;300;400&display=swap');
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{--black:#0A0F0A;--forest:#142214;--green:#2D4A2D;--sage:#7A9E7E;--gold:#C8A96E;--pale:#EEF2EC;--paper:#F6F9F5;--mid:#5A7A5A}
-body{background:#2A4028;font-family:'Jost',sans-serif;font-weight:300;min-height:100vh;display:flex;justify-content:center;align-items:flex-start;padding:40px 20px 80px}
+body{background:radial-gradient(ellipse at 50% 100%,rgba(200,169,110,.2) 0%,transparent 55%),radial-gradient(ellipse at 8% 55%,rgba(200,169,110,.09) 0%,transparent 38%),radial-gradient(ellipse at 92% 45%,rgba(200,169,110,.09) 0%,transparent 38%),#2A4028;font-family:'Jost',sans-serif;font-weight:300;min-height:100vh;display:flex;justify-content:center;align-items:flex-start;padding:40px 20px 80px}
 .card{width:100%;max-width:660px;background:var(--paper)}
 
 /* Art */
@@ -264,9 +264,10 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
     container.querySelectorAll('.guest-card').forEach(card => {
       const i = card.dataset.guest;
       saved[i] = {
-        name:  card.querySelector(`input[name="guest_name_${i}"]`)?.value || '',
-        att:   card.querySelector(`input[name="attendance_${i}"]:checked`)?.value || '',
-        meal:  card.querySelector(`input[name="meal_${i}"]:checked`)?.value || '',
+        name:    card.querySelector(`input[name="guest_name_${i}"]`)?.value || '',
+        att:     card.querySelector(`input[name="attendance_${i}"]:checked`)?.value || '',
+        meal:    card.querySelector(`input[name="meal_${i}"]:checked`)?.value || '',
+        dietary: card.querySelector(`input[name="dietary_${i}"]`)?.value || '',
       };
     });
 
@@ -315,6 +316,10 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
             <div class="guest-meal-wrap" style="display:${mealVisible?'block':'none'}">
               <label class="lbl" style="margin-bottom:8px;display:block">Entrée selection</label>
               <div class="opts">${mealHTML}</div>
+              <div style="margin-top:14px">
+                <label class="lbl">Dietary restrictions</label>
+                <input class="inp" type="text" name="dietary_${i}" placeholder="Allergies, gluten-free, etc." value="${(s.dietary||'').replace(/"/g,'&quot;')}"/>
+              </div>
             </div>
           </div>
         </div>`);
@@ -370,14 +375,17 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
     const guestNames      = [];
     const guestAttendance = [];
     const guestMeals      = [];
+    const guestDietary    = [];
 
     for (let i = 1; i <= guestCount; i++) {
-      const name = form.querySelector(`input[name="guest_name_${i}"]`)?.value.trim() || '';
-      const att  = form.querySelector(`input[name="attendance_${i}"]:checked`)?.value || '';
-      const meal = form.querySelector(`input[name="meal_${i}"]:checked`)?.value || '';
+      const name    = form.querySelector(`input[name="guest_name_${i}"]`)?.value.trim() || '';
+      const att     = form.querySelector(`input[name="attendance_${i}"]:checked`)?.value || '';
+      const meal    = form.querySelector(`input[name="meal_${i}"]:checked`)?.value || '';
+      const dietary = form.querySelector(`input[name="dietary_${i}"]`)?.value.trim() || '';
       guestNames.push(name);
       guestAttendance.push(att);
       guestMeals.push(needsDinner(att) ? meal : '');
+      guestDietary.push(needsDinner(att) ? dietary : '');
     }
 
     const payload = {
@@ -387,6 +395,7 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
       guestNames: guestNames.join(' | '),
       attendance: guestAttendance.join(' | '),
       meals:      guestMeals.filter(Boolean).join(' | '),
+      dietary:    guestDietary.filter(Boolean).join(' | '),
       notes:      form.notes.value.trim(),
     };
 
