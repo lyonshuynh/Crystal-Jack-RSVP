@@ -24,6 +24,7 @@ function doPost(e) {
         now,
         data.email             || "",
         data.phone             || "",
+        data.address           || "",
         g.name                 || "",
         attendanceLabel(g.attendance),
         mealLabel(g.meal),
@@ -60,13 +61,14 @@ function getOrCreateSheet() {
       "Timestamp",
       "Email",
       "Phone",
+      "Address",
       "Guest Name",
       "Joining For",
       "Meal",
       "Dietary Restrictions",
       "Notes",
     ]);
-    sheet.getRange(1, 1, 1, 8).setFontWeight("bold");
+    sheet.getRange(1, 1, 1, 9).setFontWeight("bold");
     sheet.setFrozenRows(1);
   }
 
@@ -106,6 +108,7 @@ function sendNotification(data, guests, timestamp) {
     "",
     "──────────────────────────",
     "Submitted by: " + (data.name || "—") + " (" + (data.email || "—") + (data.phone ? " · " + data.phone : "") + ")",
+    data.address ? "Address:      " + data.address : "",
     "Total guests: " + (data.guests || guests.length),
     "──────────────────────────",
     "",
