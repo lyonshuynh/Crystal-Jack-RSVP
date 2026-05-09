@@ -370,9 +370,34 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
     const form       = e.target;
     const guestCount = parseInt(document.getElementById('guestCount').value);
 
+    // Validate each guest card before sending
+    const errEl = document.getElementById('errorMsg');
+    errEl.style.display = 'none';
+    for (let i = 1; i <= guestCount; i++) {
+      const nameVal = form.querySelector(`input[name="guest_name_${i}"]`)?.value.trim();
+      const attVal  = form.querySelector(`input[name="attendance_${i}"]:checked`)?.value;
+      if (!nameVal) {
+        errEl.querySelector('p').textContent = i === 1 ? 'Please enter your name.' : `Please enter a name for Guest ${i}.`;
+        errEl.style.display = 'block';
+        form.querySelector(`input[name="guest_name_${i}"]`)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
+      if (!attVal) {
+        errEl.querySelector('p').textContent = i === 1 ? 'Please select what you\'ll be joining us for.' : `Please make a selection for Guest ${i}.`;
+        errEl.style.display = 'block';
+        form.querySelector(`[name="attendance_${i}"]`)?.closest('.opts')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
+      if ((attVal === 'dinner' || attVal === 'both') && !form.querySelector(`input[name="meal_${i}"]:checked`)?.value) {
+        errEl.querySelector('p').textContent = i === 1 ? 'Please select your entrée.' : `Please select an entrée for Guest ${i}.`;
+        errEl.style.display = 'block';
+        form.querySelector(`[name="meal_${i}"]`)?.closest('.opts')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
+    }
+
     btn.textContent = 'Sending…';
     btn.disabled    = true;
-    document.getElementById('errorMsg').style.display = 'none';
 
     const guestNames      = [];
     const guestAttendance = [];
