@@ -144,11 +144,6 @@ body{background:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' 
 <div class="footer"><span class="fn">Jackson Lyons & Crystal Huynh · September 2026</span><span class="fc">39.1178° N, 106.4452° W</span></div>
 </div>
 <script>
-  const MEAL_NAMES = {
-    'chicken':   'Pancetta Chicken',
-    'bass':      'Colorado Striped Bass',
-    'prime-rib': 'Herb Rubbed King Cut Prime Rib of Beef',
-  };
 
   const ATT_INFO = {
     'hike':          'The Summit — Mount Elbert · Sep 4',
@@ -176,7 +171,7 @@ body{background:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' 
         <div class="sc-hdr">${g.name || 'Guest'}</div>
         <div class="sc-body">
           <div class="sc-row"><span class="sc-lbl">Joining for</span><span class="sc-val">${attLabel}</span></div>
-          ${g.meal    ? `<div class="sc-row"><span class="sc-lbl">Entrée</span><span class="sc-val">${MEAL_NAMES[g.meal] || g.meal}</span></div>` : ''}
+          ${g.mealName ? `<div class="sc-row"><span class="sc-lbl">Entrée</span><span class="sc-val">${g.mealName}</span></div>` : ''}
           ${g.dietary ? `<div class="sc-row"><span class="sc-lbl">Dietary</span><span class="sc-val">${g.dietary}</span></div>` : ''}
         </div>
       </div>`);

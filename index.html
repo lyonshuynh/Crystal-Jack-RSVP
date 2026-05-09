@@ -387,7 +387,8 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
       guestAttendance.push(att);
       guestMeals.push(needsDinner(att) ? meal : '');
       guestDietary.push(needsDinner(att) ? dietary : '');
-      guestList.push({ name, attendance: att, meal: needsDinner(att) ? meal : '', dietary: needsDinner(att) ? dietary : '' });
+      const mealName = needsDinner(att) ? (MEALS.find(m => m.value === meal)?.name || meal) : '';
+      guestList.push({ name, attendance: att, meal: needsDinner(att) ? meal : '', mealName, dietary: needsDinner(att) ? dietary : '' });
     }
 
     const email = form.email.value.trim();
