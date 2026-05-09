@@ -20,10 +20,11 @@ function doPost(e) {
     // Append one row per submission
     sheet.appendRow([
       now,                               // Timestamp
-      data.name        || "",            // Full name
+      data.name        || "",            // Full name (submitter)
       data.email       || "",            // Email
       data.attendance  || "",            // hike / dinner / both / cannot-attend
       data.guests      || "",            // Number of guests
+      data.guestNames  || "",            // All guest names (pipe-separated)
       data.meals       || "",            // Per-guest meal choices (pipe-separated)
       data.notes       || "",            // Dietary needs / notes
     ]);
@@ -57,11 +58,12 @@ function getOrCreateSheet() {
       "Email",
       "Attending",
       "Guests",
+      "Guest Names",
       "Meal Selections",
       "Notes",
     ]);
     // Bold + freeze the header
-    sheet.getRange(1, 1, 1, 7).setFontWeight("bold");
+    sheet.getRange(1, 1, 1, 8).setFontWeight("bold");
     sheet.setFrozenRows(1);
   }
 
@@ -97,12 +99,13 @@ function sendNotification(data, timestamp) {
 You have a new RSVP for Jackson & Crystal's wedding!
 
 ──────────────────────────
-Name:      ${data.name     || "—"}
-Email:     ${data.email    || "—"}
+Name:      ${data.name       || "—"}
+Email:     ${data.email      || "—"}
 Attending: ${label}
-Guests:    ${data.guests   || "—"}
+Guests:    ${data.guests     || "—"}
+Names:     ${data.guestNames || "—"}
 Meals:     ${mealLabel(data.meals)}
-Notes:     ${data.notes    || "—"}
+Notes:     ${data.notes      || "—"}
 ──────────────────────────
 Received:  ${timestamp.toLocaleString()}
 
