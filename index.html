@@ -88,6 +88,24 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
 .footer{padding:22px 58px 30px;border-top:1px solid #D8E4D8;display:flex;justify-content:space-between;align-items:center;background:var(--paper)}
 .fn{font-size:0.6rem;color:#C5D5C5;letter-spacing:.1em}
 .fc{font-family:'EB Garamond',serif;font-style:italic;font-size:.7rem;color:#C5D5C5}
+/* Meal selection */
+#mealSection{display:none;margin-top:26px}
+.meal-guest{margin-bottom:22px}
+.meal-guest:last-child{margin-bottom:0}
+.meal-guest-lbl{display:block;font-size:0.6rem;letter-spacing:.18em;text-transform:uppercase;color:var(--mid);margin-bottom:8px}
+.meal-opt{position:relative}
+.meal-opt input[type=radio]{position:absolute;opacity:0;width:0;height:0}
+.meal-opt-lbl{display:flex;align-items:flex-start;gap:16px;padding:13px 16px;cursor:pointer;border-bottom:1px solid #C5D5C5;transition:background .15s}
+.meal-opt:last-child .meal-opt-lbl{border-bottom:none}
+.meal-opt-lbl:hover{background:rgba(122,158,126,.08)}
+.meal-opt input:checked+.meal-opt-lbl{background:var(--forest);color:var(--pale)}
+.meal-opt input:checked+.meal-opt-lbl .meal-name{color:var(--pale)}
+.meal-opt input:checked+.meal-opt-lbl .meal-desc{color:var(--sage)}
+.meal-opt input:checked+.meal-opt-lbl .dot{border-color:var(--gold);background:var(--gold)}
+.meal-opt input:checked+.meal-opt-lbl .dot::after{content:'';width:4px;height:4px;border-radius:50%;background:var(--forest)}
+.meal-name{font-size:0.8rem;font-weight:400;color:var(--forest);margin-bottom:3px}
+.meal-desc{font-size:0.67rem;color:var(--mid);line-height:1.6}
+.meal-guests-wrap{display:flex;flex-direction:column;gap:18px}
 @media(max-width:540px){.top,.events,.rsvp{padding-left:26px;padding-right:26px}.div-wrap,.spirit{margin:0 26px}.footer{padding:18px 26px 26px;flex-direction:column;gap:8px;text-align:center}}
 </style>
 </head>
@@ -213,6 +231,10 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
       <div class="stepper"><button type="button" id="guestMinus" class="step-btn" onclick="adjustGuests(-1)">−</button><input type="number" id="guestCount" name="guests" value="1" min="1" max="20" readonly/><button type="button" id="guestPlus" class="step-btn" onclick="adjustGuests(1)">+</button></div>
       <div class="sub-note">Including yourself</div>
     </div>
+    <div id="mealSection">
+      <label class="lbl" style="margin-bottom:10px;display:block">Dinner selection — please choose one per guest</label>
+      <div id="mealGuests" class="meal-guests-wrap"></div>
+    </div>
     <div class="row" style="margin-top:18px"><label class="lbl">Anything else we should know?</label><input class="inp" type="text" name="notes" placeholder="Dietary needs, questions, etc."/></div>
     <button type="submit" class="btn" id="rsvpBtn">Send my RSVP</button>
     <div class="ty" id="thankyou"><p>Thank you — we can't wait to celebrate with you. ♡</p></div>
@@ -223,11 +245,70 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
 <div class="footer"><span class="fn">Jackson Lyons & Crystal Huynh · September 2026</span><span class="fc">39.1178° N, 106.4452° W</span></div>
 </div>
 <script>
-  document.querySelectorAll('input[name="attendance"]').forEach(r=>{r.addEventListener('change',()=>{document.getElementById('guestCountRow').style.display=r.value==='cannot-attend'?'none':'block'})});
-  function adjustGuests(d){const i=document.getElementById('guestCount');const n=Math.min(20,Math.max(1,parseInt(i.value)+d));i.value=n;document.getElementById('guestMinus').style.opacity=n===1?'0.3':'1';document.getElementById('guestPlus').style.opacity=n===20?'0.3':'1'}
-  // ── Paste your Apps Script Web App URL below ──────────────────────────────
+  // ── Apps Script endpoint ───────────────────────────────────────────────────
   const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyk39vCJVkLLrxetsXIGEuW862ebp_O1kvmKYbv5rEaQXAl00-7duQeMSnHTRljfsAf/exec';
   // ──────────────────────────────────────────────────────────────────────────
+
+  const MEALS = [
+    { value: 'chicken',   name: 'Pancetta Chicken',
+      desc: 'Stuffed with house made boursin cheese, pancetta and greens, served with wild mushroom demi glace' },
+    { value: 'prime-rib', name: 'Herb Rubbed King Cut Prime Rib of Beef',
+      desc: 'With horseradish cream' },
+    { value: 'sole',      name: 'Citrus Basil Crab Stuffed Sole',
+      desc: 'With a white wine shallot sauce' },
+  ];
+
+  function needsDinner(val) { return val === 'dinner' || val === 'both'; }
+
+  function renderMealSelectors(count) {
+    const container = document.getElementById('mealGuests');
+    container.innerHTML = '';
+    for (let i = 1; i <= count; i++) {
+      const guestLabel = i === 1 ? 'Guest 1 — You' : `Guest ${i}`;
+      const optionsHTML = MEALS.map(m => `
+        <div class="meal-opt">
+          <input type="radio" name="meal_${i}" id="meal_${i}_${m.value}" value="${m.value}" required/>
+          <label class="meal-opt-lbl" for="meal_${i}_${m.value}">
+            <div class="dot"></div>
+            <div class="opt-txt">
+              <div class="meal-name">${m.name}</div>
+              <div class="meal-desc">${m.desc}</div>
+            </div>
+          </label>
+        </div>`).join('');
+      container.insertAdjacentHTML('beforeend', `
+        <div class="meal-guest">
+          <span class="meal-guest-lbl">${guestLabel}</span>
+          <div class="opts">${optionsHTML}</div>
+        </div>`);
+    }
+  }
+
+  // Show/hide guest count and meal section based on attendance choice
+  document.querySelectorAll('input[name="attendance"]').forEach(r => {
+    r.addEventListener('change', () => {
+      const v = r.value;
+      document.getElementById('guestCountRow').style.display = v === 'cannot-attend' ? 'none' : 'block';
+      const mealSection = document.getElementById('mealSection');
+      if (needsDinner(v)) {
+        mealSection.style.display = 'block';
+        renderMealSelectors(parseInt(document.getElementById('guestCount').value));
+      } else {
+        mealSection.style.display = 'none';
+      }
+    });
+  });
+
+  // Re-render meal selectors when guest count changes
+  function adjustGuests(d) {
+    const i = document.getElementById('guestCount');
+    const n = Math.min(20, Math.max(1, parseInt(i.value) + d));
+    i.value = n;
+    document.getElementById('guestMinus').style.opacity = n === 1  ? '0.3' : '1';
+    document.getElementById('guestPlus').style.opacity  = n === 20 ? '0.3' : '1';
+    const attendance = document.querySelector('input[name="attendance"]:checked')?.value;
+    if (needsDinner(attendance)) renderMealSelectors(n);
+  }
 
   async function handleRSVP(e) {
     e.preventDefault();
@@ -238,30 +319,38 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
     btn.disabled    = true;
     document.getElementById('errorMsg').style.display = 'none';
 
-    // Collect form values into a plain object (Apps Script reads JSON)
+    const attendance  = form.querySelector('input[name="attendance"]:checked')?.value || '';
+    const guestCount  = parseInt(document.getElementById('guestCount').value);
+
+    // Collect per-guest meal choices when dinner is involved
+    const meals = [];
+    if (needsDinner(attendance)) {
+      for (let i = 1; i <= guestCount; i++) {
+        const sel = form.querySelector(`input[name="meal_${i}"]:checked`);
+        meals.push(sel ? sel.value : '');
+      }
+    }
+
     const payload = {
       name:       form.name.value.trim(),
       email:      form.email.value.trim(),
-      attendance: form.querySelector('input[name="attendance"]:checked')?.value || '',
-      guests:     document.getElementById('guestCount').value,
+      attendance: attendance,
+      guests:     guestCount,
+      meals:      meals.join(' | '),   // e.g. "chicken | prime-rib | sole"
       notes:      form.notes.value.trim(),
     };
 
     try {
-      const res = await fetch(APPS_SCRIPT_URL, {
+      await fetch(APPS_SCRIPT_URL, {
         method:  'POST',
-        // Apps Script Web Apps require no-cors when called from a browser page
         mode:    'no-cors',
         headers: { 'Content-Type': 'application/json' },
         body:    JSON.stringify(payload),
       });
-
-      // no-cors responses are opaque (res.ok is always false), so we treat
-      // the absence of a network error as success.
       btn.style.display = 'none';
       document.getElementById('thankyou').style.display = 'block';
       form.reset();
-
+      document.getElementById('mealSection').style.display = 'none';
     } catch (err) {
       btn.textContent = 'Send my RSVP';
       btn.disabled    = false;

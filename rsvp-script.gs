@@ -24,6 +24,7 @@ function doPost(e) {
       data.email       || "",            // Email
       data.attendance  || "",            // hike / dinner / both / cannot-attend
       data.guests      || "",            // Number of guests
+      data.meals       || "",            // Per-guest meal choices (pipe-separated)
       data.notes       || "",            // Dietary needs / notes
     ]);
 
@@ -56,10 +57,11 @@ function getOrCreateSheet() {
       "Email",
       "Attending",
       "Guests",
+      "Meal Selections",
       "Notes",
     ]);
     // Bold + freeze the header
-    sheet.getRange(1, 1, 1, 6).setFontWeight("bold");
+    sheet.getRange(1, 1, 1, 7).setFontWeight("bold");
     sheet.setFrozenRows(1);
   }
 
@@ -76,6 +78,17 @@ function attendanceLabel(value) {
   return map[value] || value;
 }
 
+function mealLabel(value) {
+  const map = {
+    "chicken":   "Pancetta Chicken",
+    "prime-rib": "Herb Rubbed King Cut Prime Rib of Beef",
+    "sole":      "Citrus Basil Crab Stuffed Sole",
+  };
+  // meals arrive pipe-separated, e.g. "chicken | prime-rib"
+  if (!value) return "—";
+  return value.split(" | ").map((v, i) => `Guest ${i + 1}: ${map[v.trim()] || v.trim()}`).join("\n           ");
+}
+
 function sendNotification(data, timestamp) {
   const label   = attendanceLabel(data.attendance);
   const subject = `New RSVP from ${data.name || "a guest"}`;
@@ -88,6 +101,7 @@ Name:      ${data.name     || "—"}
 Email:     ${data.email    || "—"}
 Attending: ${label}
 Guests:    ${data.guests   || "—"}
+Meals:     ${mealLabel(data.meals)}
 Notes:     ${data.notes    || "—"}
 ──────────────────────────
 Received:  ${timestamp.toLocaleString()}
