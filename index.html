@@ -376,6 +376,7 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
     const guestAttendance = [];
     const guestMeals      = [];
     const guestDietary    = [];
+    const guestList       = [];
 
     for (let i = 1; i <= guestCount; i++) {
       const name    = form.querySelector(`input[name="guest_name_${i}"]`)?.value.trim() || '';
@@ -386,17 +387,24 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
       guestAttendance.push(att);
       guestMeals.push(needsDinner(att) ? meal : '');
       guestDietary.push(needsDinner(att) ? dietary : '');
+      guestList.push({ name, attendance: att, meal: needsDinner(att) ? meal : '', dietary: needsDinner(att) ? dietary : '' });
     }
+
+    const email = form.email.value.trim();
+    const notes = form.notes.value.trim();
+
+    sessionStorage.setItem('rsvp', JSON.stringify({ email, guests: guestList, notes }));
 
     const payload = {
       name:       guestNames[0],
-      email:      form.email.value.trim(),
+      email,
       guests:     guestCount,
       guestNames: guestNames.join(' | '),
       attendance: guestAttendance.join(' | '),
       meals:      guestMeals.filter(Boolean).join(' | '),
       dietary:    guestDietary.filter(Boolean).join(' | '),
-      notes:      form.notes.value.trim(),
+      notes,
+      guestData:  JSON.stringify(guestList),
     };
 
     try {
@@ -406,11 +414,7 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
         headers: { 'Content-Type': 'application/json' },
         body:    JSON.stringify(payload),
       });
-      btn.style.display = 'none';
-      document.getElementById('thankyou').style.display = 'block';
-      form.reset();
-      document.getElementById('guestCount').value = 1;
-      renderGuestCards(1);
+      window.location.href = 'thankyou.html';
     } catch (err) {
       btn.textContent = 'Send my RSVP';
       btn.disabled    = false;

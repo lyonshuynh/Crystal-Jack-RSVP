@@ -30,8 +30,10 @@ function doPost(e) {
       data.notes       || "",            // Additional notes
     ]);
 
-    // Send notification email
+    // Send notification email to organizers
     sendNotification(data, now);
+    // Send confirmation email to guest
+    sendConfirmation(data);
 
     return ContentService
       .createTextOutput(JSON.stringify({ result: "ok" }))
@@ -119,6 +121,81 @@ ${SpreadsheetApp.getActiveSpreadsheet().getUrl()}
   MailApp.sendEmail({
     to:      NOTIFICATION_EMAIL,
     subject: subject,
+    body:    body,
+  });
+}
+
+function sendConfirmation(data) {
+  if (!data.email) return;
+
+  const MEAL_LABELS = {
+    "chicken":   "Pancetta Chicken",
+    "prime-rib": "Herb Rubbed King Cut Prime Rib of Beef",
+    "sole":      "Citrus Basil Crab Stuffed Sole",
+  };
+  const ATT_LABELS = {
+    "hike":          "The Summit — Mount Elbert (Sep 4)",
+    "dinner":        "The Celebration — The Wright Room (Sep 6)",
+    "both":          "Both — The Full Adventure (Sep 4 + 6)",
+    "cannot-attend": "Cannot Attend",
+  };
+
+  const guests = data.guestData ? JSON.parse(data.guestData) : [{ name: data.name, attendance: data.attendance, meal: data.meals, dietary: data.dietary }];
+
+  const anyHike   = guests.some(function(g) { return g.attendance === "hike"   || g.attendance === "both"; });
+  const anyDinner = guests.some(function(g) { return g.attendance === "dinner" || g.attendance === "both"; });
+  const allOut    = guests.every(function(g) { return g.attendance === "cannot-attend"; });
+
+  const guestLines = guests.map(function(g) {
+    var line = (g.name || "Guest") + "\n  Joining for: " + (ATT_LABELS[g.attendance] || g.attendance);
+    if (g.meal)    line += "\n  Entrée:      " + (MEAL_LABELS[g.meal] || g.meal);
+    if (g.dietary) line += "\n  Dietary:     " + g.dietary;
+    return line;
+  }).join("\n\n");
+
+  var eventSection = "";
+  if (anyHike) {
+    eventSection +=
+      "\n──────────────────────────\n" +
+      "PART I — THE SUMMIT\n" +
+      "Mount Elbert · 14,440 ft · Lake County, CO\n" +
+      "Friday, September 4, 2026\n" +
+      "Depart trailhead at 4:00 AM · Summit by lunchtime\n" +
+      "Rain check date: Saturday, September 5\n";
+  }
+  if (anyDinner) {
+    eventSection +=
+      "\n──────────────────────────\n" +
+      "PART II — THE CELEBRATION\n" +
+      "The Wright Room · Denver, Colorado\n" +
+      "Sunday, September 6, 2026 · Evening dinner\n";
+  }
+
+  const opening = allOut
+    ? "We're sorry you can't make it, but we're so grateful you took the time to let us know. You'll be in our hearts on the day."
+    : "We're so excited to celebrate with you. Here's a summary of your RSVP — save this for your records.";
+
+  const body = [
+    "Jackson & Crystal — September 2026",
+    "",
+    opening,
+    "",
+    "YOUR RSVP SUMMARY",
+    "──────────────────────────",
+    guestLines,
+    data.notes ? "\nNotes: " + data.notes : "",
+    eventSection,
+    "──────────────────────────",
+    "",
+    "If you have any questions, just reply to this email.",
+    "",
+    "With love,",
+    "Jackson & Crystal",
+  ].join("\n").trim();
+
+  MailApp.sendEmail({
+    to:      data.email,
+    subject: "Your RSVP — Jackson & Crystal · September 2026",
     body:    body,
   });
 }
