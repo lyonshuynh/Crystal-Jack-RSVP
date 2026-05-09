@@ -84,8 +84,8 @@ function attendanceLabel(value) {
 function mealLabel(value) {
   const map = {
     "chicken":   "Pancetta Chicken",
+    "bass":      "Colorado Striped Bass",
     "prime-rib": "Herb Rubbed King Cut Prime Rib of Beef",
-    "sole":      "Citrus Basil Crab Stuffed Sole",
   };
   return map[value] || value || "";
 }
