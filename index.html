@@ -89,10 +89,6 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
 .fn{font-size:0.6rem;color:#C5D5C5;letter-spacing:.1em}
 .fc{font-family:'EB Garamond',serif;font-style:italic;font-size:.7rem;color:#C5D5C5}
 /* Meal selection */
-#mealSection{display:none;margin-top:26px}
-.meal-guest{margin-bottom:22px}
-.meal-guest:last-child{margin-bottom:0}
-.meal-guest-lbl{display:block;font-size:0.6rem;letter-spacing:.18em;text-transform:uppercase;color:var(--mid);margin-bottom:8px}
 .meal-opt{position:relative}
 .meal-opt input[type=radio]{position:absolute;opacity:0;width:0;height:0}
 .meal-opt-lbl{display:flex;align-items:flex-start;gap:16px;padding:13px 16px;cursor:pointer;border-bottom:1px solid #C5D5C5;transition:background .15s}
@@ -105,8 +101,13 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
 .meal-opt input:checked+.meal-opt-lbl .dot::after{content:'';width:4px;height:4px;border-radius:50%;background:var(--forest)}
 .meal-name{font-size:0.8rem;font-weight:400;color:var(--forest);margin-bottom:3px}
 .meal-desc{font-size:0.67rem;color:var(--mid);line-height:1.6}
-.meal-guests-wrap{display:flex;flex-direction:column;gap:18px}
-@media(max-width:540px){.top,.events,.rsvp{padding-left:26px;padding-right:26px}.div-wrap,.spirit{margin:0 26px}.footer{padding:18px 26px 26px;flex-direction:column;gap:8px;text-align:center}}
+/* Guest cards */
+#guestCards{display:flex;flex-direction:column;gap:16px}
+.guest-card{border:1px solid #D8E4D8}
+.guest-card-hdr{padding:11px 18px;background:var(--forest);color:var(--pale);font-size:0.6rem;letter-spacing:0.22em;text-transform:uppercase;font-family:'Jost',sans-serif;font-weight:300}
+.guest-card-body{padding:22px 20px;display:flex;flex-direction:column;gap:22px}
+.guest-meal-wrap{display:none}
+@media(max-width:540px){.top,.events,.rsvp{padding-left:26px;padding-right:26px}.div-wrap,.spirit{margin:0 26px}.footer{padding:18px 26px 26px;flex-direction:column;gap:8px;text-align:center}.guest-card-body{padding:18px 16px}}
 </style>
 </head>
 <body>
@@ -217,29 +218,13 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
 <div class="rsvp">
   <div class="rsvp-h"><h3>Will you join us?</h3><p>Let us know how you'd like to celebrate</p></div>
   <form id="rsvpForm" onsubmit="handleRSVP(event)">
-    <div class="row"><label class="lbl">Your name</label><input class="inp" type="text" name="name" placeholder="Full name" required/></div>
     <div class="row"><label class="lbl">Email</label><input class="inp" type="email" name="email" placeholder="your@email.com"/></div>
-    <div class="row" style="margin-top:26px"><label class="lbl">I'll be joining for</label>
-      <div class="opts">
-        <div class="opt"><input type="radio" name="attendance" id="h4" value="hike"/><label class="opt-lbl" for="h4"><div class="dot"></div><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#7A9E7E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 20 9 4 15 14 18 10 21 20 3 20"/></svg></div><div class="opt-txt"><div class="opt-t">The Summit — Mount Elbert</div><div class="opt-d">Hike up Colorado's highest peak</div></div><div class="opt-date">Sep 4</div></label></div>
-        <div class="opt"><input type="radio" name="attendance" id="d4" value="dinner"/><label class="opt-lbl" for="d4"><div class="dot"></div><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#7A9E7E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><line x1="7" y1="2" x2="7" y2="22"/><path d="M21 15V2a5 5 0 0 0-5 5v6h3l-1 11"/></svg></div><div class="opt-txt"><div class="opt-t">The Celebration — The Wright Room</div><div class="opt-d">Dinner in Denver</div></div><div class="opt-date">Sep 6</div></label></div>
-        <div class="opt"><input type="radio" name="attendance" id="b4" value="both"/><label class="opt-lbl" for="b4"><div class="dot"></div><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#7A9E7E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div><div class="opt-txt"><div class="opt-t">Both — The Full Adventure</div><div class="opt-d">Summit Sep 4, celebrate Sep 6</div></div><div class="opt-date">Sep 4+6</div></label></div>
-        <div class="opt"><input type="radio" name="attendance" id="n4" value="cannot-attend"/><label class="opt-lbl" for="n4"><div class="dot"></div><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#7A9E7E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div><div class="opt-txt"><div class="opt-t">Cannot Attend</div><div class="opt-d">We'll be there in spirit — congratulations!</div></div><div class="opt-date"></div></label></div>
-      </div>
-    </div>
-    <div class="row" id="guestCountRow" style="margin-top:26px"><label class="lbl">Number of guests</label>
+    <div class="row" style="margin-top:26px"><label class="lbl">Number of guests</label>
       <div class="stepper"><button type="button" id="guestMinus" class="step-btn" onclick="adjustGuests(-1)">−</button><input type="number" id="guestCount" name="guests" value="1" min="1" max="20" readonly/><button type="button" id="guestPlus" class="step-btn" onclick="adjustGuests(1)">+</button></div>
       <div class="sub-note">Including yourself</div>
     </div>
-    <div id="guestNamesSection" style="display:none;margin-top:26px">
-      <label class="lbl" style="margin-bottom:10px;display:block">Additional guest names</label>
-      <div id="guestNameInputs"></div>
-    </div>
-    <div id="mealSection">
-      <label class="lbl" style="margin-bottom:10px;display:block">Dinner selection — please choose one per guest</label>
-      <div id="mealGuests" class="meal-guests-wrap"></div>
-    </div>
-    <div class="row" style="margin-top:18px"><label class="lbl">Anything else we should know?</label><input class="inp" type="text" name="notes" placeholder="Dietary needs, questions, etc."/></div>
+    <div id="guestCards" style="margin-top:26px"></div>
+    <div class="row" style="margin-top:22px"><label class="lbl">Anything else we should know?</label><input class="inp" type="text" name="notes" placeholder="Dietary needs, questions, etc."/></div>
     <button type="submit" class="btn" id="rsvpBtn">Send my RSVP</button>
     <div class="ty" id="thankyou"><p>Thank you — we can't wait to celebrate with you. ♡</p></div>
     <div class="err" id="errorMsg"><p>Something went wrong — please try again.</p></div>
@@ -255,4 +240,47 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
 
   const MEALS = [
     { value: 'chicken',   name: 'Pancetta Chicken',
-  
+      desc: 'Stuffed with house made boursin cheese, pancetta and greens, served with wild mushroom demi glace' },
+    { value: 'prime-rib', name: 'Herb Rubbed King Cut Prime Rib of Beef',
+      desc: 'With horseradish cream' },
+    { value: 'sole',      name: 'Citrus Basil Crab Stuffed Sole',
+      desc: 'With a white wine shallot sauce' },
+  ];
+
+  const ACTIVITIES = [
+    { value: 'hike',          label: 'The Summit — Mount Elbert',        desc: "Hike up Colorado's highest peak",           date: 'Sep 4',   icon: '<polygon points="3 20 9 4 15 14 18 10 21 20 3 20"/>' },
+    { value: 'dinner',        label: 'The Celebration — The Wright Room', desc: 'Dinner in Denver',                          date: 'Sep 6',   icon: '<path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><line x1="7" y1="2" x2="7" y2="22"/><path d="M21 15V2a5 5 0 0 0-5 5v6h3l-1 11"/>' },
+    { value: 'both',          label: 'Both — The Full Adventure',         desc: 'Summit Sep 4, celebrate Sep 6',             date: 'Sep 4+6', icon: '<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>' },
+    { value: 'cannot-attend', label: 'Cannot Attend',                     desc: "We'll be there in spirit — congratulations!", date: '',        icon: '<line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>' },
+  ];
+
+  function needsDinner(val) { return val === 'dinner' || val === 'both'; }
+
+  function renderGuestCards(count) {
+    const container = document.getElementById('guestCards');
+
+    // Preserve values already entered before re-rendering
+    const saved = {};
+    container.querySelectorAll('.guest-card').forEach(card => {
+      const i = card.dataset.guest;
+      saved[i] = {
+        name:  card.querySelector(`input[name="guest_name_${i}"]`)?.value || '',
+        att:   card.querySelector(`input[name="attendance_${i}"]:checked`)?.value || '',
+        meal:  card.querySelector(`input[name="meal_${i}"]:checked`)?.value || '',
+      };
+    });
+
+    container.innerHTML = '';
+
+    for (let i = 1; i <= count; i++) {
+      const s           = saved[i] || {};
+      const headerLabel = i === 1 ? 'Guest 1 — You' : `Guest ${i}`;
+      const mealVisible = needsDinner(s.att);
+
+      const actHTML = ACTIVITIES.map(a => `
+        <div class="opt">
+          <input type="radio" name="attendance_${i}" id="att_${i}_${a.value}" value="${a.value}"${s.att === a.value ? ' checked' : ''}/>
+          <label class="opt-lbl" for="att_${i}_${a.value}">
+            <div class="dot"></div>
+            <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#7A9E7E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">${a.icon}</svg></div>
+            <div class="opt-txt"><div class="opt-t">${a.label}</div><div class
