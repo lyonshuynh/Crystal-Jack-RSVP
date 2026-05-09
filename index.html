@@ -218,7 +218,8 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
 <div class="rsvp">
   <div class="rsvp-h"><h3>Will you join us?</h3><p>Let us know how you'd like to celebrate</p></div>
   <form id="rsvpForm" onsubmit="handleRSVP(event)">
-    <div class="row"><label class="lbl">Email</label><input class="inp" type="email" name="email" placeholder="your@email.com"/></div>
+    <div class="row"><label class="lbl">Email</label><input class="inp" type="email" name="email" placeholder="your@email.com" required/></div>
+    <div class="row"><label class="lbl">Phone</label><input class="inp" type="tel" name="phone" placeholder="(000) 000-0000"/></div>
     <div class="row" style="margin-top:26px"><label class="lbl">Number of guests</label>
       <div class="stepper"><button type="button" id="guestMinus" class="step-btn" onclick="adjustGuests(-1)">−</button><input type="number" id="guestCount" name="guests" value="1" min="1" max="20" readonly/><button type="button" id="guestPlus" class="step-btn" onclick="adjustGuests(1)">+</button></div>
       <div class="sub-note">Including yourself</div>
@@ -392,13 +393,15 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
     }
 
     const email = form.email.value.trim();
+    const phone = form.phone.value.trim();
     const notes = form.notes.value.trim();
 
-    sessionStorage.setItem('rsvp', JSON.stringify({ email, guests: guestList, notes }));
+    sessionStorage.setItem('rsvp', JSON.stringify({ email, phone, guests: guestList, notes }));
 
     const payload = {
       name:       guestNames[0],
       email,
+      phone,
       guests:     guestCount,
       guestNames: guestNames.join(' | '),
       attendance: guestAttendance.join(' | '),
