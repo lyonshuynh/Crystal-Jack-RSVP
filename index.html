@@ -207,7 +207,7 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
     <div>
       <div class="e-part">Part II</div>
       <div class="e-title">The Celebration</div>
-      <div class="e-detail"><strong>The Wright Room</strong><br>Denver, Colorado<br><br>Sunday, September 6, 2026<br>Evening dinner with everyone we love<br><br>Menu to be announced</div>
+      <div class="e-detail"><strong>The Wright Room</strong><br>Denver, Colorado<br><br>Sunday, September 6, 2026<br>Evening dinner with everyone we love<br><br>If you'll be joining us for dinner, entrée selection is below</div>
     </div>
   </div>
 </div>
@@ -231,6 +231,10 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
       <div class="stepper"><button type="button" id="guestMinus" class="step-btn" onclick="adjustGuests(-1)">−</button><input type="number" id="guestCount" name="guests" value="1" min="1" max="20" readonly/><button type="button" id="guestPlus" class="step-btn" onclick="adjustGuests(1)">+</button></div>
       <div class="sub-note">Including yourself</div>
     </div>
+    <div id="guestNamesSection" style="display:none;margin-top:26px">
+      <label class="lbl" style="margin-bottom:10px;display:block">Additional guest names</label>
+      <div id="guestNameInputs"></div>
+    </div>
     <div id="mealSection">
       <label class="lbl" style="margin-bottom:10px;display:block">Dinner selection — please choose one per guest</label>
       <div id="mealGuests" class="meal-guests-wrap"></div>
@@ -251,112 +255,4 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
 
   const MEALS = [
     { value: 'chicken',   name: 'Pancetta Chicken',
-      desc: 'Stuffed with house made boursin cheese, pancetta and greens, served with wild mushroom demi glace' },
-    { value: 'prime-rib', name: 'Herb Rubbed King Cut Prime Rib of Beef',
-      desc: 'With horseradish cream' },
-    { value: 'sole',      name: 'Citrus Basil Crab Stuffed Sole',
-      desc: 'With a white wine shallot sauce' },
-  ];
-
-  function needsDinner(val) { return val === 'dinner' || val === 'both'; }
-
-  function renderMealSelectors(count) {
-    const container = document.getElementById('mealGuests');
-    container.innerHTML = '';
-    for (let i = 1; i <= count; i++) {
-      const guestLabel = i === 1 ? 'Guest 1 — You' : `Guest ${i}`;
-      const optionsHTML = MEALS.map(m => `
-        <div class="meal-opt">
-          <input type="radio" name="meal_${i}" id="meal_${i}_${m.value}" value="${m.value}" required/>
-          <label class="meal-opt-lbl" for="meal_${i}_${m.value}">
-            <div class="dot"></div>
-            <div class="opt-txt">
-              <div class="meal-name">${m.name}</div>
-              <div class="meal-desc">${m.desc}</div>
-            </div>
-          </label>
-        </div>`).join('');
-      container.insertAdjacentHTML('beforeend', `
-        <div class="meal-guest">
-          <span class="meal-guest-lbl">${guestLabel}</span>
-          <div class="opts">${optionsHTML}</div>
-        </div>`);
-    }
-  }
-
-  // Show/hide guest count and meal section based on attendance choice
-  document.querySelectorAll('input[name="attendance"]').forEach(r => {
-    r.addEventListener('change', () => {
-      const v = r.value;
-      document.getElementById('guestCountRow').style.display = v === 'cannot-attend' ? 'none' : 'block';
-      const mealSection = document.getElementById('mealSection');
-      if (needsDinner(v)) {
-        mealSection.style.display = 'block';
-        renderMealSelectors(parseInt(document.getElementById('guestCount').value));
-      } else {
-        mealSection.style.display = 'none';
-      }
-    });
-  });
-
-  // Re-render meal selectors when guest count changes
-  function adjustGuests(d) {
-    const i = document.getElementById('guestCount');
-    const n = Math.min(20, Math.max(1, parseInt(i.value) + d));
-    i.value = n;
-    document.getElementById('guestMinus').style.opacity = n === 1  ? '0.3' : '1';
-    document.getElementById('guestPlus').style.opacity  = n === 20 ? '0.3' : '1';
-    const attendance = document.querySelector('input[name="attendance"]:checked')?.value;
-    if (needsDinner(attendance)) renderMealSelectors(n);
-  }
-
-  async function handleRSVP(e) {
-    e.preventDefault();
-    const btn  = document.getElementById('rsvpBtn');
-    const form = e.target;
-
-    btn.textContent = 'Sending…';
-    btn.disabled    = true;
-    document.getElementById('errorMsg').style.display = 'none';
-
-    const attendance  = form.querySelector('input[name="attendance"]:checked')?.value || '';
-    const guestCount  = parseInt(document.getElementById('guestCount').value);
-
-    // Collect per-guest meal choices when dinner is involved
-    const meals = [];
-    if (needsDinner(attendance)) {
-      for (let i = 1; i <= guestCount; i++) {
-        const sel = form.querySelector(`input[name="meal_${i}"]:checked`);
-        meals.push(sel ? sel.value : '');
-      }
-    }
-
-    const payload = {
-      name:       form.name.value.trim(),
-      email:      form.email.value.trim(),
-      attendance: attendance,
-      guests:     guestCount,
-      meals:      meals.join(' | '),   // e.g. "chicken | prime-rib | sole"
-      notes:      form.notes.value.trim(),
-    };
-
-    try {
-      await fetch(APPS_SCRIPT_URL, {
-        method:  'POST',
-        mode:    'no-cors',
-        headers: { 'Content-Type': 'application/json' },
-        body:    JSON.stringify(payload),
-      });
-      btn.style.display = 'none';
-      document.getElementById('thankyou').style.display = 'block';
-      form.reset();
-      document.getElementById('mealSection').style.display = 'none';
-    } catch (err) {
-      btn.textContent = 'Send my RSVP';
-      btn.disabled    = false;
-      document.getElementById('errorMsg').style.display = 'block';
-    }
-  }
-</script>
-</body>
-</html>
+  
