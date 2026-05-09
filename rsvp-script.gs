@@ -100,4 +100,28 @@ You have a new RSVP for Jackson & Crystal's wedding!
 
 ──────────────────────────
 Name:      ${data.name       || "—"}
-Em
+Email:     ${data.email      || "—"}
+Attending: ${label}
+Guests:    ${data.guests     || "—"}
+Names:     ${data.guestNames || "—"}
+Meals:     ${mealLabel(data.meals)}
+Notes:     ${data.notes      || "—"}
+──────────────────────────
+Received:  ${timestamp.toLocaleString()}
+
+View all responses:
+${SpreadsheetApp.getActiveSpreadsheet().getUrl()}
+  `.trim();
+
+  MailApp.sendEmail({
+    to:      NOTIFICATION_EMAIL,
+    subject: subject,
+    body:    body,
+  });
+}
+
+// ── OPTIONAL: run this once manually to test the sheet setup ──
+function testSetup() {
+  const sheet = getOrCreateSheet();
+  Logger.log("Sheet ready: " + sheet.getName());
+}
