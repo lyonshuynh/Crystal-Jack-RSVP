@@ -11,29 +11,30 @@ const SHEET_NAME         = "RSVPs";                // tab name in your spreadshe
 
 function doPost(e) {
   try {
-    // Parse the incoming JSON body
-    const data = JSON.parse(e.postData.contents);
+    const data   = JSON.parse(e.postData.contents);
+    const sheet  = getOrCreateSheet();
+    const now    = new Date();
+    const guests = data.guestData
+      ? JSON.parse(data.guestData)
+      : [{ name: data.name, attendance: data.attendance, meal: data.meals, dietary: data.dietary }];
 
-    const sheet = getOrCreateSheet();
-    const now   = new Date();
+    // One row per guest
+    guests.forEach(function(g) {
+      sheet.appendRow([
+        now,
+        data.email             || "",
+        g.name                 || "",
+        attendanceLabel(g.attendance),
+        mealLabel(g.meal),
+        g.dietary              || "",
+        data.notes             || "",
+      ]);
+    });
 
-    // Append one row per submission
-    sheet.appendRow([
-      now,                               // Timestamp
-      data.name        || "",            // Full name (submitter)
-      data.email       || "",            // Email
-      data.attendance  || "",            // hike / dinner / both / cannot-attend
-      data.guests      || "",            // Number of guests
-      data.guestNames  || "",            // All guest names (pipe-separated)
-      data.meals       || "",            // Per-guest meal choices (pipe-separated)
-      data.dietary     || "",            // Per-guest dietary restrictions (pipe-separated)
-      data.notes       || "",            // Additional notes
-    ]);
-
-    // Send notification email to organizers
-    sendNotification(data, now);
-    // Send confirmation email to guest
-    sendConfirmation(data);
+    // One notification email per submission (not per guest)
+    sendNotification(data, guests, now);
+    // One confirmation email to guest per submission
+    sendConfirmation(data, guests);
 
     return ContentService
       .createTextOutput(JSON.stringify({ result: "ok" }))
@@ -54,20 +55,16 @@ function getOrCreateSheet() {
 
   if (!sheet) {
     sheet = ss.insertSheet(SHEET_NAME);
-    // Add header row on first run
     sheet.appendRow([
       "Timestamp",
-      "Name",
       "Email",
-      "Attending",
-      "Guests",
-      "Guest Names",
-      "Meal Selections",
+      "Guest Name",
+      "Joining For",
+      "Meal",
       "Dietary Restrictions",
       "Notes",
     ]);
-    // Bold + freeze the header
-    sheet.getRange(1, 1, 1, 9).setFontWeight("bold");
+    sheet.getRange(1, 1, 1, 7).setFontWeight("bold");
     sheet.setFrozenRows(1);
   }
 
@@ -81,7 +78,7 @@ function attendanceLabel(value) {
     "both":          "Both — The Full Adventure (Sep 4 + 6)",
     "cannot-attend": "Cannot Attend",
   };
-  return map[value] || value;
+  return map[value] || value || "";
 }
 
 function mealLabel(value) {
@@ -90,49 +87,46 @@ function mealLabel(value) {
     "prime-rib": "Herb Rubbed King Cut Prime Rib of Beef",
     "sole":      "Citrus Basil Crab Stuffed Sole",
   };
-  // meals arrive pipe-separated, e.g. "chicken | prime-rib"
-  if (!value) return "—";
-  return value.split(" | ").map((v, i) => `Guest ${i + 1}: ${map[v.trim()] || v.trim()}`).join("\n           ");
+  return map[value] || value || "";
 }
 
-function sendNotification(data, timestamp) {
-  const label   = attendanceLabel(data.attendance);
-  const subject = `New RSVP from ${data.name || "a guest"}`;
+function sendNotification(data, guests, timestamp) {
+  const guestLines = guests.map(function(g, i) {
+    var line = "Guest " + (i + 1) + ": " + (g.name || "—");
+    line += "\n  Joining for: " + attendanceLabel(g.attendance);
+    if (g.meal)    line += "\n  Entrée:      " + mealLabel(g.meal);
+    if (g.dietary) line += "\n  Dietary:     " + g.dietary;
+    return line;
+  }).join("\n\n");
 
-  const body = `
-You have a new RSVP for Jackson & Crystal's wedding!
-
-──────────────────────────
-Name:      ${data.name       || "—"}
-Email:     ${data.email      || "—"}
-Attending: ${label}
-Guests:    ${data.guests     || "—"}
-Names:     ${data.guestNames || "—"}
-Meals:     ${mealLabel(data.meals)}
-Dietary:   ${data.dietary    || "—"}
-Notes:     ${data.notes      || "—"}
-──────────────────────────
-Received:  ${timestamp.toLocaleString()}
-
-View all responses:
-${SpreadsheetApp.getActiveSpreadsheet().getUrl()}
-  `.trim();
+  const body = [
+    "You have a new RSVP for Jackson & Crystal's wedding!",
+    "",
+    "──────────────────────────",
+    "Submitted by: " + (data.name || "—") + " (" + (data.email || "—") + ")",
+    "Total guests: " + (data.guests || guests.length),
+    "──────────────────────────",
+    "",
+    guestLines,
+    data.notes ? "\nNotes: " + data.notes : "",
+    "",
+    "──────────────────────────",
+    "Received:  " + timestamp.toLocaleString(),
+    "",
+    "View all responses:",
+    SpreadsheetApp.getActiveSpreadsheet().getUrl(),
+  ].join("\n").trim();
 
   MailApp.sendEmail({
     to:      NOTIFICATION_EMAIL,
-    subject: subject,
+    subject: "New RSVP from " + (data.name || "a guest"),
     body:    body,
   });
 }
 
-function sendConfirmation(data) {
+function sendConfirmation(data, guests) {
   if (!data.email) return;
 
-  const MEAL_LABELS = {
-    "chicken":   "Pancetta Chicken",
-    "prime-rib": "Herb Rubbed King Cut Prime Rib of Beef",
-    "sole":      "Citrus Basil Crab Stuffed Sole",
-  };
   const ATT_LABELS = {
     "hike":          "The Summit — Mount Elbert (Sep 4)",
     "dinner":        "The Celebration — The Wright Room (Sep 6)",
@@ -140,15 +134,13 @@ function sendConfirmation(data) {
     "cannot-attend": "Cannot Attend",
   };
 
-  const guests = data.guestData ? JSON.parse(data.guestData) : [{ name: data.name, attendance: data.attendance, meal: data.meals, dietary: data.dietary }];
-
   const anyHike   = guests.some(function(g) { return g.attendance === "hike"   || g.attendance === "both"; });
   const anyDinner = guests.some(function(g) { return g.attendance === "dinner" || g.attendance === "both"; });
   const allOut    = guests.every(function(g) { return g.attendance === "cannot-attend"; });
 
   const guestLines = guests.map(function(g) {
     var line = (g.name || "Guest") + "\n  Joining for: " + (ATT_LABELS[g.attendance] || g.attendance);
-    if (g.meal)    line += "\n  Entrée:      " + (MEAL_LABELS[g.meal] || g.meal);
+    if (g.meal)    line += "\n  Entrée:      " + mealLabel(g.meal);
     if (g.dietary) line += "\n  Dietary:     " + g.dietary;
     return line;
   }).join("\n\n");
