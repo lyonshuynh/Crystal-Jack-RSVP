@@ -223,8 +223,11 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
       <div class="stepper"><button type="button" id="guestMinus" class="step-btn" onclick="adjustGuests(-1)">−</button><input type="number" id="guestCount" name="guests" value="1" min="1" max="20" readonly/><button type="button" id="guestPlus" class="step-btn" onclick="adjustGuests(1)">+</button></div>
       <div class="sub-note">Including yourself</div>
     </div>
-    <div id="guestCards" style="margin-top:26px"></div>
-    <div class="row" style="margin-top:22px"><label class="lbl">Anything else we should know?</label><input class="inp" type="text" name="notes" placeholder="Dietary needs, questions, etc."/></div>
+    <div id="mealSection">
+      <label class="lbl" style="margin-bottom:10px;display:block">Dinner selection — please choose one per guest</label>
+      <div id="mealGuests" class="meal-guests-wrap"></div>
+    </div>
+    <div class="row" style="margin-top:18px"><label class="lbl">Anything else we should know?</label><input class="inp" type="text" name="notes" placeholder="Dietary needs, questions, etc."/></div>
     <button type="submit" class="btn" id="rsvpBtn">Send my RSVP</button>
     <div class="ty" id="thankyou"><p>Thank you — we can't wait to celebrate with you. ♡</p></div>
     <div class="err" id="errorMsg"><p>Something went wrong — please try again.</p></div>
@@ -256,6 +259,53 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
 
   function needsDinner(val) { return val === 'dinner' || val === 'both'; }
 
+  // Returns the display label for a guest slot — uses entered name if available
+  function getGuestLabel(i) {
+    if (i === 1) {
+      const main = document.querySelector('input[name="name"]');
+      const n = main ? main.value.trim() : '';
+      return n ? `${n}` : 'You';
+    }
+    const inp = document.querySelector(`input[name="guest_name_${i}"]`);
+    return (inp && inp.value.trim()) ? inp.value.trim() : `Guest ${i}`;
+  }
+
+  // Sync a single meal section label when a name field changes
+  function syncMealLabel(i) {
+    const label = document.querySelector(`#mealGuests .meal-guest:nth-child(${i}) .meal-guest-lbl`);
+    if (label) label.textContent = getGuestLabel(i);
+  }
+
+  function renderGuestNames(count, attendance) {
+    const section   = document.getElementById('guestNamesSection');
+    const container = document.getElementById('guestNameInputs');
+
+    if (count <= 1 || attendance === 'cannot-attend') {
+      section.style.display = 'none';
+      container.innerHTML   = '';
+      return;
+    }
+
+    // Preserve any already-typed values before re-rendering
+    const saved = {};
+    container.querySelectorAll('input[type=text]').forEach(inp => { saved[inp.name] = inp.value; });
+
+    section.style.display = 'block';
+    container.innerHTML   = '';
+
+    for (let i = 2; i <= count; i++) {
+      container.insertAdjacentHTML('beforeend', `
+        <div style="margin-bottom:14px">
+          <label class="lbl">Guest ${i}</label>
+          <input class="inp" type="text" name="guest_name_${i}" placeholder="Full name" required/>
+        </div>`);
+      const inp = container.querySelector(`input[name="guest_name_${i}"]`);
+      if (inp && saved[`guest_name_${i}`]) inp.value = saved[`guest_name_${i}`];
+      // Live-sync label in the meal section
+      inp.addEventListener('input', () => syncMealLabel(i));
+    }
+  }
+
   function renderGuestCards(count) {
     const container = document.getElementById('guestCards');
 
@@ -273,22 +323,8 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
     container.innerHTML = '';
 
     for (let i = 1; i <= count; i++) {
-      const s           = saved[i] || {};
-      const headerLabel = i === 1 ? 'Guest 1 — You' : `Guest ${i}`;
-      const mealVisible = needsDinner(s.att);
-
-      const actHTML = ACTIVITIES.map(a => `
-        <div class="opt">
-          <input type="radio" name="attendance_${i}" id="att_${i}_${a.value}" value="${a.value}"${s.att === a.value ? ' checked' : ''}/>
-          <label class="opt-lbl" for="att_${i}_${a.value}">
-            <div class="dot"></div>
-            <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#7A9E7E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">${a.icon}</svg></div>
-            <div class="opt-txt"><div class="opt-t">${a.label}</div><div class="opt-d">${a.desc}</div></div>
-            <div class="opt-date">${a.date}</div>
-          </label>
-        </div>`).join('');
-
-      const mealHTML = MEALS.map(m => `
+      const guestLabel = i === 1 ? 'Guest 1 — You' : `Guest ${i}`;
+      const optionsHTML = MEALS.map(m => `
         <div class="meal-opt">
           <input type="radio" name="meal_${i}" id="meal_${i}_${m.value}" value="${m.value}"${s.meal === m.value ? ' checked' : ''}/>
           <label class="meal-opt-lbl" for="meal_${i}_${m.value}">
@@ -301,57 +337,37 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
         </div>`).join('');
 
       container.insertAdjacentHTML('beforeend', `
-        <div class="guest-card" data-guest="${i}">
-          <div class="guest-card-hdr" id="guest-hdr-${i}">${headerLabel}</div>
-          <div class="guest-card-body">
-            <div>
-              <label class="lbl">Name</label>
-              <input class="inp" type="text" name="guest_name_${i}" placeholder="Full name" value="${(s.name||'').replace(/"/g,'&quot;')}" required/>
-            </div>
-            <div>
-              <label class="lbl" style="margin-bottom:8px;display:block">Joining for</label>
-              <div class="opts">${actHTML}</div>
-            </div>
-            <div class="guest-meal-wrap" style="display:${mealVisible?'block':'none'}">
-              <label class="lbl" style="margin-bottom:8px;display:block">Entrée selection</label>
-              <div class="opts">${mealHTML}</div>
-            </div>
-          </div>
+        <div class="meal-guest">
+          <span class="meal-guest-lbl">${guestLabel}</span>
+          <div class="opts">${optionsHTML}</div>
         </div>`);
-
-      // Wire up interactivity for this card
-      const card      = container.querySelector(`.guest-card[data-guest="${i}"]`);
-      const nameInp   = card.querySelector(`input[name="guest_name_${i}"]`);
-      const mealWrap  = card.querySelector('.guest-meal-wrap');
-      const mealRadios= card.querySelectorAll(`input[name="meal_${i}"]`);
-
-      // Name → update card header live
-      nameInp.addEventListener('input', () => {
-        document.getElementById(`guest-hdr-${i}`).textContent =
-          nameInp.value.trim() || (i === 1 ? 'Guest 1 — You' : `Guest ${i}`);
-      });
-
-      // Activity → show/hide meal section and toggle required
-      card.querySelectorAll(`input[name="attendance_${i}"]`).forEach(r => {
-        r.addEventListener('change', () => {
-          const show = needsDinner(r.value);
-          mealWrap.style.display = show ? 'block' : 'none';
-          mealRadios.forEach(m => { m.required = show; });
-        });
-      });
-
-      // Set initial required state for meal inputs
-      mealRadios.forEach(m => { m.required = mealVisible; });
     }
   }
 
+  // Show/hide guest count and meal section based on attendance choice
+  document.querySelectorAll('input[name="attendance"]').forEach(r => {
+    r.addEventListener('change', () => {
+      const v = r.value;
+      document.getElementById('guestCountRow').style.display = v === 'cannot-attend' ? 'none' : 'block';
+      const mealSection = document.getElementById('mealSection');
+      if (needsDinner(v)) {
+        mealSection.style.display = 'block';
+        renderMealSelectors(parseInt(document.getElementById('guestCount').value));
+      } else {
+        mealSection.style.display = 'none';
+      }
+    });
+  });
+
+  // Re-render meal selectors when guest count changes
   function adjustGuests(d) {
-    const inp = document.getElementById('guestCount');
-    const n   = Math.min(20, Math.max(1, parseInt(inp.value) + d));
-    inp.value = n;
+    const i = document.getElementById('guestCount');
+    const n = Math.min(20, Math.max(1, parseInt(i.value) + d));
+    i.value = n;
     document.getElementById('guestMinus').style.opacity = n === 1  ? '0.3' : '1';
     document.getElementById('guestPlus').style.opacity  = n === 20 ? '0.3' : '1';
-    renderGuestCards(n);
+    const attendance = document.querySelector('input[name="attendance"]:checked')?.value;
+    if (needsDinner(attendance)) renderMealSelectors(n);
   }
 
   // Render the initial single guest card on page load
@@ -367,9 +383,8 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
     btn.disabled    = true;
     document.getElementById('errorMsg').style.display = 'none';
 
-    const guestNames      = [];
-    const guestAttendance = [];
-    const guestMeals      = [];
+    const attendance  = form.querySelector('input[name="attendance"]:checked')?.value || '';
+    const guestCount  = parseInt(document.getElementById('guestCount').value);
 
     for (let i = 1; i <= guestCount; i++) {
       const name = form.querySelector(`input[name="guest_name_${i}"]`)?.value.trim() || '';
@@ -384,9 +399,7 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
       name:       guestNames[0],
       email:      form.email.value.trim(),
       guests:     guestCount,
-      guestNames: guestNames.join(' | '),
-      attendance: guestAttendance.join(' | '),
-      meals:      guestMeals.filter(Boolean).join(' | '),
+      meals:      meals.join(' | '),   // e.g. "chicken | prime-rib | sole"
       notes:      form.notes.value.trim(),
     };
 
@@ -400,8 +413,7 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
       btn.style.display = 'none';
       document.getElementById('thankyou').style.display = 'block';
       form.reset();
-      document.getElementById('guestCount').value = 1;
-      renderGuestCards(1);
+      document.getElementById('mealSection').style.display = 'none';
     } catch (err) {
       btn.textContent = 'Send my RSVP';
       btn.disabled    = false;
