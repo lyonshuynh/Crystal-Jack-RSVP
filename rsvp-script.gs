@@ -161,7 +161,9 @@ function sendConfirmation(data, guests) {
     eventSection +=
       "\n──────────────────────────\n" +
       "PART II — THE CELEBRATION\n" +
-      "The Wright Room · Denver, Colorado\n" +
+      "The Wright Room\n" +
+      "535 16th St Mall, Suite 240, Denver, CO 80202\n" +
+      "Inside the historic Denver Masonic Building\n" +
       "Sunday, September 6, 2026 · Evening dinner\n";
   }
 
