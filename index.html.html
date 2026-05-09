@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Jackson & Crystal — September 2026</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Jost:wght@200;300;400&display=swap');
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--black:#0A0F0A;--forest:#142214;--green:#2D4A2D;--sage:#7A9E7E;--gold:#C8A96E;--pale:#EEF2EC;--paper:#F6F9F5;--mid:#5A7A5A}
+body{background:#2A4028;font-family:'Jost',sans-serif;font-weight:300;min-height:100vh;display:flex;justify-content:center;align-items:flex-start;padding:40px 20px 80px}
+.card{width:100%;max-width:660px;background:var(--paper)}
+
+/* Art */
+.art{width:100%;overflow:hidden}
+.art svg{display:block;width:100%;height:auto}
+
+/* Header */
+.top{padding:52px 58px 42px;text-align:center;border-bottom:1px solid #D8E4D8}
+.eyebrow{font-size:0.6rem;font-weight:300;letter-spacing:0.28em;text-transform:uppercase;color:var(--sage);margin-bottom:28px}
+.names{font-family:'EB Garamond',serif;font-weight:400;font-size:3.1rem;line-height:1.1;color:var(--forest)}
+.names em{font-style:italic}
+.amp{font-family:'EB Garamond',serif;font-style:italic;font-size:2.1rem;color:var(--gold);display:block;margin:6px 0}
+.tagline{font-family:'EB Garamond',serif;font-style:italic;font-size:1.05rem;color:var(--mid);margin-top:20px;line-height:1.9}
+
+/* Divider */
+.div-wrap{display:flex;align-items:center;gap:14px;margin:0 58px;padding:24px 0}
+.div-line{flex:1;height:1px;background:#D8E4D8}
+.div-mark{font-size:0.55rem;letter-spacing:0.3em;text-transform:uppercase;color:#D8E4D8}
+
+/* Events */
+.events{padding:0 58px 38px}
+.event{padding:26px 0;border-bottom:1px solid #DDE8DD;display:grid;grid-template-columns:2px 1fr;gap:0 24px}
+.event:last-child{border-bottom:none}
+.e-bar{background:var(--gold);width:2px;justify-self:center}
+.e-part{font-size:0.58rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:8px}
+.e-title{font-family:'EB Garamond',serif;font-size:1.45rem;font-weight:400;color:var(--forest);margin-bottom:10px}
+.e-detail{font-size:0.76rem;color:var(--mid);line-height:1.9}
+.e-detail strong{font-weight:400;color:var(--forest)}
+.e-note{display:block;margin-top:10px;font-size:0.66rem;font-style:italic;color:#C5D5C5}
+.badge{display:inline-flex;align-items:center;gap:6px;margin-top:12px;padding:4px 10px;border:1px solid #D8E4D8;font-size:0.6rem;letter-spacing:.15em;text-transform:uppercase;color:var(--mid)}
+
+/* Spirit */
+.spirit{margin:0 58px;padding:28px 0 32px;border-top:1px solid #D8E4D8;border-bottom:1px solid #D8E4D8;text-align:center}
+.spirit p{font-family:'EB Garamond',serif;font-style:italic;font-size:1rem;color:var(--mid);line-height:1.9}
+
+/* RSVP */
+.rsvp{padding:38px 58px 46px;background:var(--pale)}
+.rsvp-h{text-align:center;margin-bottom:26px}
+.rsvp-h h3{font-family:'EB Garamond',serif;font-weight:400;font-size:1.35rem;color:var(--forest);margin-bottom:5px}
+.rsvp-h p{font-size:0.7rem;color:var(--mid);letter-spacing:.06em}
+.row{margin-bottom:18px}
+.lbl{display:block;font-size:0.6rem;letter-spacing:.18em;text-transform:uppercase;color:var(--mid);margin-bottom:8px}
+.inp{width:100%;border:none;border-bottom:1px solid #C5D5C5;background:transparent;padding:8px 0;font-family:'Jost',sans-serif;font-weight:300;font-size:0.86rem;color:var(--forest);outline:none;transition:border-color .2s}
+.inp:focus{border-bottom-color:var(--forest)}
+.inp::placeholder{color:#C5D5C5}
+.opts{border:1px solid #C5D5C5}
+.opt{position:relative}
+.opt input[type=radio]{position:absolute;opacity:0;width:0;height:0}
+.opt-lbl{display:flex;align-items:center;gap:16px;padding:15px 18px;cursor:pointer;border-bottom:1px solid #C5D5C5;transition:background .15s}
+.opt:last-child .opt-lbl{border-bottom:none}
+.opt-lbl:hover{background:rgba(122,158,126,.08)}
+.opt input:checked+.opt-lbl{background:var(--forest);color:var(--pale)}
+.opt input:checked+.opt-lbl .opt-t{color:var(--pale)}
+.opt input:checked+.opt-lbl .opt-d{color:var(--sage)}
+.opt input:checked+.opt-lbl .opt-date{color:rgba(238,242,236,.5)}
+.dot{width:13px;height:13px;border:1px solid #C5D5C5;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.opt input:checked+.opt-lbl .dot{border-color:var(--gold);background:var(--gold)}
+.opt input:checked+.opt-lbl .dot::after{content:'';width:4px;height:4px;border-radius:50%;background:var(--forest)}
+.ico{width:18px;height:18px;flex-shrink:0}
+.ico svg{width:18px;height:18px}
+.opt-txt{flex:1}
+.opt-t{font-size:0.8rem;font-weight:400;color:var(--forest);margin-bottom:2px}
+.opt-d{font-size:0.67rem;color:var(--mid)}
+.opt-date{font-size:0.6rem;font-weight:200;letter-spacing:.1em;color:#C5D5C5}
+.stepper{display:flex;align-items:center;border:1px solid #C5D5C5;width:fit-content}
+.step-btn{width:42px;height:42px;background:transparent;border:none;font-family:'Jost',sans-serif;font-size:1rem;color:var(--mid);cursor:pointer;display:flex;align-items:center;justify-content:center}
+.step-btn:first-child{border-right:1px solid #C5D5C5}
+.step-btn:last-child{border-left:1px solid #C5D5C5}
+#guestCount{width:58px;height:42px;border:none;background:transparent;text-align:center;font-family:'Jost',sans-serif;font-size:0.86rem;color:var(--forest);padding:0;-webkit-appearance:none;-moz-appearance:textfield;appearance:none}
+input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
+.sub-note{margin-top:7px;font-size:0.63rem;color:#C5D5C5;letter-spacing:.08em}
+.btn{width:100%;margin-top:22px;padding:15px;background:var(--forest);color:var(--pale);border:none;font-family:'Jost',sans-serif;font-weight:300;font-size:0.68rem;letter-spacing:.22em;text-transform:uppercase;cursor:pointer;transition:background .2s}
+.btn:hover{background:var(--green)}
+.ty{display:none;text-align:center;padding:22px 0 6px}
+.ty p{font-family:'EB Garamond',serif;font-style:italic;font-size:1.05rem;color:var(--gold)}
+.err{display:none;text-align:center;padding:12px 0}
+.err p{font-size:.75rem;color:#b94a48}
+.footer{padding:22px 58px 30px;border-top:1px solid #D8E4D8;display:flex;justify-content:space-between;align-items:center;background:var(--paper)}
+.fn{font-size:0.6rem;color:#C5D5C5;letter-spacing:.1em}
+.fc{font-family:'EB Garamond',serif;font-style:italic;font-size:.7rem;color:#C5D5C5}
+@media(max-width:540px){.top,.events,.rsvp{padding-left:26px;padding-right:26px}.div-wrap,.spirit{margin:0 26px}.footer{padding:18px 26px 26px;flex-direction:column;gap:8px;text-align:center}}
+</style>
+</head>
+<body>
+<div class="card">
+
+<!-- Forest: minimal, desert-structure, deep green palette -->
+<div class="art">
+<svg viewBox="0 0 660 200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Deep forest sky — dark canopy green at top, soft sage at horizon -->
+    <linearGradient id="fSky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%"   stop-color="#0E1E0E"/>
+      <stop offset="55%"  stop-color="#2A4028"/>
+      <stop offset="100%" stop-color="#4A6A4A"/>
+    </linearGradient>
+    <!-- Pre-dawn glow behind Elbert -->
+    <radialGradient id="dawnGlow" cx="50%" cy="100%" r="55%">
+      <stop offset="0%"   stop-color="#C8A96E" stop-opacity="0.28"/>
+      <stop offset="60%"  stop-color="#C8A96E" stop-opacity="0.08"/>
+      <stop offset="100%" stop-color="#C8A96E" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Sky -->
+  <rect width="660" height="200" fill="url(#fSky)"/>
+  <!-- Pre-dawn gold glow -->
+  <ellipse cx="330" cy="200" rx="260" ry="130" fill="url(#dawnGlow)"/>
+
+  <!-- Far range silhouette — very flat, wide, atmospheric -->
+  <polygon points="0,155 80,128 160,142 240,115 320,130 330,105 340,130 420,112 500,138 580,120 660,132 660,200 0,200"
+           fill="#1E3020" opacity="0.55"/>
+  <!-- Mid range -->
+  <polygon points="0,172 90,150 180,162 270,140 330,120 390,136 480,148 570,135 660,152 660,200 0,200"
+           fill="#2D4A2D"/>
+
+  <!-- Elbert — bold, centered, minimal -->
+  <polygon points="298,200 330,48 362,200" fill="#142214"/>
+  <!-- Snowcap -->
+  <polygon points="322,92 330,48 338,92 334,85 330,80 326,85" fill="#EEF2EC" opacity="0.9"/>
+  <!-- Ridge shadow lines -->
+  <polygon points="298,200 312,148 330,48 321,144 308,190" fill="#0A1408" opacity="0.65"/>
+  <polygon points="362,200 348,152 330,48 339,148 352,190" fill="#3A5830" opacity="0.45"/>
+
+  <!-- Left flank -->
+  <polygon points="168,200 216,118 264,200" fill="#1E3020" opacity="0.75"/>
+  <!-- Right flank -->
+  <polygon points="394,200 446,128 498,200" fill="#1E3020" opacity="0.75"/>
+
+  <!-- Forest floor — sparse pine silhouettes replacing desert scrub -->
+  <polygon points="0,200 0,184 18,174 36,184 54,172 72,182 90,170 108,181 126,171 144,182 162,171 180,182 198,174 216,184 234,176 252,184 270,178 288,185 306,180 322,185 338,185 352,180 368,185 384,178 400,183 418,175 436,184 454,172 472,182 490,170 508,181 526,171 544,183 562,172 580,182 598,174 616,183 634,172 652,182 660,178 660,200"
+           fill="#2A4028"/>
+  <!-- Sparse taller pine tips — like desert scrub marks but as trees -->
+  <g fill="#1A2E18">
+    <polygon points="22,200  30,170 38,200"/>
+    <polygon points="58,200  66,168 74,200"/>
+    <polygon points="96,200 104,166 112,200"/>
+    <polygon points="134,200 142,171 150,200"/>
+    <polygon points="170,200 178,169 186,200"/>
+    <polygon points="208,200 216,172 224,200"/>
+    <!-- gap center for Elbert -->
+    <polygon points="430,200 438,172 446,200"/>
+    <polygon points="468,200 476,168 484,200"/>
+    <polygon points="506,200 514,166 522,200"/>
+    <polygon points="544,200 552,170 560,200"/>
+    <polygon points="582,200 590,168 598,200"/>
+    <polygon points="620,200 628,172 636,200"/>
+  </g>
+
+  <!-- Elevation accent — gold, matching forest palette -->
+  <text x="342" y="64" font-family="'Jost',sans-serif" font-size="7" fill="#C8A96E" font-weight="300" letter-spacing="1.5" opacity="0.8">14,440 ft</text>
+  <line x1="330" y1="61" x2="338" y2="61" stroke="#C8A96E" stroke-width="0.6" opacity="0.6"/>
+</svg>
+</div>
+
+<div class="top">
+  <div class="eyebrow">A Wedding in Two Parts</div>
+  <div class="names"><em>Jackson</em></div>
+  <span class="amp">&</span>
+  <div class="names"><em>Crystal</em></div>
+  <p class="tagline">No venue. No aisle. No seating chart.<br>Just the summit, and the people we love.</p>
+</div>
+
+<div class="div-wrap"><div class="div-line"></div><div class="div-mark">September 2026</div><div class="div-line"></div></div>
+
+<div class="events">
+  <div class="event">
+    <div class="e-bar"></div>
+    <div>
+      <div class="e-part">Part I</div>
+      <div class="e-title">The Summit</div>
+      <div class="e-detail"><strong>Mount Elbert — Colorado</strong><br>Highest point in the Rocky Mountains<br><br>Friday, September 4, 2026<br>Depart trailhead at 4:00 AM · Summit by lunchtime</div>
+      <div class="badge"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="18 15 12 9 6 15"/></svg>14,440 ft · Lake County, CO</div>
+      <span class="e-note">Rain check date: Saturday, September 5</span>
+    </div>
+  </div>
+  <div class="event">
+    <div class="e-bar"></div>
+    <div>
+      <div class="e-part">Part II</div>
+      <div class="e-title">The Celebration</div>
+      <div class="e-detail"><strong>The Wright Room</strong><br>Denver, Colorado<br><br>Sunday, September 6, 2026<br>Evening dinner with everyone we love<br><br>Menu to be announced</div>
+    </div>
+  </div>
+</div>
+
+<div class="spirit"><p>Join us for the climb, the dinner, or both —<br>whatever feels right for you.<br>What matters is that you're part of this with us.</p></div>
+
+<div class="rsvp">
+  <div class="rsvp-h"><h3>Will you join us?</h3><p>Let us know how you'd like to celebrate</p></div>
+  <form id="rsvpForm" onsubmit="handleRSVP(event)">
+    <div class="row"><label class="lbl">Your name</label><input class="inp" type="text" name="name" placeholder="Full name" required/></div>
+    <div class="row"><label class="lbl">Email</label><input class="inp" type="email" name="email" placeholder="your@email.com"/></div>
+    <div class="row" style="margin-top:26px"><label class="lbl">I'll be joining for</label>
+      <div class="opts">
+        <div class="opt"><input type="radio" name="attendance" id="h4" value="hike"/><label class="opt-lbl" for="h4"><div class="dot"></div><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#7A9E7E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 20 9 4 15 14 18 10 21 20 3 20"/></svg></div><div class="opt-txt"><div class="opt-t">The Summit — Mount Elbert</div><div class="opt-d">Hike up Colorado's highest peak</div></div><div class="opt-date">Sep 4</div></label></div>
+        <div class="opt"><input type="radio" name="attendance" id="d4" value="dinner"/><label class="opt-lbl" for="d4"><div class="dot"></div><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#7A9E7E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><line x1="7" y1="2" x2="7" y2="22"/><path d="M21 15V2a5 5 0 0 0-5 5v6h3l-1 11"/></svg></div><div class="opt-txt"><div class="opt-t">The Celebration — The Wright Room</div><div class="opt-d">Dinner in Denver</div></div><div class="opt-date">Sep 6</div></label></div>
+        <div class="opt"><input type="radio" name="attendance" id="b4" value="both"/><label class="opt-lbl" for="b4"><div class="dot"></div><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#7A9E7E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div><div class="opt-txt"><div class="opt-t">Both — The Full Adventure</div><div class="opt-d">Summit Sep 4, celebrate Sep 6</div></div><div class="opt-date">Sep 4+6</div></label></div>
+        <div class="opt"><input type="radio" name="attendance" id="n4" value="cannot-attend"/><label class="opt-lbl" for="n4"><div class="dot"></div><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#7A9E7E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div><div class="opt-txt"><div class="opt-t">Cannot Attend</div><div class="opt-d">We'll be there in spirit — congratulations!</div></div><div class="opt-date"></div></label></div>
+      </div>
+    </div>
+    <div class="row" id="guestCountRow" style="margin-top:26px"><label class="lbl">Number of guests</label>
+      <div class="stepper"><button type="button" id="guestMinus" class="step-btn" onclick="adjustGuests(-1)">−</button><input type="number" id="guestCount" name="guests" value="1" min="1" max="20" readonly/><button type="button" id="guestPlus" class="step-btn" onclick="adjustGuests(1)">+</button></div>
+      <div class="sub-note">Including yourself</div>
+    </div>
+    <div class="row" style="margin-top:18px"><label class="lbl">Anything else we should know?</label><input class="inp" type="text" name="notes" placeholder="Dietary needs, questions, etc."/></div>
+    <button type="submit" class="btn" id="rsvpBtn">Send my RSVP</button>
+    <div class="ty" id="thankyou"><p>Thank you — we can't wait to celebrate with you. ♡</p></div>
+    <div class="err" id="errorMsg"><p>Something went wrong — please try again.</p></div>
+  </form>
+</div>
+
+<div class="footer"><span class="fn">Jackson Lyons & Crystal Huynh · September 2026</span><span class="fc">39.1178° N, 106.4452° W</span></div>
+</div>
+<script>
+  document.querySelectorAll('input[name="attendance"]').forEach(r=>{r.addEventListener('change',()=>{document.getElementById('guestCountRow').style.display=r.value==='cannot-attend'?'none':'block'})});
+  function adjustGuests(d){const i=document.getElementById('guestCount');const n=Math.min(20,Math.max(1,parseInt(i.value)+d));i.value=n;document.getElementById('guestMinus').style.opacity=n===1?'0.3':'1';document.getElementById('guestPlus').style.opacity=n===20?'0.3':'1'}
+  // ── Paste your Apps Script Web App URL below ──────────────────────────────
+  const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyk39vCJVkLLrxetsXIGEuW862ebp_O1kvmKYbv5rEaQXAl00-7duQeMSnHTRljfsAf/exec';
+  // ──────────────────────────────────────────────────────────────────────────
+
+  async function handleRSVP(e) {
+    e.preventDefault();
+    const btn  = document.getElementById('rsvpBtn');
+    const form = e.target;
+
+    btn.textContent = 'Sending…';
+    btn.disabled    = true;
+    document.getElementById('errorMsg').style.display = 'none';
+
+    // Collect form values into a plain object (Apps Script reads JSON)
+    const payload = {
+      name:       form.name.value.trim(),
+      email:      form.email.value.trim(),
+      attendance: form.querySelector('input[name="attendance"]:checked')?.value || '',
+      guests:     document.getElementById('guestCount').value,
+      notes:      form.notes.value.trim(),
+    };
+
+    try {
+      const res = await fetch(APPS_SCRIPT_URL, {
+        method:  'POST',
+        // Apps Script Web Apps require no-cors when called from a browser page
+        mode:    'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify(payload),
+      });
+
+      // no-cors responses are opaque (res.ok is always false), so we treat
+      // the absence of a network error as success.
+      btn.style.display = 'none';
+      document.getElementById('thankyou').style.display = 'block';
+      form.reset();
+
+    } catch (err) {
+      btn.textContent = 'Send my RSVP';
+      btn.disabled    = false;
+      document.getElementById('errorMsg').style.display = 'block';
+    }
+  }
+</script>
+</body>
+</html>
