@@ -157,7 +157,7 @@ function sendConfirmation(data, guests) {
       "PART I — THE SUMMIT\n" +
       "Mount Elbert · 14,440 ft · Lake County, CO\n" +
       "Friday, September 4, 2026\n" +
-      "Depart trailhead at 4:00 AM · Summit by lunchtime\n" +
+      "Depart trailhead at 4:00 AM · Summit by sunrise\n" +
       "Rain check date: Saturday, September 5\n\n" +
       "Trailhead: North Mt. Elbert Trailhead\n" +
       "Via County Road 11 (Halfmoon Creek Road) near Leadville, CO\n" +
