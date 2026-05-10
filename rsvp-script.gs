@@ -162,7 +162,13 @@ function sendConfirmation(data, guests) {
       "Trailhead: North Mt. Elbert Trailhead\n" +
       "Via County Road 11 (Halfmoon Creek Road) near Leadville, CO\n" +
       "GPS: Forest Service Road 110, Leadville, CO 80461\n" +
-      "5 miles up a dirt road west of CO 300, near Elbert Creek Campground\n";
+      "5 miles up a dirt road west of CO 300, near Elbert Creek Campground\n\n" +
+      "Lodging\n" +
+      "The Lodge — We've reserved a large cabin near the trailhead, open to all on a first-come, first-served basis. Reach out if you'd like a spot.\n" +
+      "On Your Own — Leadville has a range of hotels, vacation rentals, and B&Bs nearby.\n" +
+      "Camping — For the bold: dispersed camping near the trailhead is always an option.\n\n" +
+      "What to Wear\n" +
+      "Dress for the hike — comfortable layers, broken-in boots, whatever gets you to 14,440 ft. No need to pack dress clothes. The whole idea is to hike, exchange rings somewhere breathtaking, and head back down. The dinner on Sunday is where we'll take the nice photos.\n";
   }
   if (anyDinner) {
     eventSection +=
