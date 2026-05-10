@@ -158,13 +158,13 @@ function sendConfirmation(data, guests) {
       "Mount Elbert · 14,440 ft · Lake County, CO\n" +
       "Friday, September 4, 2026\n" +
       "Depart trailhead at 4:00 AM · Summit by sunrise\n" +
-      "Rain check date: Saturday, September 5\n\n" +
+      "Rain check date: Saturday, September 5 — dinner on September 6 is unaffected\n\n" +
       "Trailhead: North Mt. Elbert Trailhead\n" +
       "Via County Road 11 (Halfmoon Creek Road) near Leadville, CO\n" +
       "GPS: Forest Service Road 110, Leadville, CO 80461\n" +
       "5 miles up a dirt road west of CO 300, near Elbert Creek Campground\n\n" +
       "Lodging\n" +
-      "The Lodge — We've reserved a large cabin near the trailhead, open to all on a first-come, first-served basis. Reach out if you'd like a spot.\n" +
+      "The Lodge — We've reserved a large cabin near the trailhead, open to all on a first-come, first-served basis. Email LyonsHuynh@gmail.com to claim a spot.\n" +
       "On Your Own — Leadville has a range of hotels, vacation rentals, and B&Bs nearby.\n" +
       "Camping — For the bold: dispersed camping near the trailhead is always an option.\n\n" +
       "What to Wear\n" +
@@ -177,7 +177,12 @@ function sendConfirmation(data, guests) {
       "The Wright Room\n" +
       "535 16th St Mall, Suite 240, Denver, CO 80202\n" +
       "Inside the historic Denver Masonic Building\n" +
-      "Sunday, September 6, 2026 · Evening dinner\n\n" +
+      "Sunday, September 6, 2026\n\n" +
+      "Schedule\n" +
+      "5:00 PM — Cocktail hour\n" +
+      "6:00 PM — Dinner begins\n" +
+      "9:00 PM — We say goodnight\n\n" +
+      "Parking: Denver Pavilion next door — covered by us. Rideshare and public transit also convenient.\n\n" +
       "Attire: Semi-formal\n\n" +
       "Lodging: Aloft by Marriott Denver Downtown\n" +
       "800 15th St, Denver, CO 80202 · 3 blocks from The Wright Room\n" +
