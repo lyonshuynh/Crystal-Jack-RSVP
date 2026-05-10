@@ -159,6 +159,13 @@ function sendConfirmation(data, guests) {
       "Friday, September 4, 2026\n" +
       "Depart trailhead at 4:00 AM · Summit by sunrise\n" +
       "Rain check date: Saturday, September 5 — dinner on September 6 is unaffected\n\n" +
+      "The Weekend\n" +
+      "Wed Sep 2 — Arrive at the lodge\n" +
+      "Thu Sep 3 — Acclimate: explore Leadville, board games, take it easy\n" +
+      "Fri Sep 4 — Hike day: depart trailhead at 4:00 AM\n" +
+      "Sat Sep 5 — Recovery: make your way back to Denver (2.5 hrs)\n" +
+      "Sun Sep 6 — The Celebration: The Wright Room, Denver\n" +
+      "Rain check plan: Friday becomes a bonus lodge day — Saturday we hike, then drive to Denver.\n\n" +
       "Trailhead: North Mt. Elbert Trailhead\n" +
       "Via County Road 11 (Halfmoon Creek Road) near Leadville, CO\n" +
       "GPS: Forest Service Road 110, Leadville, CO 80461\n" +
