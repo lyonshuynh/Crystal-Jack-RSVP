@@ -178,7 +178,7 @@ function sendConfirmation(data, guests) {
       "535 16th St Mall, Suite 240, Denver, CO 80202\n" +
       "Inside the historic Denver Masonic Building\n" +
       "Sunday, September 6, 2026 · Evening dinner\n\n" +
-      "Dress Code: Semi-formal\n\n" +
+      "Attire: Semi-formal\n\n" +
       "Lodging: Aloft by Marriott Denver Downtown\n" +
       "800 15th St, Denver, CO 80202 · 3 blocks from The Wright Room\n" +
       "Booking link coming soon\n";
