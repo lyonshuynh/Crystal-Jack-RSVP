@@ -2,11 +2,13 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>Jackson & Crystal — September 2026</title>
+<title>Jackson &amp; Crystal — September 2026</title>
+<meta name="description" content="Jackson &amp; Crystal — September 2026. Join us for the summit on Mount Elbert (Sep 4) and the celebration at The Wright Room in Denver (Sep 6). Please RSVP by July 31, 2026."/>
 <meta property="og:title" content="Jackson &amp; Crystal — September 2026"/>
 <meta property="og:description" content="You're invited. Join us for the summit on Mount Elbert (Sep 4) and the celebration at The Wright Room in Denver (Sep 6). Please RSVP by July 31, 2026."/>
 <meta property="og:image" content="surprise_proposal_in_switzerland_jackson_and_crystal-222.jpg"/>
 <meta property="og:type" content="website"/>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23142214'/%3E%3Cpolygon points='4,26 12,10 18,20 22,14 28,26' fill='%23C8A96E'/%3E%3C/svg%3E"/>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Jost:wght@200;300;400&display=swap');
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -27,12 +29,21 @@ body{background:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' 
 .tagline{font-family:'EB Garamond',serif;font-style:italic;font-size:1.05rem;color:var(--mid);margin-top:20px;line-height:1.9;text-align:center}
 
 /* Tabs */
-.tab-bar{display:flex;border-bottom:1px solid #D8E4D8;background:var(--paper)}
-.tab-btn{flex:1;padding:15px 8px;background:none;border:none;border-bottom:2px solid transparent;font-family:'Jost',sans-serif;font-weight:300;font-size:0.67rem;letter-spacing:.22em;text-transform:uppercase;color:var(--mid);cursor:pointer;transition:color .2s,border-color .2s;margin-bottom:-1px}
+.tab-bar{display:flex;border-bottom:1px solid #D8E4D8;background:var(--paper);position:sticky;top:0;z-index:20}
+.tab-btn{flex:1;padding:16px 8px;background:none;border:none;border-bottom:2px solid transparent;font-family:'Jost',sans-serif;font-weight:300;font-size:0.72rem;letter-spacing:.22em;text-transform:uppercase;color:var(--mid);cursor:pointer;transition:color .2s,border-color .2s;margin-bottom:-1px;min-height:48px}
 .tab-btn:hover{color:var(--forest)}
 .tab-btn.active{color:var(--forest);border-bottom-color:var(--gold)}
 .tab-panel{display:none}
 .tab-panel.active{display:block}
+
+/* Sub-nav within Details */
+.subnav{display:flex;gap:0;background:var(--paper);border-bottom:1px solid #D8E4D8;position:sticky;top:49px;z-index:10}
+.subnav-btn{flex:1;padding:11px 6px;background:none;border:none;font-family:'Jost',sans-serif;font-weight:300;font-size:0.62rem;letter-spacing:.18em;text-transform:uppercase;color:var(--mid);cursor:pointer;transition:color .2s,background .2s;min-height:40px}
+.subnav-btn:hover{color:var(--forest);background:rgba(122,158,126,.06)}
+.subnav-btn + .subnav-btn{border-left:1px solid #EEF4EE}
+
+/* Optional label */
+.optional{font-size:0.55rem;color:var(--mid);letter-spacing:.12em;text-transform:none;font-style:italic;margin-left:6px}
 
 /* Overview */
 .ov{padding:38px 58px 28px}
@@ -43,18 +54,18 @@ body{background:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' 
 .ov-part{font-size:0.58rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:6px}
 .ov-title{font-family:'EB Garamond',serif;font-size:1.35rem;font-weight:400;color:var(--forest);margin-bottom:4px}
 .ov-loc{font-size:0.72rem;color:var(--forest);margin-bottom:8px}
-.ov-desc{font-size:0.72rem;color:var(--mid);line-height:1.7;margin-bottom:10px}
+.ov-desc{font-size:0.78rem;color:var(--mid);line-height:1.7;margin-bottom:10px}
 .ov-meta{display:flex;flex-direction:column;gap:5px}
 .ov-kv{display:flex;gap:12px;align-items:baseline}
 .ov-k{font-size:0.54rem;letter-spacing:.14em;text-transform:uppercase;color:var(--forest);min-width:70px;flex-shrink:0}
-.ov-v{font-size:0.72rem;color:var(--mid);line-height:1.5}
+.ov-v{font-size:0.78rem;color:var(--mid);line-height:1.5}
 .ov-more{display:inline-block;margin-top:12px;font-size:0.58rem;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);cursor:pointer;background:none;border:none;padding:0;font-family:'Jost',sans-serif}
 .ov-more:hover{color:var(--forest)}
 .ov-contact{text-align:center;padding:20px 58px 0;font-size:0.7rem;color:var(--mid)}
 .ov-contact a{color:var(--mid);text-decoration:none}
 .ov-contact a:hover{color:var(--forest)}
 .ov-cta{padding:28px 58px 38px;text-align:center}
-.deadline{font-size:0.6rem;letter-spacing:.1em;text-transform:uppercase;color:#7A9A7A;margin-bottom:12px}
+.deadline{font-size:0.6rem;letter-spacing:.1em;text-transform:uppercase;color:#5A7A5A;margin-bottom:12px}
 .ov-cta-btn{padding:13px 38px;background:var(--forest);color:var(--pale);border:none;font-family:'Jost',sans-serif;font-weight:300;font-size:0.62rem;letter-spacing:.22em;text-transform:uppercase;cursor:pointer;transition:background .2s}
 .ov-cta-btn:hover{background:var(--green)}
 
@@ -69,21 +80,21 @@ body{background:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' 
 .e-bar{background:var(--gold);width:2px;justify-self:center}
 .e-part{font-size:0.58rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:8px}
 .e-title{font-family:'EB Garamond',serif;font-size:1.45rem;font-weight:400;color:var(--forest);margin-bottom:18px}
-.e-detail{font-size:0.76rem;color:var(--mid);line-height:1.9}
+.e-detail{font-size:0.82rem;color:var(--mid);line-height:1.9}
 .e-detail strong{font-weight:400;color:var(--forest)}
 .e-sections{display:flex;flex-direction:column}
 .e-sec{padding-top:16px;margin-top:16px;border-top:1px solid #EEF4EE}
 .e-sec:first-child{padding-top:0;margin-top:0;border-top:none}
-.e-sec-h{font-size:0.55rem;letter-spacing:.2em;text-transform:uppercase;color:var(--forest);font-family:'Jost',sans-serif;font-weight:400;margin-bottom:8px}
-.e-sec p{font-size:0.76rem;color:var(--mid);line-height:1.9}
+.e-sec-h{font-size:0.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--forest);font-family:'Jost',sans-serif;font-weight:400;margin-bottom:8px}
+.e-sec p{font-size:0.82rem;color:var(--mid);line-height:1.9}
 .e-sec p strong{font-weight:400;color:var(--forest)}
-.e-note{display:block;margin-top:8px;font-size:0.68rem;font-style:italic;color:#7A9A7A}
+.e-note{display:block;margin-top:8px;font-size:0.68rem;font-style:italic;color:#5A7A5A}
 .badge{display:inline-flex;align-items:center;gap:6px;margin-top:10px;padding:4px 10px;border:1px solid #D8E4D8;font-size:0.6rem;letter-spacing:.15em;text-transform:uppercase;color:var(--mid)}
 .gear-list{list-style:none;margin-top:6px;display:flex;flex-direction:column;gap:4px}
-.gear-list li{font-size:0.74rem;color:var(--mid);line-height:1.6;padding-left:16px;position:relative}
+.gear-list li{font-size:0.8rem;color:var(--mid);line-height:1.6;padding-left:16px;position:relative}
 .gear-list li::before{content:'—';position:absolute;left:0;color:var(--gold)}
 .sched-grid{display:flex;flex-direction:column;gap:6px;margin-top:4px}
-.sched-row{display:flex;gap:16px;font-size:0.76rem}
+.sched-row{display:flex;gap:16px;font-size:0.82rem}
 .sched-time{color:var(--forest);min-width:58px;flex-shrink:0}
 .sched-desc{color:var(--mid)}
 .rsvp-jump{margin-top:28px;text-align:center}
@@ -96,10 +107,10 @@ body{background:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' 
 .rsvp-h h3{font-family:'EB Garamond',serif;font-weight:400;font-size:1.35rem;color:var(--forest);margin-bottom:6px}
 .rsvp-h p{font-size:0.7rem;color:var(--mid);letter-spacing:.04em}
 .rsvp-h p strong{font-weight:400;color:var(--forest)}
-.rsvp-contact{margin-top:6px;font-size:0.68rem;color:#7A9A7A}
-.rsvp-contact a{color:#7A9A7A;text-decoration:none}
+.rsvp-contact{margin-top:6px;font-size:0.68rem;color:#5A7A5A}
+.rsvp-contact a{color:#5A7A5A;text-decoration:none}
 .rsvp-contact a:hover{color:var(--forest)}
-.req-note{font-size:0.6rem;color:#7A9A7A;margin-bottom:20px}
+.req-note{font-size:0.6rem;color:#5A7A5A;margin-bottom:20px}
 .req{color:var(--gold)}
 .row{margin-bottom:18px}
 .lbl{display:block;font-size:0.6rem;letter-spacing:.18em;text-transform:uppercase;color:var(--mid);margin-bottom:8px}
@@ -123,15 +134,15 @@ body{background:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' 
 .ico svg{width:18px;height:18px}
 .opt-txt{flex:1}
 .opt-t{font-size:0.8rem;font-weight:400;color:var(--forest);margin-bottom:2px}
-.opt-d{font-size:0.67rem;color:var(--mid)}
-.opt-date{font-size:0.6rem;font-weight:200;letter-spacing:.1em;color:#7A9A7A}
+.opt-d{font-size:0.74rem;color:var(--mid)}
+.opt-date{font-size:0.6rem;font-weight:200;letter-spacing:.1em;color:#5A7A5A}
 .stepper{display:flex;align-items:center;border:1px solid #C5D5C5;width:fit-content}
 .step-btn{width:42px;height:42px;background:transparent;border:none;font-family:'Jost',sans-serif;font-size:1rem;color:var(--mid);cursor:pointer;display:flex;align-items:center;justify-content:center}
 .step-btn:first-child{border-right:1px solid #C5D5C5}
 .step-btn:last-child{border-left:1px solid #C5D5C5}
 #guestCount{width:58px;height:42px;border:none;background:transparent;text-align:center;font-family:'Jost',sans-serif;font-size:0.86rem;color:var(--forest);padding:0;-webkit-appearance:none;-moz-appearance:textfield;appearance:none}
 input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
-.sub-note{margin-top:7px;font-size:0.63rem;color:#7A9A7A;letter-spacing:.08em}
+.sub-note{margin-top:7px;font-size:0.63rem;color:#5A7A5A;letter-spacing:.08em}
 .btn{width:100%;margin-top:22px;padding:15px;background:var(--forest);color:var(--pale);border:none;font-family:'Jost',sans-serif;font-weight:300;font-size:0.68rem;letter-spacing:.22em;text-transform:uppercase;cursor:pointer;transition:background .2s}
 .btn:hover{background:var(--green)}
 .ty{display:none;text-align:center;padding:22px 0 6px}
@@ -150,7 +161,7 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
 .meal-opt input:checked+.meal-opt-lbl .dot{border-color:var(--gold);background:var(--gold)}
 .meal-opt input:checked+.meal-opt-lbl .dot::after{content:'';width:4px;height:4px;border-radius:50%;background:var(--forest)}
 .meal-name{font-size:0.8rem;font-weight:400;color:var(--forest);margin-bottom:3px}
-.meal-desc{font-size:0.67rem;color:var(--mid);line-height:1.6}
+.meal-desc{font-size:0.74rem;color:var(--mid);line-height:1.6}
 /* Guest cards */
 #guestCards{display:flex;flex-direction:column;gap:16px}
 .guest-card{border:1px solid #D8E4D8}
@@ -159,8 +170,8 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
 .guest-meal-wrap{display:none}
 /* Footer */
 .footer{padding:22px 58px 30px;border-top:1px solid #D8E4D8;display:flex;justify-content:space-between;align-items:center;background:var(--paper)}
-.fn{font-size:0.6rem;color:#7A9A7A;letter-spacing:.1em}
-.fc{font-family:'EB Garamond',serif;font-style:italic;font-size:.7rem;color:#7A9A7A}
+.fn{font-size:0.6rem;color:#5A7A5A;letter-spacing:.1em}
+.fc{font-family:'EB Garamond',serif;font-style:italic;font-size:.7rem;color:#5A7A5A}
 @media(max-width:540px){
   .top,.ov,.events,.rsvp{padding-left:26px;padding-right:26px}
   .ov-contact,.ov-cta{padding-left:26px;padding-right:26px}
@@ -169,6 +180,9 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
   .guest-card-body{padding:18px 16px}
   .ov-k{min-width:60px}
   .art img{height:200px}
+  .tab-btn{font-size:0.78rem;padding:18px 4px;letter-spacing:.16em;min-height:52px}
+  .subnav-btn{font-size:0.62rem;padding:13px 4px;letter-spacing:.12em;min-height:46px}
+  .subnav{top:53px}
 }
 </style>
 </head>
@@ -182,7 +196,7 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
 <div class="top">
   <div class="eyebrow">A Wedding in Two Parts</div>
   <div class="names"><em>Jackson</em></div>
-  <span class="amp">&</span>
+  <span class="amp">&amp;</span>
   <div class="names"><em>Crystal</em></div>
   <p class="tagline">No venue. No aisle. No seating chart.<br>Just the summit, and the people we love.</p>
 </div>
@@ -206,7 +220,8 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
           <div class="ov-loc">Mount Elbert · 14,440 ft · Lake County, CO</div>
           <div class="ov-desc">Colorado's highest peak — arrive Wednesday, acclimate Thursday, summit Friday at sunrise, and make your way back to Denver on Saturday in time for Sunday's dinner.</div>
           <div class="ov-meta">
-            <div class="ov-kv"><span class="ov-k">Departs</span><span class="ov-v">4:00 AM from trailhead</span></div>
+            <div class="ov-kv"><span class="ov-k">Departs</span><span class="ov-v">4:00 AM MT from trailhead</span></div>
+            <div class="ov-kv"><span class="ov-k">Travel</span><span class="ov-v">Fly into Denver (DEN) — about 2 hours to Leadville</span></div>
             <div class="ov-kv"><span class="ov-k">Rain check</span><span class="ov-v">September 5 — dinner on Sep 6 is unaffected</span></div>
             <div class="ov-kv"><span class="ov-k">Lodging</span><span class="ov-v">Reserved lodge (first-come), independent, or camping</span></div>
             <div class="ov-kv"><span class="ov-k">Attire</span><span class="ov-v">Hiking layers — no dress change needed</span></div>
@@ -223,11 +238,11 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
           <div class="ov-loc">The Wright Room · 535 16th St Mall, Denver, CO</div>
           <div class="ov-desc">An evening dinner inside the historic Denver Masonic Building.</div>
           <div class="ov-meta">
-            <div class="ov-kv"><span class="ov-k">Cocktails</span><span class="ov-v">5:00 PM</span></div>
-            <div class="ov-kv"><span class="ov-k">Dinner</span><span class="ov-v">6:00 PM · room until 9:00 PM</span></div>
+            <div class="ov-kv"><span class="ov-k">Cocktails</span><span class="ov-v">5:00 PM MT</span></div>
+            <div class="ov-kv"><span class="ov-k">Dinner</span><span class="ov-v">6:00 PM MT · room until 9:00 PM</span></div>
             <div class="ov-kv"><span class="ov-k">Parking</span><span class="ov-v">Denver Pavilion next door — covered by us</span></div>
             <div class="ov-kv"><span class="ov-k">Lodging</span><span class="ov-v">Aloft by Marriott Denver Downtown · 3 blocks away</span></div>
-            <div class="ov-kv"><span class="ov-k">Attire</span><span class="ov-v">Semi-formal</span></div>
+            <div class="ov-kv"><span class="ov-k">Attire</span><span class="ov-v">Semi-formal · children welcome</span></div>
           </div>
           <button class="ov-more" onclick="showTabSection('tab-details','part-ii-detail')">Full details →</button>
         </div>
@@ -246,9 +261,14 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
 
 <!-- ── Tab 2: Details ── -->
 <div id="tab-details" class="tab-panel">
+  <nav class="subnav" aria-label="Details sections">
+    <button class="subnav-btn" onclick="scrollToInTab('part-i-detail')">Part I · Summit</button>
+    <button class="subnav-btn" onclick="scrollToInTab('part-ii-detail')">Part II · Dinner</button>
+    <button class="subnav-btn" onclick="scrollToInTab('gifts-section')">Gifts</button>
+  </nav>
   <div class="events">
 
-    <div class="event">
+    <div class="event" id="part-i-detail">
       <div class="e-bar"></div>
       <div>
         <div class="e-part">Part I</div>
@@ -257,7 +277,7 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
 
           <div class="e-sec">
             <div class="e-sec-h">When &amp; Where</div>
-            <p>Mount Elbert — Colorado's highest peak at 14,440 ft<br>Friday, September 4, 2026 · Depart trailhead 4:00 AM · Summit by sunrise</p>
+            <p>Mount Elbert — Colorado's highest peak at 14,440 ft<br>Friday, September 4, 2026 · Depart trailhead 4:00 AM MT · Summit by sunrise<br><span style="font-size:0.7rem;color:#5A7A5A">All times are Mountain Time (MT)</span></p>
             <div class="badge"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="18 15 12 9 6 15"/></svg>14,440 ft · Lake County, CO</div>
           </div>
 
@@ -267,11 +287,16 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
             <div class="sched-grid" style="margin-top:10px">
               <div class="sched-row"><span class="sched-time" style="min-width:76px">Wed Sep 2</span><span class="sched-desc">Arrive at the lodge</span></div>
               <div class="sched-row"><span class="sched-time" style="min-width:76px">Thu Sep 3</span><span class="sched-desc">Acclimate — explore Leadville, board games, take it easy</span></div>
-              <div class="sched-row"><span class="sched-time" style="min-width:76px">Fri Sep 4</span><span class="sched-desc">Hike day — depart trailhead at 4:00 AM</span></div>
+              <div class="sched-row"><span class="sched-time" style="min-width:76px">Fri Sep 4</span><span class="sched-desc">Hike day — depart trailhead at 4:00 AM MT</span></div>
               <div class="sched-row"><span class="sched-time" style="min-width:76px">Sat Sep 5</span><span class="sched-desc">Recovery — make your way back to Denver (2.5 hrs)</span></div>
               <div class="sched-row"><span class="sched-time" style="min-width:76px">Sun Sep 6</span><span class="sched-desc">The Celebration — The Wright Room, Denver</span></div>
             </div>
             <span class="e-note">Rain check plan: Friday becomes a bonus lodge day — Saturday we hike, then make the drive back to Denver in the evening.</span>
+          </div>
+
+          <div class="e-sec">
+            <div class="e-sec-h">Getting There</div>
+            <p><strong>Fly into Denver International Airport (DEN)</strong> — the closest major airport. From DEN, it's roughly a <strong>2-hour drive</strong> to Leadville (~120 miles via I-70 W and US-24 S).<br><br><strong>Rental car:</strong> A <strong>high-clearance vehicle is recommended</strong>, and <strong>AWD or 4WD is ideal</strong> for the last few miles of Forest Service Road 110, which is a rough dirt road.<br><br>If you don't have the right vehicle or want to carpool, email <a href="mailto:LyonsHuynh@gmail.com" style="color:var(--mid)">LyonsHuynh@gmail.com</a> and we'll help coordinate rides.</p>
           </div>
 
           <div class="e-sec">
@@ -315,6 +340,11 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
             <p>Mount Elbert is a strenuous hike — approximately 9 miles round trip with 4,700 ft of elevation gain at high altitude. Participants should be in good cardiovascular health. We strongly recommend spending a day or two acclimatizing in Colorado before the hike. This climb is not suitable for those with heart, lung, or significant mobility conditions. Please reach out at <a href="mailto:LyonsHuynh@gmail.com" style="color:var(--mid)">LyonsHuynh@gmail.com</a> or <a href="tel:9526882363" style="color:var(--mid)">952-688-2363</a> with any questions about what to expect.</p>
           </div>
 
+          <div class="e-sec">
+            <div class="e-sec-h">Bringing Kids</div>
+            <p>Children are <strong>welcome at Sunday's dinner</strong> — bring the whole family.<br><br>For the hike, it's at <strong>parents' discretion</strong>, but given the 4:00 AM start, 4,700 ft of elevation gain, and altitude near 14,440 ft, we don't recommend it for young kids. If you're considering it, please reach out so we can talk it through.</p>
+          </div>
+
         </div>
       </div>
     </div>
@@ -338,6 +368,7 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
               <div class="sched-row"><span class="sched-time">6:00 PM</span><span class="sched-desc">Dinner begins</span></div>
               <div class="sched-row"><span class="sched-time">9:00 PM</span><span class="sched-desc">We say goodnight</span></div>
             </div>
+            <span class="e-note">All times are Mountain Time (MT).</span>
           </div>
 
           <div class="e-sec">
@@ -357,9 +388,23 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
 
           <div class="e-sec">
             <div class="e-sec-h">Entrée Selection</div>
-            <p>If you'll be joining us for dinner, please select your entrée when you RSVP.</p>
+            <p>If you'll be joining us for dinner, please select your entrée when you RSVP. We also offer a <strong>Special Request</strong> option for vegetarian, vegan, allergy-friendly, or other dietary needs — just leave a note when you RSVP.</p>
           </div>
 
+        </div>
+      </div>
+    </div>
+
+    <div class="event" id="gifts-section">
+      <div class="e-bar"></div>
+      <div>
+        <div class="e-part">A Note on Gifts</div>
+        <div class="e-title">Your Presence Is the Gift</div>
+        <div class="e-sections">
+          <div class="e-sec">
+            <p>Truly — having you there means everything. We'd rather spend on adventures than things, so we're not keeping a traditional registry.</p>
+            <p style="margin-top:14px">If you'd still like to contribute to our honeymoon fund, you can send a little via Venmo at <a href="https://venmo.com/u/Crystal-Huynh" target="_blank" rel="noopener" style="color:var(--forest);font-weight:400">@Crystal-Huynh</a>, or reach out at <a href="mailto:LyonsHuynh@gmail.com" style="color:var(--mid)">LyonsHuynh@gmail.com</a>.</p>
+          </div>
         </div>
         <div class="rsvp-jump">
           <button class="rsvp-jump-btn" onclick="showTab('tab-rsvp')">Send your RSVP</button>
@@ -381,11 +426,11 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
     <form id="rsvpForm" onsubmit="handleRSVP(event)">
       <div class="req-note"><span class="req">*</span> required</div>
       <div class="row"><label class="lbl">Email <span class="req">*</span></label><input class="inp" type="email" name="email" placeholder="your@email.com" required/></div>
-      <div class="row"><label class="lbl">Phone</label><input class="inp" type="tel" name="phone" placeholder="(000) 000-0000"/></div>
-      <div class="row"><label class="lbl">Mailing Address <span class="req">*</span></label><input class="inp" type="text" name="address" placeholder="Street, City, State, ZIP" required/></div>
+      <div class="row"><label class="lbl">Phone <span class="optional">(optional)</span></label><input class="inp" type="tel" name="phone" placeholder="(000) 000-0000"/></div>
+      <div class="row"><label class="lbl">Mailing Address <span class="req">*</span></label><input class="inp" type="text" name="address" placeholder="Street, City, State, ZIP" required/><div class="sub-note">So we can send you a thank-you card.</div></div>
       <div class="row" style="margin-top:26px"><label class="lbl">Number of guests</label>
-        <div class="stepper"><button type="button" id="guestMinus" class="step-btn" onclick="adjustGuests(-1)">−</button><input type="number" id="guestCount" name="guests" value="1" min="1" max="20" readonly/><button type="button" id="guestPlus" class="step-btn" onclick="adjustGuests(1)">+</button></div>
-        <div class="sub-note">Including yourself</div>
+        <div class="stepper"><button type="button" id="guestMinus" class="step-btn" onclick="adjustGuests(-1)">−</button><input type="number" id="guestCount" name="guests" value="1" min="1" max="10" readonly/><button type="button" id="guestPlus" class="step-btn" onclick="adjustGuests(1)">+</button></div>
+        <div class="sub-note">Including yourself. Plus-ones are communicated individually — please only count people invited on your envelope.</div>
       </div>
       <div id="guestCards" style="margin-top:26px"></div>
       <div class="row" style="margin-top:22px"><label class="lbl">Anything else we should know?</label><input class="inp" type="text" name="notes" placeholder="Questions, notes, etc."/></div>
@@ -396,12 +441,20 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
   </div>
 </div>
 
-<div class="footer"><span class="fn">Jackson Lyons & Crystal Huynh · September 2026</span><span class="fc">39.1178° N, 106.4452° W</span></div>
+<div class="footer"><span class="fn">Jackson &amp; Crystal · September 2026</span><span class="fc">39.1178° N, 106.4452° W</span></div>
 </div>
 <script>
-  function showTab(id) {
+  const TAB_HASH = { 'tab-overview': 'overview', 'tab-details': 'details', 'tab-rsvp': 'rsvp' };
+  const HASH_TAB = { overview: 'tab-overview', details: 'tab-details', rsvp: 'tab-rsvp' };
+
+  function showTab(id, updateHash = true) {
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === id));
     document.querySelectorAll('.tab-panel').forEach(p => p.classList.toggle('active', p.id === id));
+    if (updateHash && TAB_HASH[id]) {
+      const h = '#' + TAB_HASH[id];
+      if (location.hash !== h) history.replaceState(null, '', h);
+    }
+    window.scrollTo({ top: 0, behavior: 'instant' in window ? 'instant' : 'auto' });
   }
 
   function showTabSection(tabId, sectionId) {
@@ -409,6 +462,21 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
     requestAnimationFrame(() => requestAnimationFrame(() => {
       document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }));
+  }
+
+  function applyHashTab() {
+    const key = (location.hash || '').replace('#', '').toLowerCase();
+    if (HASH_TAB[key]) showTab(HASH_TAB[key], false);
+  }
+  window.addEventListener('hashchange', applyHashTab);
+  applyHashTab();
+
+  function scrollToInTab(sectionId) {
+    const el = document.getElementById(sectionId);
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    const offset = 100;
+    window.scrollTo({ top: window.scrollY + rect.top - offset, behavior: 'smooth' });
   }
 
   const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzCvN2byIDQsU-uztm1JpTX8Z7lv3pUcLUpDhvHJwAE1n-pFI99845n8QcAdfEXKvYHkw/exec';
@@ -420,6 +488,8 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
       desc: 'A la plancha with saffron roasted tomato broth' },
     { value: 'prime-rib', name: 'Herb Rubbed King Cut Prime Rib of Beef',
       desc: 'With horseradish cream' },
+    { value: 'special',   name: 'Special Request',
+      desc: 'Vegetarian, vegan, allergy, or other — please describe in the dietary field below' },
   ];
 
   const ACTIVITIES = [
@@ -522,10 +592,10 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
 
   function adjustGuests(d) {
     const inp = document.getElementById('guestCount');
-    const n   = Math.min(20, Math.max(1, parseInt(inp.value) + d));
+    const n   = Math.min(10, Math.max(1, parseInt(inp.value) + d));
     inp.value = n;
     document.getElementById('guestMinus').style.opacity = n === 1  ? '0.3' : '1';
-    document.getElementById('guestPlus').style.opacity  = n === 20 ? '0.3' : '1';
+    document.getElementById('guestPlus').style.opacity  = n === 10 ? '0.3' : '1';
     renderGuestCards(n);
   }
 
@@ -537,30 +607,49 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
     const form       = e.target;
     const guestCount = parseInt(document.getElementById('guestCount').value);
 
-    const errEl = document.getElementById('errorMsg');
-    errEl.style.display = 'none';
+    const errEl  = document.getElementById('errorMsg');
+    const errors = [];
+    let firstErrorEl = null;
+    const flagFirst = el => { if (!firstErrorEl && el) firstErrorEl = el; };
+
+    if (!form.email.value.trim())   { errors.push('Email is required.');           flagFirst(form.email); }
+    if (!form.address.value.trim()) { errors.push('Mailing address is required.'); flagFirst(form.address); }
+
     for (let i = 1; i <= guestCount; i++) {
-      const nameVal = form.querySelector(`input[name="guest_name_${i}"]`)?.value.trim();
-      const attVal  = form.querySelector(`input[name="attendance_${i}"]:checked`)?.value;
+      const nameEl    = form.querySelector(`input[name="guest_name_${i}"]`);
+      const nameVal   = nameEl?.value.trim();
+      const attVal    = form.querySelector(`input[name="attendance_${i}"]:checked`)?.value;
+      const mealVal   = form.querySelector(`input[name="meal_${i}"]:checked`)?.value;
+      const dietaryEl = form.querySelector(`input[name="dietary_${i}"]`);
+      const dietaryVal= dietaryEl?.value.trim();
+      const who       = i === 1 ? 'you' : `Guest ${i}`;
+
       if (!nameVal) {
-        errEl.querySelector('p').textContent = i === 1 ? 'Please enter your name.' : `Please enter a name for Guest ${i}.`;
-        errEl.style.display = 'block';
-        form.querySelector(`input[name="guest_name_${i}"]`)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        return;
+        errors.push(i === 1 ? 'Please enter your name.' : `Please enter a name for Guest ${i}.`);
+        flagFirst(nameEl);
       }
       if (!attVal) {
-        errEl.querySelector('p').textContent = i === 1 ? "Please select what you'll be joining us for." : `Please make a selection for Guest ${i}.`;
-        errEl.style.display = 'block';
-        form.querySelector(`[name="attendance_${i}"]`)?.closest('.opts')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        return;
+        errors.push(i === 1 ? "Please select what you'll be joining us for." : `Please make a selection for Guest ${i}.`);
+        flagFirst(form.querySelector(`[name="attendance_${i}"]`)?.closest('.opts'));
       }
-      if ((attVal === 'dinner' || attVal === 'both') && !form.querySelector(`input[name="meal_${i}"]:checked`)?.value) {
-        errEl.querySelector('p').textContent = i === 1 ? 'Please select your entrée.' : `Please select an entrée for Guest ${i}.`;
-        errEl.style.display = 'block';
-        form.querySelector(`[name="meal_${i}"]`)?.closest('.opts')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        return;
+      if (attVal === 'dinner' || attVal === 'both') {
+        if (!mealVal) {
+          errors.push(i === 1 ? 'Please select your entrée.' : `Please select an entrée for Guest ${i}.`);
+          flagFirst(form.querySelector(`[name="meal_${i}"]`)?.closest('.opts'));
+        } else if (mealVal === 'special' && !dietaryVal) {
+          errors.push(i === 1 ? 'Please describe your special meal request in the dietary field.' : `Please describe ${who}'s special meal request in the dietary field.`);
+          flagFirst(dietaryEl);
+        }
       }
     }
+
+    if (errors.length) {
+      errEl.querySelector('p').innerHTML = errors.map(e => '• ' + e).join('<br>');
+      errEl.style.display = 'block';
+      firstErrorEl?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+    errEl.style.display = 'none';
 
     btn.textContent = 'Sending…';
     btn.disabled    = true;
