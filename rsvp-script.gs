@@ -87,9 +87,10 @@ function attendanceLabel(value) {
 
 function mealLabel(value) {
   const map = {
-    "chicken":   "Pancetta Chicken",
-    "bass":      "Colorado Striped Bass",
-    "prime-rib": "Herb Rubbed King Cut Prime Rib of Beef",
+    "chicken": "Chicken Piccata",
+    "bass":    "Colorado Striped Bass",
+    "strip":   "Green Chili Rubbed NY Strip",
+    "special": "Special Request (see dietary notes)",
   };
   return map[value] || value || "";
 }
