@@ -157,6 +157,11 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
 .footer{padding:22px 58px 30px;border-top:1px solid #D8E4D8;display:flex;justify-content:space-between;align-items:center;background:var(--paper)}
 .fn{font-size:0.6rem;color:#7A9A7A;letter-spacing:.1em}
 .fc{font-family:'EB Garamond',serif;font-style:italic;font-size:.7rem;color:#7A9A7A}
+/* Photo gallery */
+.photo-gallery{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:210px 220px;gap:3px;background:#D8E4D8}
+.photo-wide{grid-column:1/3;width:100%;height:100%;object-fit:cover;display:block;object-position:center 40%}
+.photo-gallery img{width:100%;height:100%;object-fit:cover;display:block}
+.photo-cap{text-align:center;font-family:'EB Garamond',serif;font-style:italic;font-size:0.75rem;color:#7A9A7A;padding:11px 0 0;letter-spacing:.04em}
 @media(max-width:540px){
   .top,.ov,.events,.rsvp{padding-left:26px;padding-right:26px}
   .ov-contact{padding-left:26px;padding-right:26px}
@@ -164,6 +169,7 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
   .footer{padding:18px 26px 26px;flex-direction:column;gap:8px;text-align:center}
   .guest-card-body{padding:18px 16px}
   .ov-k{min-width:60px}
+  .photo-gallery{grid-template-rows:160px 170px}
 }
 </style>
 </head>
@@ -224,6 +230,12 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
 
 <!-- ── Tab 1: Overview ── -->
 <div id="tab-overview" class="tab-panel active">
+  <div class="photo-gallery">
+    <img src="surprise_proposal_in_switzerland_jackson_and_crystal-222.jpg" class="photo-wide" alt="Jackson & Crystal — Switzerland"/>
+    <img src="surprise_proposal_in_switzerland_jackson_and_crystal-145.jpg" alt="Jackson & Crystal — Switzerland"/>
+    <img src="surprise_proposal_in_switzerland_jackson_and_crystal-242.jpg" alt="The proposal — Switzerland"/>
+  </div>
+  <p class="photo-cap">The proposal — Switzerland</p>
   <div class="ov">
     <div class="ov-events">
 
@@ -258,7 +270,7 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
             <div class="ov-kv"><span class="ov-k">Lodging</span><span class="ov-v">Aloft by Marriott Denver Downtown · 3 blocks away</span></div>
             <div class="ov-kv"><span class="ov-k">Dress</span><span class="ov-v">Semi-formal</span></div>
           </div>
-          <button class="ov-more" onclick="showTab('tab-details')">Full details →</button>
+          <button class="ov-more" onclick="showTabSection('tab-details','part-ii-detail')">Full details →</button>
         </div>
       </div>
 
@@ -336,7 +348,7 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
       </div>
     </div>
 
-    <div class="event">
+    <div class="event" id="part-ii-detail">
       <div class="e-bar"></div>
       <div>
         <div class="e-part">Part II</div>
@@ -419,6 +431,13 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
   function showTab(id) {
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === id));
     document.querySelectorAll('.tab-panel').forEach(p => p.classList.toggle('active', p.id === id));
+  }
+
+  function showTabSection(tabId, sectionId) {
+    showTab(tabId);
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }));
   }
 
   const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzCvN2byIDQsU-uztm1JpTX8Z7lv3pUcLUpDhvHJwAE1n-pFI99845n8QcAdfEXKvYHkw/exec';
