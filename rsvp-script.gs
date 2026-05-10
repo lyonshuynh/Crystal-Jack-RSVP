@@ -172,7 +172,7 @@ function sendConfirmation(data, guests) {
       "GPS: Forest Service Road 110, Leadville, CO 80461\n" +
       "5 miles up a dirt road west of CO 300, near Elbert Creek Campground\n\n" +
       "Lodging\n" +
-      "The Lodge — We've reserved a large cabin near the trailhead for Wed Sep 2 through Sat Sep 5, open to all on a first-come, first-served basis. Email LyonsHuynh@gmail.com to claim a spot.\n" +
+      "The Lodges — We've booked two lodges near the trailhead for Wed Sep 2 through Sat Sep 5, with a mix of king, queen, and single rooms. Rooms are first-come, first-served. $150 per person for all three nights. Email LyonsHuynh@gmail.com to claim a spot.\n" +
       "On Your Own — Leadville has a range of hotels, vacation rentals, and B&Bs nearby.\n" +
       "Camping — For the bold: dispersed camping near the trailhead is always an option.\n\n" +
       "What to Wear\n" +
