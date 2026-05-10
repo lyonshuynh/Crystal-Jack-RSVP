@@ -22,12 +22,34 @@ body{background:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' 
 .amp{font-family:'EB Garamond',serif;font-style:italic;font-size:2.1rem;color:var(--gold);display:block;margin:6px 0;text-align:center}
 .tagline{font-family:'EB Garamond',serif;font-style:italic;font-size:1.05rem;color:var(--mid);margin-top:20px;line-height:1.9;text-align:center}
 
+/* Tabs */
+.tab-bar{display:flex;border-bottom:1px solid #D8E4D8;background:var(--paper)}
+.tab-btn{flex:1;padding:15px 8px;background:none;border:none;border-bottom:2px solid transparent;font-family:'Jost',sans-serif;font-weight:300;font-size:0.6rem;letter-spacing:.22em;text-transform:uppercase;color:var(--mid);cursor:pointer;transition:color .2s,border-color .2s;margin-bottom:-1px}
+.tab-btn:hover{color:var(--forest)}
+.tab-btn.active{color:var(--forest);border-bottom-color:var(--gold)}
+.tab-panel{display:none}
+.tab-panel.active{display:block}
+
 /* Divider */
 .div-wrap{display:flex;align-items:center;gap:14px;margin:0 58px;padding:24px 0}
 .div-line{flex:1;height:1px;background:#D8E4D8}
 .div-mark{font-size:0.55rem;letter-spacing:0.3em;text-transform:uppercase;color:#D8E4D8}
 
-/* Events */
+/* Overview */
+.ov{padding:38px 58px 28px}
+.ov-events{display:flex;flex-direction:column}
+.ov-event{padding:22px 0;border-bottom:1px solid #DDE8DD;display:grid;grid-template-columns:2px 1fr;gap:0 22px}
+.ov-event:last-child{border-bottom:none;padding-bottom:4px}
+.ov-bar{background:var(--gold);width:2px;justify-self:center}
+.ov-part{font-size:0.58rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:6px}
+.ov-title{font-family:'EB Garamond',serif;font-size:1.35rem;font-weight:400;color:var(--forest);margin-bottom:5px}
+.ov-loc{font-size:0.72rem;color:var(--forest);margin-bottom:4px}
+.ov-desc{font-size:0.72rem;color:var(--mid);line-height:1.7}
+.ov-cta{margin-top:30px;text-align:center}
+.ov-cta-btn{padding:13px 38px;background:var(--forest);color:var(--pale);border:none;font-family:'Jost',sans-serif;font-weight:300;font-size:0.62rem;letter-spacing:.22em;text-transform:uppercase;cursor:pointer;transition:background .2s}
+.ov-cta-btn:hover{background:var(--green)}
+
+/* Events (Details tab) */
 .events{padding:0 58px 38px}
 .event{padding:26px 0;border-bottom:1px solid #DDE8DD;display:grid;grid-template-columns:2px 1fr;gap:0 24px}
 .event:last-child{border-bottom:none}
@@ -36,7 +58,7 @@ body{background:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' 
 .e-title{font-family:'EB Garamond',serif;font-size:1.45rem;font-weight:400;color:var(--forest);margin-bottom:10px}
 .e-detail{font-size:0.76rem;color:var(--mid);line-height:1.9}
 .e-detail strong{font-weight:400;color:var(--forest)}
-.e-note{display:block;margin-top:10px;font-size:0.66rem;font-style:italic;color:#C5D5C5}
+.e-note{display:block;margin-top:10px;font-size:0.66rem;font-style:italic;color:#7A9A7A}
 .badge{display:inline-flex;align-items:center;gap:6px;margin-top:12px;padding:4px 10px;border:1px solid #D8E4D8;font-size:0.6rem;letter-spacing:.15em;text-transform:uppercase;color:var(--mid)}
 
 /* Spirit */
@@ -107,76 +129,50 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
 .guest-card-hdr{padding:11px 18px;background:var(--forest);color:var(--pale);font-size:0.6rem;letter-spacing:0.22em;text-transform:uppercase;font-family:'Jost',sans-serif;font-weight:300}
 .guest-card-body{padding:22px 20px;display:flex;flex-direction:column;gap:22px}
 .guest-meal-wrap{display:none}
-@media(max-width:540px){.top,.events,.rsvp{padding-left:26px;padding-right:26px}.div-wrap,.spirit{margin:0 26px}.footer{padding:18px 26px 26px;flex-direction:column;gap:8px;text-align:center}.guest-card-body{padding:18px 16px}}
+@media(max-width:540px){
+  .top,.ov,.events,.rsvp{padding-left:26px;padding-right:26px}
+  .div-wrap,.spirit{margin:0 26px}
+  .footer{padding:18px 26px 26px;flex-direction:column;gap:8px;text-align:center}
+  .guest-card-body{padding:18px 16px}
+}
 </style>
 </head>
 <body>
 <div class="card">
 
-<!-- Forest: minimal, desert-structure, deep green palette -->
 <div class="art">
 <svg viewBox="0 0 660 200" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <!-- Deep forest sky — dark canopy green at top, soft sage at horizon -->
     <linearGradient id="fSky" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0%"   stop-color="#0E1E0E"/>
       <stop offset="55%"  stop-color="#2A4028"/>
       <stop offset="100%" stop-color="#4A6A4A"/>
     </linearGradient>
-    <!-- Pre-dawn glow behind Elbert -->
     <radialGradient id="dawnGlow" cx="50%" cy="100%" r="55%">
       <stop offset="0%"   stop-color="#C8A96E" stop-opacity="0.28"/>
       <stop offset="60%"  stop-color="#C8A96E" stop-opacity="0.08"/>
       <stop offset="100%" stop-color="#C8A96E" stop-opacity="0"/>
     </radialGradient>
   </defs>
-
-  <!-- Sky -->
   <rect width="660" height="200" fill="url(#fSky)"/>
-  <!-- Pre-dawn gold glow -->
   <ellipse cx="330" cy="200" rx="260" ry="130" fill="url(#dawnGlow)"/>
-
-  <!-- Far range silhouette — very flat, wide, atmospheric -->
-  <polygon points="0,155 80,128 160,142 240,115 320,130 330,105 340,130 420,112 500,138 580,120 660,132 660,200 0,200"
-           fill="#1E3020" opacity="0.55"/>
-  <!-- Mid range -->
-  <polygon points="0,172 90,150 180,162 270,140 330,120 390,136 480,148 570,135 660,152 660,200 0,200"
-           fill="#2D4A2D"/>
-
-  <!-- Elbert — bold, centered, minimal -->
+  <polygon points="0,155 80,128 160,142 240,115 320,130 330,105 340,130 420,112 500,138 580,120 660,132 660,200 0,200" fill="#1E3020" opacity="0.55"/>
+  <polygon points="0,172 90,150 180,162 270,140 330,120 390,136 480,148 570,135 660,152 660,200 0,200" fill="#2D4A2D"/>
   <polygon points="298,200 330,48 362,200" fill="#142214"/>
-  <!-- Snowcap -->
   <polygon points="322,92 330,48 338,92 334,85 330,80 326,85" fill="#EEF2EC" opacity="0.9"/>
-  <!-- Ridge shadow lines -->
   <polygon points="298,200 312,148 330,48 321,144 308,190" fill="#0A1408" opacity="0.65"/>
   <polygon points="362,200 348,152 330,48 339,148 352,190" fill="#3A5830" opacity="0.45"/>
-
-  <!-- Left flank -->
   <polygon points="168,200 216,118 264,200" fill="#1E3020" opacity="0.75"/>
-  <!-- Right flank -->
   <polygon points="394,200 446,128 498,200" fill="#1E3020" opacity="0.75"/>
-
-  <!-- Forest floor — sparse pine silhouettes replacing desert scrub -->
-  <polygon points="0,200 0,184 18,174 36,184 54,172 72,182 90,170 108,181 126,171 144,182 162,171 180,182 198,174 216,184 234,176 252,184 270,178 288,185 306,180 322,185 338,185 352,180 368,185 384,178 400,183 418,175 436,184 454,172 472,182 490,170 508,181 526,171 544,183 562,172 580,182 598,174 616,183 634,172 652,182 660,178 660,200"
-           fill="#2A4028"/>
-  <!-- Sparse taller pine tips — like desert scrub marks but as trees -->
+  <polygon points="0,200 0,184 18,174 36,184 54,172 72,182 90,170 108,181 126,171 144,182 162,171 180,182 198,174 216,184 234,176 252,184 270,178 288,185 306,180 322,185 338,185 352,180 368,185 384,178 400,183 418,175 436,184 454,172 472,182 490,170 508,181 526,171 544,183 562,172 580,182 598,174 616,183 634,172 652,182 660,178 660,200" fill="#2A4028"/>
   <g fill="#1A2E18">
-    <polygon points="22,200  30,170 38,200"/>
-    <polygon points="58,200  66,168 74,200"/>
-    <polygon points="96,200 104,166 112,200"/>
-    <polygon points="134,200 142,171 150,200"/>
-    <polygon points="170,200 178,169 186,200"/>
-    <polygon points="208,200 216,172 224,200"/>
-    <!-- gap center for Elbert -->
-    <polygon points="430,200 438,172 446,200"/>
-    <polygon points="468,200 476,168 484,200"/>
-    <polygon points="506,200 514,166 522,200"/>
-    <polygon points="544,200 552,170 560,200"/>
-    <polygon points="582,200 590,168 598,200"/>
-    <polygon points="620,200 628,172 636,200"/>
+    <polygon points="22,200  30,170 38,200"/><polygon points="58,200  66,168 74,200"/>
+    <polygon points="96,200 104,166 112,200"/><polygon points="134,200 142,171 150,200"/>
+    <polygon points="170,200 178,169 186,200"/><polygon points="208,200 216,172 224,200"/>
+    <polygon points="430,200 438,172 446,200"/><polygon points="468,200 476,168 484,200"/>
+    <polygon points="506,200 514,166 522,200"/><polygon points="544,200 552,170 560,200"/>
+    <polygon points="582,200 590,168 598,200"/><polygon points="620,200 628,172 636,200"/>
   </g>
-
-  <!-- Elevation accent — gold, matching forest palette -->
   <text x="342" y="64" font-family="'Jost',sans-serif" font-size="7" fill="#C8A96E" font-weight="300" letter-spacing="1.5" opacity="0.8">14,440 ft</text>
   <line x1="330" y1="61" x2="338" y2="61" stroke="#C8A96E" stroke-width="0.6" opacity="0.6"/>
 </svg>
@@ -190,53 +186,97 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
   <p class="tagline">No venue. No aisle. No seating chart.<br>Just the summit, and the people we love.</p>
 </div>
 
-<div class="div-wrap"><div class="div-line"></div><div class="div-mark">September 2026</div><div class="div-line"></div></div>
+<div class="tab-bar">
+  <button class="tab-btn active" data-tab="tab-overview" onclick="showTab('tab-overview')">Overview</button>
+  <button class="tab-btn" data-tab="tab-details" onclick="showTab('tab-details')">Details</button>
+  <button class="tab-btn" data-tab="tab-rsvp" onclick="showTab('tab-rsvp')">RSVP</button>
+</div>
 
-<div class="events">
-  <div class="event">
-    <div class="e-bar"></div>
-    <div>
-      <div class="e-part">Part I</div>
-      <div class="e-title">The Summit</div>
-      <div class="e-detail"><strong>Mount Elbert — Colorado</strong><br>Highest point in the Rocky Mountains<br><br>Friday, September 4, 2026<br>Depart trailhead at 4:00 AM · Summit by lunchtime<br><br><strong>Trailhead</strong><br>North Mt. Elbert Trailhead via County Road 11 (Halfmoon Creek Road) near Leadville, CO<br>Use Forest Service Road 110, Leadville, CO 80461 for GPS<br>5 miles up a dirt road west of CO 300, near Elbert Creek Campground</div>
-      <div class="badge"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="18 15 12 9 6 15"/></svg>14,440 ft · Lake County, CO</div>
-      <span class="e-note">Rain check date: Saturday, September 5</span>
-      <span class="e-note" style="margin-top:14px;color:#a0b8a0;font-style:normal;font-size:0.68rem;line-height:1.7;display:block"><strong style="font-weight:400;color:#7A9E7E">A note on fitness:</strong> Mount Elbert is a strenuous hike — approximately 9 miles round trip with 4,700 ft of elevation gain at high altitude. Participants should be in good cardiovascular health. We strongly recommend spending a day or two acclimatizing in Colorado before the hike. This climb is not suitable for those with heart, lung, or significant mobility conditions. We want everyone to be safe and have a great time — please reach out with any questions about what to expect.</span>
+<!-- ── Tab 1: Overview ── -->
+<div id="tab-overview" class="tab-panel active">
+  <div class="ov">
+    <div class="ov-events">
+      <div class="ov-event">
+        <div class="ov-bar"></div>
+        <div>
+          <div class="ov-part">Part I · Friday, September 4, 2026</div>
+          <div class="ov-title">The Summit</div>
+          <div class="ov-loc">Mount Elbert · 14,440 ft · Lake County, CO</div>
+          <div class="ov-desc">Colorado's highest peak. Depart trailhead at 4:00 AM — summit by lunchtime. Rain check: September 5.</div>
+        </div>
+      </div>
+      <div class="ov-event">
+        <div class="ov-bar"></div>
+        <div>
+          <div class="ov-part">Part II · Sunday, September 6, 2026</div>
+          <div class="ov-title">The Celebration</div>
+          <div class="ov-loc">The Wright Room · 535 16th St Mall, Denver, CO</div>
+          <div class="ov-desc">An evening dinner inside the historic Denver Masonic Building with everyone we love.</div>
+        </div>
+      </div>
+    </div>
+    <div class="ov-cta">
+      <button class="ov-cta-btn" onclick="showTab('tab-rsvp')">Send your RSVP</button>
     </div>
   </div>
-  <div class="event">
-    <div class="e-bar"></div>
-    <div>
-      <div class="e-part">Part II</div>
-      <div class="e-title">The Celebration</div>
-      <div class="e-detail"><strong>The Wright Room</strong><br>535 16th St Mall, Suite 240, Denver, CO 80202<br>Inside the historic Denver Masonic Building<br><br>Sunday, September 6, 2026<br>Evening dinner with everyone we love<br><br>If you'll be joining us for dinner, entrée selection is below</div>
+  <div class="spirit"><p>Join us for the climb, the dinner, or both —<br>whatever feels right for you.<br>What matters is that you're part of this with us.</p></div>
+</div>
+
+<!-- ── Tab 2: Details ── -->
+<div id="tab-details" class="tab-panel">
+  <div class="div-wrap"><div class="div-line"></div><div class="div-mark">September 2026</div><div class="div-line"></div></div>
+  <div class="events">
+    <div class="event">
+      <div class="e-bar"></div>
+      <div>
+        <div class="e-part">Part I</div>
+        <div class="e-title">The Summit</div>
+        <div class="e-detail"><strong>Mount Elbert — Colorado</strong><br>Highest point in the Rocky Mountains<br><br>Friday, September 4, 2026<br>Depart trailhead at 4:00 AM · Summit by lunchtime<br><br><strong>Trailhead</strong><br>North Mt. Elbert Trailhead via County Road 11 (Halfmoon Creek Road) near Leadville, CO<br>Use Forest Service Road 110, Leadville, CO 80461 for GPS<br>5 miles up a dirt road west of CO 300, near Elbert Creek Campground</div>
+        <div class="badge"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="18 15 12 9 6 15"/></svg>14,440 ft · Lake County, CO</div>
+        <span class="e-note">Rain check date: Saturday, September 5</span>
+        <span class="e-note" style="margin-top:14px;color:#a0b8a0;font-style:normal;font-size:0.68rem;line-height:1.7;display:block"><strong style="font-weight:400;color:#7A9E7E">A note on fitness:</strong> Mount Elbert is a strenuous hike — approximately 9 miles round trip with 4,700 ft of elevation gain at high altitude. Participants should be in good cardiovascular health. We strongly recommend spending a day or two acclimatizing in Colorado before the hike. This climb is not suitable for those with heart, lung, or significant mobility conditions. We want everyone to be safe and have a great time — please reach out with any questions about what to expect.</span>
+      </div>
+    </div>
+    <div class="event">
+      <div class="e-bar"></div>
+      <div>
+        <div class="e-part">Part II</div>
+        <div class="e-title">The Celebration</div>
+        <div class="e-detail"><strong>The Wright Room</strong><br>535 16th St Mall, Suite 240, Denver, CO 80202<br>Inside the historic Denver Masonic Building<br><br>Sunday, September 6, 2026<br>Evening dinner with everyone we love<br><br>If you'll be joining us for dinner, entrée selection is in the RSVP tab</div>
+      </div>
     </div>
   </div>
 </div>
 
-<div class="spirit"><p>Join us for the climb, the dinner, or both —<br>whatever feels right for you.<br>What matters is that you're part of this with us.</p></div>
-
-<div class="rsvp">
-  <div class="rsvp-h"><h3>Will you join us?</h3><p>Let us know how you'd like to celebrate</p></div>
-  <form id="rsvpForm" onsubmit="handleRSVP(event)">
-    <div class="row"><label class="lbl">Email</label><input class="inp" type="email" name="email" placeholder="your@email.com" required/></div>
-    <div class="row"><label class="lbl">Phone</label><input class="inp" type="tel" name="phone" placeholder="(000) 000-0000"/></div>
-    <div class="row"><label class="lbl">Mailing Address</label><input class="inp" type="text" name="address" placeholder="Street, City, State, ZIP" required/></div>
-    <div class="row" style="margin-top:26px"><label class="lbl">Number of guests</label>
-      <div class="stepper"><button type="button" id="guestMinus" class="step-btn" onclick="adjustGuests(-1)">−</button><input type="number" id="guestCount" name="guests" value="1" min="1" max="20" readonly/><button type="button" id="guestPlus" class="step-btn" onclick="adjustGuests(1)">+</button></div>
-      <div class="sub-note">Including yourself</div>
-    </div>
-    <div id="guestCards" style="margin-top:26px"></div>
-    <div class="row" style="margin-top:22px"><label class="lbl">Anything else we should know?</label><input class="inp" type="text" name="notes" placeholder="Dietary needs, questions, etc."/></div>
-    <button type="submit" class="btn" id="rsvpBtn">Send my RSVP</button>
-    <div class="ty" id="thankyou"><p>Thank you — we can't wait to celebrate with you. ♡</p></div>
-    <div class="err" id="errorMsg"><p>Something went wrong — please try again.</p></div>
-  </form>
+<!-- ── Tab 3: RSVP ── -->
+<div id="tab-rsvp" class="tab-panel">
+  <div class="rsvp">
+    <div class="rsvp-h"><h3>Will you join us?</h3><p>Let us know how you'd like to celebrate</p></div>
+    <form id="rsvpForm" onsubmit="handleRSVP(event)">
+      <div class="row"><label class="lbl">Email</label><input class="inp" type="email" name="email" placeholder="your@email.com" required/></div>
+      <div class="row"><label class="lbl">Phone</label><input class="inp" type="tel" name="phone" placeholder="(000) 000-0000"/></div>
+      <div class="row"><label class="lbl">Mailing Address</label><input class="inp" type="text" name="address" placeholder="Street, City, State, ZIP" required/></div>
+      <div class="row" style="margin-top:26px"><label class="lbl">Number of guests</label>
+        <div class="stepper"><button type="button" id="guestMinus" class="step-btn" onclick="adjustGuests(-1)">−</button><input type="number" id="guestCount" name="guests" value="1" min="1" max="20" readonly/><button type="button" id="guestPlus" class="step-btn" onclick="adjustGuests(1)">+</button></div>
+        <div class="sub-note">Including yourself</div>
+      </div>
+      <div id="guestCards" style="margin-top:26px"></div>
+      <div class="row" style="margin-top:22px"><label class="lbl">Anything else we should know?</label><input class="inp" type="text" name="notes" placeholder="Dietary needs, questions, etc."/></div>
+      <button type="submit" class="btn" id="rsvpBtn">Send my RSVP</button>
+      <div class="ty" id="thankyou"><p>Thank you — we can't wait to celebrate with you. ♡</p></div>
+      <div class="err" id="errorMsg"><p>Something went wrong — please try again.</p></div>
+    </form>
+  </div>
 </div>
 
 <div class="footer"><span class="fn">Jackson Lyons & Crystal Huynh · September 2026</span><span class="fc">39.1178° N, 106.4452° W</span></div>
 </div>
 <script>
+  function showTab(id) {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === id));
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.toggle('active', p.id === id));
+  }
+
   // ── Apps Script endpoint ───────────────────────────────────────────────────
   const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzCvN2byIDQsU-uztm1JpTX8Z7lv3pUcLUpDhvHJwAE1n-pFI99845n8QcAdfEXKvYHkw/exec';
   // ──────────────────────────────────────────────────────────────────────────
@@ -262,7 +302,6 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
   function renderGuestCards(count) {
     const container = document.getElementById('guestCards');
 
-    // Preserve values already entered before re-rendering
     const saved = {};
     container.querySelectorAll('.guest-card').forEach(card => {
       const i = card.dataset.guest;
@@ -327,19 +366,16 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
           </div>
         </div>`);
 
-      // Wire up interactivity for this card
       const card      = container.querySelector(`.guest-card[data-guest="${i}"]`);
       const nameInp   = card.querySelector(`input[name="guest_name_${i}"]`);
       const mealWrap  = card.querySelector('.guest-meal-wrap');
       const mealRadios= card.querySelectorAll(`input[name="meal_${i}"]`);
 
-      // Name → update card header live
       nameInp.addEventListener('input', () => {
         document.getElementById(`guest-hdr-${i}`).textContent =
           nameInp.value.trim() || (i === 1 ? 'Guest 1 — You' : `Guest ${i}`);
       });
 
-      // Activity → show/hide meal section and toggle required
       card.querySelectorAll(`input[name="attendance_${i}"]`).forEach(r => {
         r.addEventListener('change', () => {
           const show = needsDinner(r.value);
@@ -348,7 +384,6 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
         });
       });
 
-      // Set initial required state for meal inputs
       mealRadios.forEach(m => { m.required = mealVisible; });
     }
   }
@@ -362,7 +397,6 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
     renderGuestCards(n);
   }
 
-  // Render the initial single guest card on page load
   renderGuestCards(1);
 
   async function handleRSVP(e) {
@@ -371,7 +405,6 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
     const form       = e.target;
     const guestCount = parseInt(document.getElementById('guestCount').value);
 
-    // Validate each guest card before sending
     const errEl = document.getElementById('errorMsg');
     errEl.style.display = 'none';
     for (let i = 1; i <= guestCount; i++) {
