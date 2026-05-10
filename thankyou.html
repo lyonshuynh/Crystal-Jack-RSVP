@@ -117,6 +117,7 @@ body{background:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' 
   </div>
 </div>
 
+<div class="div-wrap" id="eventDivider" style="display:none"><div class="div-line"></div><div class="div-mark">Event Details</div><div class="div-line"></div></div>
 <div class="events" id="eventSection">
   <div class="event" id="hikeEvent" style="display:none">
     <div class="e-bar"></div>
@@ -125,7 +126,7 @@ body{background:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' 
       <div class="e-title">The Summit</div>
       <div class="e-detail"><strong>Mount Elbert — Colorado</strong><br>Highest point in the Rocky Mountains<br><br>Friday, September 4, 2026<br>Depart trailhead at 4:00 AM · Summit by sunrise<br><br><strong>Trailhead</strong><br>North Mt. Elbert Trailhead via County Road 11 (Halfmoon Creek Road) near Leadville, CO<br>Use Forest Service Road 110, Leadville, CO 80461 for GPS<br>5 miles up a dirt road west of CO 300, near Elbert Creek Campground<br><br><strong>Lodging</strong><br>Three options for making a weekend of it:<br>The Lodge — We've reserved a large cabin near the trailhead, open to all on a first-come, first-served basis. Reach out if you'd like a spot.<br>On Your Own — Leadville has a range of hotels, vacation rentals, and B&Bs nearby.<br>Camping — For the bold: dispersed camping near the trailhead is always an option.<br><br><strong>What to Wear</strong><br>Dress for the hike — comfortable layers, broken-in boots, whatever gets you to 14,440 ft. No need to pack dress clothes or plan a summit outfit change. The whole idea is to hike, exchange rings somewhere breathtaking, and head back down. The dinner on Sunday is where we'll take the nice photos.</div>
       <div class="badge"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="18 15 12 9 6 15"/></svg>14,440 ft · Lake County, CO</div>
-      <span class="e-note">Rain check date: Saturday, September 5</span>
+      <span class="e-note">Rain check: Saturday, September 5 — dinner on September 6 is unaffected</span>
       <span class="e-note" style="margin-top:14px;color:#a0b8a0;font-style:normal;font-size:0.68rem;line-height:1.7;display:block"><strong style="font-weight:400;color:#7A9E7E">A note on fitness:</strong> Mount Elbert is a strenuous hike — approximately 9 miles round trip with 4,700 ft of elevation gain at high altitude. Participants should be in good cardiovascular health. We strongly recommend spending a day or two acclimatizing in Colorado before the hike. This climb is not suitable for those with heart, lung, or significant mobility conditions. We want everyone to be safe and have a great time — please reach out with any questions about what to expect.</span>
     </div>
   </div>
@@ -134,7 +135,7 @@ body{background:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' 
     <div>
       <div class="e-part">Part II</div>
       <div class="e-title">The Celebration</div>
-      <div class="e-detail"><strong>The Wright Room</strong><br>535 16th St Mall, Suite 240, Denver, CO 80202<br>Inside the historic Denver Masonic Building<br><br>Sunday, September 6, 2026<br>Evening dinner with everyone we love<br><br><strong>Lodging</strong><br>We have reserved a block of rooms at the Aloft by Marriott Denver Downtown<br>800 15th St, Denver, CO 80202 · 3 blocks from The Wright Room<br>Booking link coming soon<br><br><strong>Dress Code</strong><br>Semi-formal</div>
+      <div class="e-detail"><strong>The Wright Room</strong><br>535 16th St Mall, Suite 240, Denver, CO 80202<br>Inside the historic Denver Masonic Building<br><br><strong>Schedule</strong><br>5:00 PM — Cocktail hour<br>6:00 PM — Dinner begins<br>9:00 PM — We say goodnight<br><br><strong>Parking</strong><br>Available at the Denver Pavilion next door — covered by us. Rideshare and public transit also convenient.<br><br><strong>Lodging</strong><br>Aloft by Marriott Denver Downtown<br>800 15th St, Denver, CO 80202 · 3 blocks from The Wright Room<br>Booking link coming soon<br><br><strong>Dress Code</strong><br>Semi-formal</div>
     </div>
   </div>
 </div>
@@ -185,7 +186,11 @@ body{background:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' 
 
   if (anyHike)   document.getElementById('hikeEvent').style.display   = 'grid';
   if (anyDinner) document.getElementById('dinnerEvent').style.display = 'grid';
-  if (!anyHike && !anyDinner) document.getElementById('eventSection').style.display = 'none';
+  if (!anyHike && !anyDinner) {
+    document.getElementById('eventSection').style.display = 'none';
+  } else {
+    document.getElementById('eventDivider').style.display = 'flex';
+  }
 
   if (allOut) {
     document.getElementById('spiritMsg').style.display = 'none';

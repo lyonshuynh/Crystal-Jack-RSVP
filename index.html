@@ -30,11 +30,6 @@ body{background:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' 
 .tab-panel{display:none}
 .tab-panel.active{display:block}
 
-/* Divider */
-.div-wrap{display:flex;align-items:center;gap:14px;margin:0 58px;padding:24px 0}
-.div-line{flex:1;height:1px;background:#D8E4D8}
-.div-mark{font-size:0.55rem;letter-spacing:0.3em;text-transform:uppercase;color:#D8E4D8}
-
 /* Overview */
 .ov{padding:38px 58px 28px}
 .ov-events{display:flex;flex-direction:column}
@@ -42,34 +37,66 @@ body{background:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' 
 .ov-event:last-child{border-bottom:none;padding-bottom:4px}
 .ov-bar{background:var(--gold);width:2px;justify-self:center}
 .ov-part{font-size:0.58rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:6px}
-.ov-title{font-family:'EB Garamond',serif;font-size:1.35rem;font-weight:400;color:var(--forest);margin-bottom:5px}
-.ov-loc{font-size:0.72rem;color:var(--forest);margin-bottom:4px}
-.ov-desc{font-size:0.72rem;color:var(--mid);line-height:1.7}
-.ov-cta{margin-top:30px;text-align:center}
+.ov-title{font-family:'EB Garamond',serif;font-size:1.35rem;font-weight:400;color:var(--forest);margin-bottom:4px}
+.ov-loc{font-size:0.72rem;color:var(--forest);margin-bottom:8px}
+.ov-desc{font-size:0.72rem;color:var(--mid);line-height:1.7;margin-bottom:10px}
+.ov-meta{display:flex;flex-direction:column;gap:5px}
+.ov-kv{display:flex;gap:12px;align-items:baseline}
+.ov-k{font-size:0.54rem;letter-spacing:.14em;text-transform:uppercase;color:var(--forest);min-width:70px;flex-shrink:0}
+.ov-v{font-size:0.72rem;color:var(--mid);line-height:1.5}
+.ov-more{display:inline-block;margin-top:12px;font-size:0.58rem;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);cursor:pointer;background:none;border:none;padding:0;font-family:'Jost',sans-serif}
+.ov-more:hover{color:var(--forest)}
+.ov-contact{text-align:center;padding:4px 58px 0;font-size:0.7rem;color:var(--mid)}
+.ov-contact a{color:var(--mid);text-decoration:none}
+.ov-contact a:hover{color:var(--forest)}
+.ov-cta{margin-top:28px;text-align:center}
+.deadline{font-size:0.6rem;letter-spacing:.1em;text-transform:uppercase;color:#7A9A7A;margin-bottom:12px}
 .ov-cta-btn{padding:13px 38px;background:var(--forest);color:var(--pale);border:none;font-family:'Jost',sans-serif;font-weight:300;font-size:0.62rem;letter-spacing:.22em;text-transform:uppercase;cursor:pointer;transition:background .2s}
 .ov-cta-btn:hover{background:var(--green)}
-
-/* Events (Details tab) */
-.events{padding:0 58px 38px}
-.event{padding:26px 0;border-bottom:1px solid #DDE8DD;display:grid;grid-template-columns:2px 1fr;gap:0 24px}
-.event:last-child{border-bottom:none}
-.e-bar{background:var(--gold);width:2px;justify-self:center}
-.e-part{font-size:0.58rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:8px}
-.e-title{font-family:'EB Garamond',serif;font-size:1.45rem;font-weight:400;color:var(--forest);margin-bottom:10px}
-.e-detail{font-size:0.76rem;color:var(--mid);line-height:1.9}
-.e-detail strong{font-weight:400;color:var(--forest)}
-.e-note{display:block;margin-top:10px;font-size:0.66rem;font-style:italic;color:#7A9A7A}
-.badge{display:inline-flex;align-items:center;gap:6px;margin-top:12px;padding:4px 10px;border:1px solid #D8E4D8;font-size:0.6rem;letter-spacing:.15em;text-transform:uppercase;color:var(--mid)}
 
 /* Spirit */
 .spirit{margin:0 58px;padding:28px 0 32px;border-top:1px solid #D8E4D8;border-bottom:1px solid #D8E4D8;text-align:center}
 .spirit p{font-family:'EB Garamond',serif;font-style:italic;font-size:1rem;color:var(--mid);line-height:1.9}
 
+/* Events (Details tab) */
+.events{padding:38px 58px 38px}
+.event{padding-bottom:32px;margin-bottom:32px;border-bottom:1px solid #DDE8DD;display:grid;grid-template-columns:2px 1fr;gap:0 24px}
+.event:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+.e-bar{background:var(--gold);width:2px;justify-self:center}
+.e-part{font-size:0.58rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:8px}
+.e-title{font-family:'EB Garamond',serif;font-size:1.45rem;font-weight:400;color:var(--forest);margin-bottom:18px}
+.e-detail{font-size:0.76rem;color:var(--mid);line-height:1.9}
+.e-detail strong{font-weight:400;color:var(--forest)}
+.e-sections{display:flex;flex-direction:column}
+.e-sec{padding-top:16px;margin-top:16px;border-top:1px solid #EEF4EE}
+.e-sec:first-child{padding-top:0;margin-top:0;border-top:none}
+.e-sec-h{font-size:0.55rem;letter-spacing:.2em;text-transform:uppercase;color:var(--forest);font-family:'Jost',sans-serif;font-weight:400;margin-bottom:8px}
+.e-sec p{font-size:0.76rem;color:var(--mid);line-height:1.9}
+.e-sec p strong{font-weight:400;color:var(--forest)}
+.e-note{display:block;margin-top:8px;font-size:0.68rem;font-style:italic;color:#7A9A7A}
+.badge{display:inline-flex;align-items:center;gap:6px;margin-top:10px;padding:4px 10px;border:1px solid #D8E4D8;font-size:0.6rem;letter-spacing:.15em;text-transform:uppercase;color:var(--mid)}
+.gear-list{list-style:none;margin-top:6px;display:flex;flex-direction:column;gap:4px}
+.gear-list li{font-size:0.74rem;color:var(--mid);line-height:1.6;padding-left:16px;position:relative}
+.gear-list li::before{content:'—';position:absolute;left:0;color:var(--gold)}
+.sched-grid{display:flex;flex-direction:column;gap:6px;margin-top:4px}
+.sched-row{display:flex;gap:16px;font-size:0.76rem}
+.sched-time{color:var(--forest);min-width:58px;flex-shrink:0}
+.sched-desc{color:var(--mid)}
+.rsvp-jump{margin-top:28px;text-align:center}
+.rsvp-jump-btn{padding:11px 32px;background:transparent;border:1px solid var(--forest);color:var(--forest);font-family:'Jost',sans-serif;font-weight:300;font-size:0.6rem;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;transition:all .2s}
+.rsvp-jump-btn:hover{background:var(--forest);color:var(--pale)}
+
 /* RSVP */
 .rsvp{padding:38px 58px 46px;background:var(--pale)}
-.rsvp-h{text-align:center;margin-bottom:26px}
-.rsvp-h h3{font-family:'EB Garamond',serif;font-weight:400;font-size:1.35rem;color:var(--forest);margin-bottom:5px}
-.rsvp-h p{font-size:0.7rem;color:var(--mid);letter-spacing:.06em}
+.rsvp-h{text-align:center;margin-bottom:22px}
+.rsvp-h h3{font-family:'EB Garamond',serif;font-weight:400;font-size:1.35rem;color:var(--forest);margin-bottom:6px}
+.rsvp-h p{font-size:0.7rem;color:var(--mid);letter-spacing:.04em}
+.rsvp-h p strong{font-weight:400;color:var(--forest)}
+.rsvp-contact{margin-top:6px;font-size:0.68rem;color:#7A9A7A}
+.rsvp-contact a{color:#7A9A7A;text-decoration:none}
+.rsvp-contact a:hover{color:var(--forest)}
+.req-note{font-size:0.6rem;color:#7A9A7A;margin-bottom:20px}
+.req{color:var(--gold)}
 .row{margin-bottom:18px}
 .lbl{display:block;font-size:0.6rem;letter-spacing:.18em;text-transform:uppercase;color:var(--mid);margin-bottom:8px}
 .inp{width:100%;border:none;border-bottom:1px solid #C5D5C5;background:transparent;padding:8px 0;font-family:'Jost',sans-serif;font-weight:300;font-size:0.86rem;color:var(--forest);outline:none;transition:border-color .2s}
@@ -107,9 +134,6 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
 .ty p{font-family:'EB Garamond',serif;font-style:italic;font-size:1.05rem;color:var(--gold)}
 .err{display:none;text-align:center;padding:12px 0}
 .err p{font-size:.75rem;color:#b94a48}
-.footer{padding:22px 58px 30px;border-top:1px solid #D8E4D8;display:flex;justify-content:space-between;align-items:center;background:var(--paper)}
-.fn{font-size:0.6rem;color:#7A9A7A;letter-spacing:.1em}
-.fc{font-family:'EB Garamond',serif;font-style:italic;font-size:.7rem;color:#7A9A7A}
 /* Meal selection */
 .meal-opt{position:relative}
 .meal-opt input[type=radio]{position:absolute;opacity:0;width:0;height:0}
@@ -129,11 +153,17 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
 .guest-card-hdr{padding:11px 18px;background:var(--forest);color:var(--pale);font-size:0.6rem;letter-spacing:0.22em;text-transform:uppercase;font-family:'Jost',sans-serif;font-weight:300}
 .guest-card-body{padding:22px 20px;display:flex;flex-direction:column;gap:22px}
 .guest-meal-wrap{display:none}
+/* Footer */
+.footer{padding:22px 58px 30px;border-top:1px solid #D8E4D8;display:flex;justify-content:space-between;align-items:center;background:var(--paper)}
+.fn{font-size:0.6rem;color:#7A9A7A;letter-spacing:.1em}
+.fc{font-family:'EB Garamond',serif;font-style:italic;font-size:.7rem;color:#7A9A7A}
 @media(max-width:540px){
   .top,.ov,.events,.rsvp{padding-left:26px;padding-right:26px}
+  .ov-contact{padding-left:26px;padding-right:26px}
   .div-wrap,.spirit{margin:0 26px}
   .footer{padding:18px 26px 26px;flex-direction:column;gap:8px;text-align:center}
   .guest-card-body{padding:18px 16px}
+  .ov-k{min-width:60px}
 }
 </style>
 </head>
@@ -196,26 +226,48 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
 <div id="tab-overview" class="tab-panel active">
   <div class="ov">
     <div class="ov-events">
+
       <div class="ov-event">
         <div class="ov-bar"></div>
         <div>
           <div class="ov-part">Part I · Friday, September 4, 2026</div>
           <div class="ov-title">The Summit</div>
           <div class="ov-loc">Mount Elbert · 14,440 ft · Lake County, CO</div>
-          <div class="ov-desc">Colorado's highest peak. Depart trailhead at 4:00 AM — summit by sunrise. Rain check: September 5.<br><br>Lodging: lodge (first-come, first-served), independent, or camping nearby · Attire: hiking clothes — no dress change needed</div>
+          <div class="ov-desc">Colorado's highest peak — meet at the trailhead at 4:00 AM and summit by sunrise.</div>
+          <div class="ov-meta">
+            <div class="ov-kv"><span class="ov-k">Departs</span><span class="ov-v">4:00 AM from trailhead</span></div>
+            <div class="ov-kv"><span class="ov-k">Rain check</span><span class="ov-v">September 5 — dinner on Sep 6 is unaffected</span></div>
+            <div class="ov-kv"><span class="ov-k">Lodging</span><span class="ov-v">Reserved lodge (first-come), independent, or camping</span></div>
+            <div class="ov-kv"><span class="ov-k">Attire</span><span class="ov-v">Hiking layers — no dress change needed</span></div>
+          </div>
+          <button class="ov-more" onclick="showTab('tab-details')">Full details + gear checklist →</button>
         </div>
       </div>
+
       <div class="ov-event">
         <div class="ov-bar"></div>
         <div>
           <div class="ov-part">Part II · Sunday, September 6, 2026</div>
           <div class="ov-title">The Celebration</div>
           <div class="ov-loc">The Wright Room · 535 16th St Mall, Denver, CO</div>
-          <div class="ov-desc">An evening dinner inside the historic Denver Masonic Building with everyone we love.<br><br>Lodging: Aloft by Marriott Denver Downtown, 800 15th St — 3 blocks away (booking link coming soon) · Dress code: semi-formal</div>
+          <div class="ov-desc">An evening dinner inside the historic Denver Masonic Building.</div>
+          <div class="ov-meta">
+            <div class="ov-kv"><span class="ov-k">Cocktails</span><span class="ov-v">5:00 PM</span></div>
+            <div class="ov-kv"><span class="ov-k">Dinner</span><span class="ov-v">6:00 PM · room until 9:00 PM</span></div>
+            <div class="ov-kv"><span class="ov-k">Parking</span><span class="ov-v">Denver Pavilion next door — covered by us</span></div>
+            <div class="ov-kv"><span class="ov-k">Lodging</span><span class="ov-v">Aloft by Marriott Denver Downtown · 3 blocks away</span></div>
+            <div class="ov-kv"><span class="ov-k">Dress</span><span class="ov-v">Semi-formal</span></div>
+          </div>
+          <button class="ov-more" onclick="showTab('tab-details')">Full details →</button>
         </div>
       </div>
+
     </div>
+
+    <div class="ov-contact">Questions? <a href="mailto:LyonsHuynh@gmail.com">LyonsHuynh@gmail.com</a> · <a href="tel:9526882363">952-688-2363</a></div>
+
     <div class="ov-cta">
+      <div class="deadline">Please respond by July 31, 2026</div>
       <button class="ov-cta-btn" onclick="showTab('tab-rsvp')">Send your RSVP</button>
     </div>
   </div>
@@ -224,44 +276,136 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
 
 <!-- ── Tab 2: Details ── -->
 <div id="tab-details" class="tab-panel">
-  <div class="div-wrap"><div class="div-line"></div><div class="div-mark">September 2026</div><div class="div-line"></div></div>
   <div class="events">
+
     <div class="event">
       <div class="e-bar"></div>
       <div>
         <div class="e-part">Part I</div>
         <div class="e-title">The Summit</div>
-        <div class="e-detail"><strong>Mount Elbert — Colorado</strong><br>Highest point in the Rocky Mountains<br><br>Friday, September 4, 2026<br>Depart trailhead at 4:00 AM · Summit by sunrise<br><br><strong>Trailhead</strong><br>North Mt. Elbert Trailhead via County Road 11 (Halfmoon Creek Road) near Leadville, CO<br>Use Forest Service Road 110, Leadville, CO 80461 for GPS<br>5 miles up a dirt road west of CO 300, near Elbert Creek Campground<br><br><strong>Lodging</strong><br>Three options for making a weekend of it:<br>The Lodge — We've reserved a large cabin near the trailhead, open to all on a first-come, first-served basis. Reach out if you'd like a spot.<br>On Your Own — Leadville has a range of hotels, vacation rentals, and B&Bs nearby.<br>Camping — For the bold: dispersed camping near the trailhead is always an option.<br><br><strong>What to Wear</strong><br>Dress for the hike — comfortable layers, broken-in boots, whatever gets you to 14,440 ft. No need to pack dress clothes or plan a summit outfit change. The whole idea is to hike, exchange rings somewhere breathtaking, and head back down. The dinner on Sunday is where we'll take the nice photos.</div>
-        <div class="badge"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="18 15 12 9 6 15"/></svg>14,440 ft · Lake County, CO</div>
-        <span class="e-note">Rain check date: Saturday, September 5</span>
-        <span class="e-note" style="margin-top:14px;color:#a0b8a0;font-style:normal;font-size:0.68rem;line-height:1.7;display:block"><strong style="font-weight:400;color:#7A9E7E">A note on fitness:</strong> Mount Elbert is a strenuous hike — approximately 9 miles round trip with 4,700 ft of elevation gain at high altitude. Participants should be in good cardiovascular health. We strongly recommend spending a day or two acclimatizing in Colorado before the hike. This climb is not suitable for those with heart, lung, or significant mobility conditions. We want everyone to be safe and have a great time — please reach out with any questions about what to expect.</span>
+        <div class="e-sections">
+
+          <div class="e-sec">
+            <div class="e-sec-h">When &amp; Where</div>
+            <p>Mount Elbert — Colorado's highest peak at 14,440 ft<br>Friday, September 4, 2026 · Depart trailhead 4:00 AM · Summit by sunrise</p>
+            <div class="badge"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="18 15 12 9 6 15"/></svg>14,440 ft · Lake County, CO</div>
+          </div>
+
+          <div class="e-sec">
+            <div class="e-sec-h">Trailhead</div>
+            <p>North Mt. Elbert Trailhead via County Road 11 (Halfmoon Creek Road) near Leadville, CO<br>Use <strong>Forest Service Road 110, Leadville, CO 80461</strong> for GPS<br>5 miles up a dirt road west of CO 300, near Elbert Creek Campground</p>
+          </div>
+
+          <div class="e-sec">
+            <div class="e-sec-h">Recommended Gear</div>
+            <ul class="gear-list">
+              <li>Headlamp with fresh batteries — essential for the 4:00 AM start</li>
+              <li>Layered clothing — moisture-wicking base, insulating mid-layer, wind and rain shell</li>
+              <li>Warm gloves and a hat — summit temps can drop near freezing</li>
+              <li>Sturdy hiking boots with ankle support</li>
+              <li>Trekking poles — highly recommended, especially on the descent</li>
+              <li>3+ liters of water — dehydration is faster at altitude</li>
+              <li>High-energy snacks — bars, trail mix, anything portable</li>
+              <li>Sunscreen SPF 50+ and sunglasses — UV is intense above treeline</li>
+              <li>Personal medications and a small first aid kit</li>
+              <li>Fully charged phone with emergency contacts saved</li>
+            </ul>
+          </div>
+
+          <div class="e-sec">
+            <div class="e-sec-h">Lodging</div>
+            <p><strong>The Lodge</strong> — We've reserved a large cabin near the trailhead, open to all on a first-come, first-served basis. Email <a href="mailto:LyonsHuynh@gmail.com" style="color:var(--mid)">LyonsHuynh@gmail.com</a> to claim a spot.<br><br><strong>On Your Own</strong> — Leadville has a range of hotels, vacation rentals, and B&Bs nearby.<br><br><strong>Camping</strong> — For the bold: dispersed camping near the trailhead is always an option.</p>
+          </div>
+
+          <div class="e-sec">
+            <div class="e-sec-h">What to Wear</div>
+            <p>Dress for the hike — comfortable layers, broken-in boots, whatever gets you to 14,440 ft. No need to pack dress clothes. The whole idea is to hike, exchange rings somewhere breathtaking, and head back down. The dinner on Sunday is where we'll take the nice photos.</p>
+          </div>
+
+          <div class="e-sec">
+            <div class="e-sec-h">Rain Check</div>
+            <p>If weather calls for it, the hike moves to <strong>Saturday, September 5</strong>. The dinner on Sunday, September 6 is unaffected regardless of which day we summit — no action needed on your part.</p>
+          </div>
+
+          <div class="e-sec">
+            <div class="e-sec-h">A Note on Fitness</div>
+            <p>Mount Elbert is a strenuous hike — approximately 9 miles round trip with 4,700 ft of elevation gain at high altitude. Participants should be in good cardiovascular health. We strongly recommend spending a day or two acclimatizing in Colorado before the hike. This climb is not suitable for those with heart, lung, or significant mobility conditions. Please reach out at <a href="mailto:LyonsHuynh@gmail.com" style="color:var(--mid)">LyonsHuynh@gmail.com</a> or <a href="tel:9526882363" style="color:var(--mid)">952-688-2363</a> with any questions about what to expect.</p>
+          </div>
+
+        </div>
       </div>
     </div>
+
     <div class="event">
       <div class="e-bar"></div>
       <div>
         <div class="e-part">Part II</div>
         <div class="e-title">The Celebration</div>
-        <div class="e-detail"><strong>The Wright Room</strong><br>535 16th St Mall, Suite 240, Denver, CO 80202<br>Inside the historic Denver Masonic Building<br><br>Sunday, September 6, 2026<br>Evening dinner with everyone we love<br><br>If you'll be joining us for dinner, entrée selection is in the RSVP tab<br><br><strong>Lodging</strong><br>We have reserved a block of rooms at the Aloft by Marriott Denver Downtown<br>800 15th St, Denver, CO 80202 · 3 blocks from The Wright Room<br>Booking link coming soon<br><br><strong>Dress Code</strong><br>Semi-formal</div>
+        <div class="e-sections">
+
+          <div class="e-sec">
+            <div class="e-sec-h">Venue</div>
+            <p><strong>The Wright Room</strong><br>535 16th St Mall, Suite 240, Denver, CO 80202<br>Inside the historic Denver Masonic Building</p>
+          </div>
+
+          <div class="e-sec">
+            <div class="e-sec-h">Schedule</div>
+            <div class="sched-grid">
+              <div class="sched-row"><span class="sched-time">5:00 PM</span><span class="sched-desc">Cocktail hour</span></div>
+              <div class="sched-row"><span class="sched-time">6:00 PM</span><span class="sched-desc">Dinner begins</span></div>
+              <div class="sched-row"><span class="sched-time">9:00 PM</span><span class="sched-desc">We say goodnight</span></div>
+            </div>
+          </div>
+
+          <div class="e-sec">
+            <div class="e-sec-h">Parking</div>
+            <p>Parking is available at the <strong>Denver Pavilion</strong> next door and will be covered by us. Rideshare and public transit are also convenient options if you prefer.</p>
+          </div>
+
+          <div class="e-sec">
+            <div class="e-sec-h">Lodging</div>
+            <p>We have reserved a block of rooms at the <strong>Aloft by Marriott Denver Downtown</strong><br>800 15th St, Denver, CO 80202 · 3 blocks from The Wright Room<br>Booking link coming soon</p>
+          </div>
+
+          <div class="e-sec">
+            <div class="e-sec-h">Dress Code</div>
+            <p>Semi-formal</p>
+          </div>
+
+          <div class="e-sec">
+            <div class="e-sec-h">Entrée Selection</div>
+            <p>If you'll be joining us for dinner, please select your entrée when you RSVP.</p>
+          </div>
+
+        </div>
+        <div class="rsvp-jump">
+          <button class="rsvp-jump-btn" onclick="showTab('tab-rsvp')">Send your RSVP</button>
+        </div>
       </div>
     </div>
+
   </div>
 </div>
 
 <!-- ── Tab 3: RSVP ── -->
 <div id="tab-rsvp" class="tab-panel">
   <div class="rsvp">
-    <div class="rsvp-h"><h3>Will you join us?</h3><p>Let us know how you'd like to celebrate</p></div>
+    <div class="rsvp-h">
+      <h3>Will you join us?</h3>
+      <p>Please respond by <strong>July 31, 2026</strong></p>
+      <p class="rsvp-contact">Questions? <a href="mailto:LyonsHuynh@gmail.com">LyonsHuynh@gmail.com</a> · <a href="tel:9526882363">952-688-2363</a></p>
+    </div>
     <form id="rsvpForm" onsubmit="handleRSVP(event)">
-      <div class="row"><label class="lbl">Email</label><input class="inp" type="email" name="email" placeholder="your@email.com" required/></div>
+      <div class="req-note"><span class="req">*</span> required</div>
+      <div class="row"><label class="lbl">Email <span class="req">*</span></label><input class="inp" type="email" name="email" placeholder="your@email.com" required/></div>
       <div class="row"><label class="lbl">Phone</label><input class="inp" type="tel" name="phone" placeholder="(000) 000-0000"/></div>
-      <div class="row"><label class="lbl">Mailing Address</label><input class="inp" type="text" name="address" placeholder="Street, City, State, ZIP" required/></div>
+      <div class="row"><label class="lbl">Mailing Address <span class="req">*</span></label><input class="inp" type="text" name="address" placeholder="Street, City, State, ZIP" required/></div>
       <div class="row" style="margin-top:26px"><label class="lbl">Number of guests</label>
         <div class="stepper"><button type="button" id="guestMinus" class="step-btn" onclick="adjustGuests(-1)">−</button><input type="number" id="guestCount" name="guests" value="1" min="1" max="20" readonly/><button type="button" id="guestPlus" class="step-btn" onclick="adjustGuests(1)">+</button></div>
         <div class="sub-note">Including yourself</div>
       </div>
       <div id="guestCards" style="margin-top:26px"></div>
-      <div class="row" style="margin-top:22px"><label class="lbl">Anything else we should know?</label><input class="inp" type="text" name="notes" placeholder="Dietary needs, questions, etc."/></div>
+      <div class="row" style="margin-top:22px"><label class="lbl">Anything else we should know?</label><input class="inp" type="text" name="notes" placeholder="Questions, notes, etc."/></div>
       <button type="submit" class="btn" id="rsvpBtn">Send my RSVP</button>
       <div class="ty" id="thankyou"><p>Thank you — we can't wait to celebrate with you. ♡</p></div>
       <div class="err" id="errorMsg"><p>Something went wrong — please try again.</p></div>
@@ -277,9 +421,7 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
     document.querySelectorAll('.tab-panel').forEach(p => p.classList.toggle('active', p.id === id));
   }
 
-  // ── Apps Script endpoint ───────────────────────────────────────────────────
   const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzCvN2byIDQsU-uztm1JpTX8Z7lv3pUcLUpDhvHJwAE1n-pFI99845n8QcAdfEXKvYHkw/exec';
-  // ──────────────────────────────────────────────────────────────────────────
 
   const MEALS = [
     { value: 'chicken',   name: 'Pancetta Chicken',
@@ -291,10 +433,10 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
   ];
 
   const ACTIVITIES = [
-    { value: 'hike',          label: 'The Summit — Mount Elbert',        desc: "Hike up Colorado's highest peak",           date: 'Sep 4',   icon: '<polygon points="3 20 9 4 15 14 18 10 21 20 3 20"/>' },
-    { value: 'dinner',        label: 'The Celebration — The Wright Room', desc: 'Dinner in Denver',                          date: 'Sep 6',   icon: '<path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><line x1="7" y1="2" x2="7" y2="22"/><path d="M21 15V2a5 5 0 0 0-5 5v6h3l-1 11"/>' },
-    { value: 'both',          label: 'Both — The Full Adventure',         desc: 'Summit Sep 4, celebrate Sep 6',             date: 'Sep 4+6', icon: '<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>' },
-    { value: 'cannot-attend', label: 'Cannot Attend',                     desc: "We'll be there in spirit — congratulations!", date: '',        icon: '<line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>' },
+    { value: 'hike',          label: 'The Summit — Mount Elbert',        desc: "Hike up Colorado's highest peak",      date: 'Sep 4',   icon: '<polygon points="3 20 9 4 15 14 18 10 21 20 3 20"/>' },
+    { value: 'dinner',        label: 'The Celebration — The Wright Room', desc: 'Dinner in Denver',                     date: 'Sep 6',   icon: '<path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><line x1="7" y1="2" x2="7" y2="22"/><path d="M21 15V2a5 5 0 0 0-5 5v6h3l-1 11"/>' },
+    { value: 'both',          label: 'Both — The Full Adventure',         desc: 'Summit Sep 4, celebrate Sep 6',        date: 'Sep 4+6', icon: '<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>' },
+    { value: 'cannot-attend', label: 'Cannot Attend',                     desc: "We'll miss you — thank you for letting us know.", date: '', icon: '<line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>' },
   ];
 
   function needsDinner(val) { return val === 'dinner' || val === 'both'; }
@@ -417,7 +559,7 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
         return;
       }
       if (!attVal) {
-        errEl.querySelector('p').textContent = i === 1 ? 'Please select what you\'ll be joining us for.' : `Please make a selection for Guest ${i}.`;
+        errEl.querySelector('p').textContent = i === 1 ? "Please select what you'll be joining us for." : `Please make a selection for Guest ${i}.`;
         errEl.style.display = 'block';
         form.querySelector(`[name="attendance_${i}"]`)?.closest('.opts')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
         return;
