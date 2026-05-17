@@ -9,9 +9,24 @@ const NOTIFICATION_EMAIL = "lyonshuynh@gmail.com"; // where RSVP emails go
 const SHEET_NAME         = "RSVPs";                // tab name in your spreadsheet
 // ─────────────────────────────────────────────────────────────
 
+// Health check — open the /exec URL in a browser to confirm the deploy is live.
+function doGet() {
+  return ContentService
+    .createTextOutput(JSON.stringify({ result: "ok", message: "RSVP endpoint is live." }))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+
 function doPost(e) {
   try {
     const data   = JSON.parse(e.postData.contents);
+
+    // Spam honeypot: legitimate guests never populate this field.
+    if (data.company) {
+      return ContentService
+        .createTextOutput(JSON.stringify({ result: "ok" }))
+        .setMimeType(ContentService.MimeType.JSON);
+    }
+
     const sheet  = getOrCreateSheet();
     const now    = new Date();
     const guests = data.guestData

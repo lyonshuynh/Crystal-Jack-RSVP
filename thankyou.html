@@ -6,8 +6,10 @@
 <meta name="description" content="Thank you for your RSVP — Jackson &amp; Crystal, September 2026."/>
 <meta property="og:title" content="Jackson &amp; Crystal — September 2026"/>
 <meta property="og:description" content="You're invited. Join us for the summit on Mount Elbert (Sep 4) and the celebration at The Wright Room in Denver (Sep 6). Please RSVP by July 31, 2026."/>
-<meta property="og:image" content="surprise_proposal_in_switzerland_jackson_and_crystal-222.jpg"/>
+<!-- TODO before launch: replace https://YOUR-DOMAIN.com with the real hosted URL. -->
+<meta property="og:image" content="https://YOUR-DOMAIN.com/surprise_proposal_in_switzerland_jackson_and_crystal-222.jpg"/>
 <meta property="og:type" content="website"/>
+<meta name="twitter:card" content="summary_large_image"/>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23142214'/%3E%3Cpolygon points='4,26 12,10 18,20 22,14 28,26' fill='%23C8A96E'/%3E%3C/svg%3E"/>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Jost:wght@200;300;400&display=swap');
@@ -220,6 +222,14 @@ body{background:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' 
           <p>Semi-formal — knee-length or midi dress, dressy jumpsuit, tailored suit or sport coat. This is where we'll take the nice photos, so dress up a little.</p>
         </div>
 
+        <div class="e-sec">
+          <div class="e-sec-h">The Menu</div>
+          <p><strong>First Course</strong><br>Greek hearts of romaine</p>
+          <p style="margin-top:12px"><strong>Entrée</strong> — your selection is shown above<br>Chicken Piccata · Colorado Striped Bass · Green Chili Rubbed NY Strip</p>
+          <p style="margin-top:12px"><strong>Accompaniments</strong><br>Au gratin potatoes · grilled asparagus with citrus emulsion</p>
+          <p style="margin-top:12px"><strong>Dessert</strong><br>Dessert station</p>
+        </div>
+
       </div>
     </div>
   </div>
@@ -250,16 +260,19 @@ body{background:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' 
 
   if (email) document.getElementById('emailNote').textContent = `A confirmation has been sent to ${email}`;
 
+  const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c =>
+    ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
   const list = document.getElementById('guestSummaryCards');
   guests.forEach(g => {
     const attLabel = ATT_INFO[g.attendance] || g.attendance;
     list.insertAdjacentHTML('beforeend', `
       <div class="sc">
-        <div class="sc-hdr">${g.name || 'Guest'}</div>
+        <div class="sc-hdr">${esc(g.name) || 'Guest'}</div>
         <div class="sc-body">
-          <div class="sc-row"><span class="sc-lbl">Joining for</span><span class="sc-val">${attLabel}</span></div>
-          ${g.mealName ? `<div class="sc-row"><span class="sc-lbl">Entrée</span><span class="sc-val">${g.mealName}</span></div>` : ''}
-          ${g.dietary ? `<div class="sc-row"><span class="sc-lbl">Dietary</span><span class="sc-val">${g.dietary}</span></div>` : ''}
+          <div class="sc-row"><span class="sc-lbl">Joining for</span><span class="sc-val">${esc(attLabel)}</span></div>
+          ${g.mealName ? `<div class="sc-row"><span class="sc-lbl">Entrée</span><span class="sc-val">${esc(g.mealName)}</span></div>` : ''}
+          ${g.dietary ? `<div class="sc-row"><span class="sc-lbl">Dietary</span><span class="sc-val">${esc(g.dietary)}</span></div>` : ''}
         </div>
       </div>`);
   });

@@ -6,8 +6,12 @@
 <meta name="description" content="Jackson &amp; Crystal — September 2026. Join us for the summit on Mount Elbert (Sep 4) and the celebration at The Wright Room in Denver (Sep 6). Please RSVP by July 31, 2026."/>
 <meta property="og:title" content="Jackson &amp; Crystal — September 2026"/>
 <meta property="og:description" content="You're invited. Join us for the summit on Mount Elbert (Sep 4) and the celebration at The Wright Room in Denver (Sep 6). Please RSVP by July 31, 2026."/>
-<meta property="og:image" content="surprise_proposal_in_switzerland_jackson_and_crystal-222.jpg"/>
+<!-- TODO before launch: replace https://YOUR-DOMAIN.com with the real hosted URL.
+     Social link previews (iMessage, WhatsApp, Facebook) require an ABSOLUTE https URL. -->
+<meta property="og:url" content="https://YOUR-DOMAIN.com/"/>
+<meta property="og:image" content="https://YOUR-DOMAIN.com/surprise_proposal_in_switzerland_jackson_and_crystal-222.jpg"/>
 <meta property="og:type" content="website"/>
+<meta name="twitter:card" content="summary_large_image"/>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23142214'/%3E%3Cpolygon points='4,26 12,10 18,20 22,14 28,26' fill='%23C8A96E'/%3E%3C/svg%3E"/>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Jost:wght@200;300;400&display=swap');
@@ -35,6 +39,7 @@ body{background:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' 
 .tab-btn.active{color:var(--forest);border-bottom-color:var(--gold)}
 .tab-panel{display:none}
 .tab-panel.active{display:block}
+#part-i-detail,#part-ii-detail,#gear-section,#gifts-section{scroll-margin-top:110px}
 
 /* Sub-nav within Details */
 .subnav{display:flex;gap:0;background:var(--paper);border-bottom:1px solid #D8E4D8;position:sticky;top:49px;z-index:10}
@@ -61,6 +66,10 @@ body{background:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' 
 .ov-v{font-size:0.78rem;color:var(--mid);line-height:1.5}
 .ov-more{display:inline-block;margin-top:12px;font-size:0.58rem;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);cursor:pointer;background:none;border:none;padding:0;font-family:'Jost',sans-serif}
 .ov-more:hover{color:var(--forest)}
+.cal-row{margin-top:10px;font-size:0.58rem;letter-spacing:.12em;text-transform:uppercase}
+.cal-row a{color:var(--mid);text-decoration:none;border-bottom:1px dotted var(--sage)}
+.cal-row a:hover{color:var(--forest);border-bottom-color:var(--forest)}
+.cal-sep{color:#C5D5C5;margin:0 8px;border:none}
 .ov-contact{text-align:center;padding:20px 58px 0;font-size:0.7rem;color:var(--mid)}
 .ov-contact a{color:var(--mid);text-decoration:none}
 .ov-contact a:hover{color:var(--forest)}
@@ -147,6 +156,7 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
 .btn:hover{background:var(--green)}
 .ty{display:none;text-align:center;padding:22px 0 6px}
 .ty p{font-family:'EB Garamond',serif;font-style:italic;font-size:1.05rem;color:var(--gold)}
+.hp{position:absolute!important;left:-9999px!important;width:1px;height:1px;overflow:hidden}
 .err{display:none;text-align:center;padding:12px 0}
 .err p{font-size:.75rem;color:#b94a48}
 /* Meal selection */
@@ -201,14 +211,14 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
   <p class="tagline">No venue. No aisle. No seating chart.<br>Just the summit, and the people we love.</p>
 </div>
 
-<div class="tab-bar">
-  <button class="tab-btn active" data-tab="tab-overview" onclick="showTab('tab-overview')">Overview</button>
-  <button class="tab-btn" data-tab="tab-details" onclick="showTab('tab-details')">Details</button>
-  <button class="tab-btn" data-tab="tab-rsvp" onclick="showTab('tab-rsvp')">RSVP</button>
+<div class="tab-bar" role="tablist" aria-label="Sections">
+  <button class="tab-btn active" id="tabbtn-tab-overview" role="tab" aria-selected="true"  tabindex="0"  aria-controls="tab-overview" data-tab="tab-overview" onclick="showTab('tab-overview')">Overview</button>
+  <button class="tab-btn"        id="tabbtn-tab-details"  role="tab" aria-selected="false" tabindex="-1" aria-controls="tab-details"  data-tab="tab-details"  onclick="showTab('tab-details')">Details</button>
+  <button class="tab-btn"        id="tabbtn-tab-rsvp"     role="tab" aria-selected="false" tabindex="-1" aria-controls="tab-rsvp"     data-tab="tab-rsvp"     onclick="showTab('tab-rsvp')">RSVP</button>
 </div>
 
 <!-- ── Tab 1: Overview ── -->
-<div id="tab-overview" class="tab-panel active">
+<div id="tab-overview" class="tab-panel active" role="tabpanel" aria-labelledby="tabbtn-tab-overview" tabindex="0">
   <div class="ov">
     <div class="ov-events">
 
@@ -227,6 +237,7 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
             <div class="ov-kv"><span class="ov-k">Attire</span><span class="ov-v">Hiking layers — no dress change needed</span></div>
           </div>
           <button class="ov-more" onclick="showTabSection('tab-details','gear-section')">Full details + gear checklist →</button>
+          <div class="cal-row">Add to calendar: <a data-cal="summit" data-cal-type="ics" href="#">Apple / Outlook</a><span class="cal-sep">·</span><a data-cal="summit" data-cal-type="gcal" target="_blank" rel="noopener" href="#">Google</a></div>
         </div>
       </div>
 
@@ -245,6 +256,7 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
             <div class="ov-kv"><span class="ov-k">Attire</span><span class="ov-v">Semi-formal · children welcome</span></div>
           </div>
           <button class="ov-more" onclick="showTabSection('tab-details','part-ii-detail')">Full details →</button>
+          <div class="cal-row">Add to calendar: <a data-cal="dinner" data-cal-type="ics" href="#">Apple / Outlook</a><span class="cal-sep">·</span><a data-cal="dinner" data-cal-type="gcal" target="_blank" rel="noopener" href="#">Google</a></div>
         </div>
       </div>
 
@@ -260,7 +272,7 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
 </div>
 
 <!-- ── Tab 2: Details ── -->
-<div id="tab-details" class="tab-panel">
+<div id="tab-details" class="tab-panel" role="tabpanel" aria-labelledby="tabbtn-tab-details" tabindex="0">
   <nav class="subnav" aria-label="Details sections">
     <button class="subnav-btn" onclick="scrollToInTab('part-i-detail')">Part I · Summit</button>
     <button class="subnav-btn" onclick="scrollToInTab('part-ii-detail')">Part II · Dinner</button>
@@ -387,6 +399,14 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
           </div>
 
           <div class="e-sec">
+            <div class="e-sec-h">The Menu</div>
+            <p><strong>First Course</strong><br>Greek hearts of romaine</p>
+            <p style="margin-top:12px"><strong>Entrée</strong> — choose one when you RSVP<br>Chicken Piccata · Colorado Striped Bass · Green Chili Rubbed NY Strip</p>
+            <p style="margin-top:12px"><strong>Accompaniments</strong><br>Au gratin potatoes · grilled asparagus with citrus emulsion</p>
+            <p style="margin-top:12px"><strong>Dessert</strong><br>Dessert station</p>
+          </div>
+
+          <div class="e-sec">
             <div class="e-sec-h">Entrée Selection</div>
             <p>If you'll be joining us for dinner, please select your entrée when you RSVP. We also offer a <strong>Special Request</strong> option for vegetarian, vegan, allergy-friendly, or other dietary needs — just leave a note when you RSVP.</p>
           </div>
@@ -416,7 +436,7 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
 </div>
 
 <!-- ── Tab 3: RSVP ── -->
-<div id="tab-rsvp" class="tab-panel">
+<div id="tab-rsvp" class="tab-panel" role="tabpanel" aria-labelledby="tabbtn-tab-rsvp" tabindex="0">
   <div class="rsvp">
     <div class="rsvp-h">
       <h3>Will you join us?</h3>
@@ -425,15 +445,16 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
     </div>
     <form id="rsvpForm" onsubmit="handleRSVP(event)">
       <div class="req-note"><span class="req">*</span> required</div>
-      <div class="row"><label class="lbl">Email <span class="req">*</span></label><input class="inp" type="email" name="email" placeholder="your@email.com" required/></div>
-      <div class="row"><label class="lbl">Phone <span class="optional">(optional)</span></label><input class="inp" type="tel" name="phone" placeholder="(000) 000-0000"/></div>
-      <div class="row"><label class="lbl">Mailing Address <span class="req">*</span></label><input class="inp" type="text" name="address" placeholder="Street, City, State, ZIP" required/><div class="sub-note">So we can send you a thank-you card.</div></div>
-      <div class="row" style="margin-top:26px"><label class="lbl">Number of guests</label>
-        <div class="stepper"><button type="button" id="guestMinus" class="step-btn" onclick="adjustGuests(-1)">−</button><input type="number" id="guestCount" name="guests" value="1" min="1" max="10" readonly/><button type="button" id="guestPlus" class="step-btn" onclick="adjustGuests(1)">+</button></div>
+      <div class="hp" aria-hidden="true"><label>Do not fill this in<input type="text" name="company" tabindex="-1" autocomplete="off"/></label></div>
+      <div class="row"><label class="lbl" for="f-email">Email <span class="req">*</span></label><input class="inp" id="f-email" type="email" name="email" placeholder="your@email.com" autocomplete="email" required/></div>
+      <div class="row"><label class="lbl" for="f-phone">Phone <span class="optional">(optional)</span></label><input class="inp" id="f-phone" type="tel" name="phone" placeholder="(000) 000-0000" autocomplete="tel"/></div>
+      <div class="row"><label class="lbl" for="f-address">Mailing Address <span class="optional">(if attending)</span></label><input class="inp" id="f-address" type="text" name="address" placeholder="Street, City, State, ZIP" autocomplete="street-address"/><div class="sub-note">So we can send you a thank-you card. Not needed if you can't make it.</div></div>
+      <div class="row" style="margin-top:26px"><label class="lbl" id="guests-lbl">Number of guests</label>
+        <div class="stepper" role="group" aria-labelledby="guests-lbl"><button type="button" id="guestMinus" class="step-btn" aria-label="Remove a guest" onclick="adjustGuests(-1)">−</button><input type="number" id="guestCount" name="guests" value="1" min="1" max="10" readonly aria-label="Number of guests"/><button type="button" id="guestPlus" class="step-btn" aria-label="Add a guest" onclick="adjustGuests(1)">+</button></div>
         <div class="sub-note">Including yourself. Plus-ones are communicated individually — please only count people invited on your envelope.</div>
       </div>
       <div id="guestCards" style="margin-top:26px"></div>
-      <div class="row" style="margin-top:22px"><label class="lbl">Anything else we should know?</label><input class="inp" type="text" name="notes" placeholder="Questions, notes, etc."/></div>
+      <div class="row" style="margin-top:22px"><label class="lbl" for="f-notes">Anything else we should know?</label><input class="inp" id="f-notes" type="text" name="notes" placeholder="Questions, notes, etc."/></div>
       <button type="submit" class="btn" id="rsvpBtn">Send my RSVP</button>
       <div class="ty" id="thankyou"><p>Thank you — we can't wait to celebrate with you. ♡</p></div>
       <div class="err" id="errorMsg"><p>Something went wrong — please try again.</p></div>
@@ -448,7 +469,12 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
   const HASH_TAB = { overview: 'tab-overview', details: 'tab-details', rsvp: 'tab-rsvp' };
 
   function showTab(id, updateHash = true) {
-    document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === id));
+    document.querySelectorAll('.tab-btn').forEach(b => {
+      const on = b.dataset.tab === id;
+      b.classList.toggle('active', on);
+      b.setAttribute('aria-selected', on ? 'true' : 'false');
+      b.tabIndex = on ? 0 : -1;
+    });
     document.querySelectorAll('.tab-panel').forEach(p => p.classList.toggle('active', p.id === id));
     if (updateHash && TAB_HASH[id]) {
       const h = '#' + TAB_HASH[id];
@@ -471,6 +497,22 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
   window.addEventListener('hashchange', applyHashTab);
   applyHashTab();
 
+  // Arrow-key navigation for the tab bar (WAI-ARIA tabs pattern)
+  const tabButtons = Array.from(document.querySelectorAll('.tab-btn'));
+  document.querySelector('.tab-bar').addEventListener('keydown', e => {
+    const i = tabButtons.indexOf(document.activeElement);
+    if (i === -1) return;
+    let n = i;
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') n = (i + 1) % tabButtons.length;
+    else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') n = (i - 1 + tabButtons.length) % tabButtons.length;
+    else if (e.key === 'Home') n = 0;
+    else if (e.key === 'End') n = tabButtons.length - 1;
+    else return;
+    e.preventDefault();
+    showTab(tabButtons[n].dataset.tab);
+    tabButtons[n].focus();
+  });
+
   function scrollToInTab(sectionId) {
     const el = document.getElementById(sectionId);
     if (!el) return;
@@ -478,6 +520,50 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
     const offset = 100;
     window.scrollTo({ top: window.scrollY + rect.top - offset, behavior: 'smooth' });
   }
+
+  // ── Add to calendar ──  (times in UTC; Sep 2026 = Mountain Daylight, UTC−6)
+  const CAL = {
+    summit: {
+      title: 'Jackson & Crystal — The Summit (Mount Elbert)',
+      start: '20260904T100000Z', end: '20260904T200000Z',          // 4:00 AM–2:00 PM MT
+      loc:   'North Mt. Elbert Trailhead, Forest Service Road 110, Leadville, CO 80461',
+      desc:  'Depart trailhead 4:00 AM MT, summit by sunrise. Rain-check: Saturday Sep 5. Bring hiking layers, headlamp, water. Questions: LyonsHuynh@gmail.com',
+    },
+    dinner: {
+      title: 'Jackson & Crystal — The Celebration',
+      start: '20260906T230000Z', end: '20260907T030000Z',          // 5:00–9:00 PM MT
+      loc:   'The Wright Room, 535 16th St Mall, Suite 240, Denver, CO 80202',
+      desc:  'Cocktails 5:00 PM MT, dinner 6:00 PM MT. Semi-formal. Parking covered at the Denver Pavilion. Questions: LyonsHuynh@gmail.com',
+    },
+  };
+  function icsHref(c) {
+    const stamp = new Date().toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
+    const lines = [
+      'BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Jackson & Crystal//RSVP//EN',
+      'BEGIN:VEVENT', 'UID:' + c.start + '-' + c.title.replace(/\W/g, '') + '@jacksoncrystal',
+      'DTSTAMP:' + stamp, 'DTSTART:' + c.start, 'DTEND:' + c.end,
+      'SUMMARY:' + c.title, 'LOCATION:' + c.loc, 'DESCRIPTION:' + c.desc,
+      'END:VEVENT', 'END:VCALENDAR',
+    ].join('\r\n');
+    return 'data:text/calendar;charset=utf-8,' + encodeURIComponent(lines);
+  }
+  function gcalHref(c) {
+    const p = new URLSearchParams({
+      action: 'TEMPLATE', text: c.title,
+      dates: c.start + '/' + c.end, details: c.desc, location: c.loc,
+    });
+    return 'https://calendar.google.com/calendar/render?' + p.toString();
+  }
+  document.querySelectorAll('a[data-cal]').forEach(a => {
+    const c = CAL[a.dataset.cal];
+    if (!c) return;
+    if (a.dataset.calType === 'ics') {
+      a.href = icsHref(c);
+      a.setAttribute('download', a.dataset.cal + '-jackson-crystal.ics');
+    } else {
+      a.href = gcalHref(c);
+    }
+  });
 
   const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzCvN2byIDQsU-uztm1JpTX8Z7lv3pUcLUpDhvHJwAE1n-pFI99845n8QcAdfEXKvYHkw/exec';
 
@@ -550,19 +636,19 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
           <div class="guest-card-hdr" id="guest-hdr-${i}">${headerLabel}</div>
           <div class="guest-card-body">
             <div>
-              <label class="lbl">Name <span class="req">*</span></label>
-              <input class="inp" type="text" name="guest_name_${i}" placeholder="Full name" value="${(s.name||'').replace(/"/g,'&quot;')}" required/>
+              <label class="lbl" for="guest_name_${i}">Name <span class="req">*</span></label>
+              <input class="inp" id="guest_name_${i}" type="text" name="guest_name_${i}" placeholder="Full name" autocomplete="${i===1?'name':'off'}" value="${(s.name||'').replace(/"/g,'&quot;')}" required/>
             </div>
             <div>
-              <label class="lbl" style="margin-bottom:8px;display:block">Joining for</label>
-              <div class="opts">${actHTML}</div>
+              <label class="lbl" id="att-lbl-${i}" style="margin-bottom:8px;display:block">Joining for</label>
+              <div class="opts" role="radiogroup" aria-labelledby="att-lbl-${i}">${actHTML}</div>
             </div>
             <div class="guest-meal-wrap" style="display:${mealVisible?'block':'none'}">
-              <label class="lbl" style="margin-bottom:8px;display:block">Entrée selection</label>
-              <div class="opts">${mealHTML}</div>
+              <label class="lbl" id="meal-lbl-${i}" style="margin-bottom:8px;display:block">Entrée selection</label>
+              <div class="opts" role="radiogroup" aria-labelledby="meal-lbl-${i}">${mealHTML}</div>
               <div style="margin-top:14px">
-                <label class="lbl">Dietary restrictions</label>
-                <input class="inp" type="text" name="dietary_${i}" placeholder="Allergies, gluten-free, etc." value="${(s.dietary||'').replace(/"/g,'&quot;')}"/>
+                <label class="lbl" for="dietary_${i}">Dietary restrictions</label>
+                <input class="inp" id="dietary_${i}" type="text" name="dietary_${i}" placeholder="Allergies, gluten-free, etc." value="${(s.dietary||'').replace(/"/g,'&quot;')}"/>
               </div>
             </div>
           </div>
@@ -605,6 +691,9 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
     e.preventDefault();
     const btn        = document.getElementById('rsvpBtn');
     const form       = e.target;
+
+    // Spam honeypot: real guests never see or fill this field.
+    if (form.company && form.company.value) return;
     const guestCount = parseInt(document.getElementById('guestCount').value);
 
     const errEl  = document.getElementById('errorMsg');
@@ -612,9 +701,9 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
     let firstErrorEl = null;
     const flagFirst = el => { if (!firstErrorEl && el) firstErrorEl = el; };
 
-    if (!form.email.value.trim())   { errors.push('Email is required.');           flagFirst(form.email); }
-    if (!form.address.value.trim()) { errors.push('Mailing address is required.'); flagFirst(form.address); }
+    if (!form.email.value.trim())   { errors.push('Email is required.'); flagFirst(form.email); }
 
+    let anyAttending = false;
     for (let i = 1; i <= guestCount; i++) {
       const nameEl    = form.querySelector(`input[name="guest_name_${i}"]`);
       const nameVal   = nameEl?.value.trim();
@@ -632,6 +721,7 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
         errors.push(i === 1 ? "Please select what you'll be joining us for." : `Please make a selection for Guest ${i}.`);
         flagFirst(form.querySelector(`[name="attendance_${i}"]`)?.closest('.opts'));
       }
+      if (attVal && attVal !== 'cannot-attend') anyAttending = true;
       if (attVal === 'dinner' || attVal === 'both') {
         if (!mealVal) {
           errors.push(i === 1 ? 'Please select your entrée.' : `Please select an entrée for Guest ${i}.`);
@@ -641,6 +731,11 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
           flagFirst(dietaryEl);
         }
       }
+    }
+
+    if (anyAttending && !form.address.value.trim()) {
+      errors.push('Please add a mailing address so we can send a thank-you card.');
+      flagFirst(form.address);
     }
 
     if (errors.length) {
@@ -695,17 +790,28 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
     };
 
     try {
-      await fetch(APPS_SCRIPT_URL, {
-        method:  'POST',
-        mode:    'no-cors',
-        headers: { 'Content-Type': 'application/json' },
-        body:    JSON.stringify(payload),
+      // text/plain keeps this a "simple" request (no CORS preflight, which
+      // Apps Script can't answer); the deployed /exec response is readable.
+      const res  = await fetch(APPS_SCRIPT_URL, {
+        method:   'POST',
+        headers:  { 'Content-Type': 'text/plain;charset=utf-8' },
+        body:     JSON.stringify(payload),
+        redirect: 'follow',
       });
+      let out;
+      try { out = await res.json(); } catch (_) { out = null; }
+      if (!res.ok || !out || out.result !== 'ok') {
+        throw new Error(out && out.message ? out.message : 'We could not record your RSVP.');
+      }
       window.location.href = 'thankyou.html';
     } catch (err) {
       btn.textContent = 'Send my RSVP';
       btn.disabled    = false;
-      document.getElementById('errorMsg').style.display = 'block';
+      const errEl = document.getElementById('errorMsg');
+      errEl.querySelector('p').textContent =
+        "We couldn't submit your RSVP. Please check your connection and try again — or email LyonsHuynh@gmail.com and we'll add you manually.";
+      errEl.style.display = 'block';
+      errEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
   }
 </script>
