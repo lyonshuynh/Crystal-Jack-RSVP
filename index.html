@@ -158,6 +158,22 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
 .ty p{font-family:'EB Garamond',serif;font-style:italic;font-size:1.05rem;color:var(--gold)}
 .hp{position:absolute!important;left:-9999px!important;width:1px;height:1px;overflow:hidden}
 .err{display:none;text-align:center;padding:12px 0}
+/* Lookup / edit-existing-RSVP */
+.lookup-panel{padding:0 0 22px;border-bottom:1px solid #D8E4D8;margin-bottom:22px}
+.lookup-trigger{font-size:0.74rem;color:var(--mid);letter-spacing:.02em;text-align:center;margin:0}
+.lookup-trigger a{color:var(--forest);text-decoration:none;border-bottom:1px dotted var(--forest)}
+.lookup-trigger a:hover{color:var(--green)}
+.lookup-form{padding:18px 0 0;text-align:left}
+.lookup-msg{margin-top:10px;font-size:0.7rem;color:#b94a48}
+.lookup-ok{padding:14px 18px;border:1px solid var(--sage);background:rgba(95,129,99,.08);font-size:0.78rem;color:var(--forest);text-align:center;line-height:1.6;margin-bottom:22px}
+.cancel-btn{margin-left:12px;background:none;border:none;font-family:'Jost',sans-serif;font-size:0.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--mid);cursor:pointer;padding:11px 8px}
+.cancel-btn:hover{color:var(--forest)}
+.cancel-btn:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.edit-banner{margin:0 0 22px;padding:16px 18px;border:1px solid var(--gold);background:rgba(200,169,110,.08)}
+.edit-banner p{font-size:0.8rem;color:var(--forest);line-height:1.6}
+.edit-banner p + p{margin-top:10px;font-size:0.74rem;color:#b94a48}
+.token-error{padding:14px 18px;border:1px solid #b94a48;background:rgba(185,74,72,.08);margin-bottom:22px}
+.token-error p{font-size:0.78rem;color:#b94a48;line-height:1.6;text-align:center}
 .err p{font-size:.75rem;color:#b94a48}
 /* Meal selection */
 .meal-opt{position:relative}
@@ -466,14 +482,38 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
 <!-- ── Tab 3: RSVP ── -->
 <div id="tab-rsvp" class="tab-panel" role="tabpanel" aria-labelledby="tabbtn-tab-rsvp" tabindex="0">
   <div class="rsvp">
+    <div id="tokenError" class="token-error" hidden>
+      <p><strong>This edit link has expired.</strong> Use the form below to request a new one.</p>
+    </div>
+    <div id="lookupOk" class="lookup-ok" hidden>
+      If we have an RSVP for that email, we've just sent you a link to edit it. Check your inbox — the link is good for 24 hours.
+    </div>
+    <div class="lookup-panel" id="lookupPanel">
+      <p class="lookup-trigger" id="lookupTrigger">Already RSVP'd? <a href="#" id="lookupOpen">Edit your response →</a></p>
+      <div class="lookup-form" id="lookupForm" hidden>
+        <label class="lbl" for="lookupEmail">Your email</label>
+        <input class="inp" type="email" id="lookupEmail" placeholder="your@email.com" autocomplete="email"/>
+        <div class="sub-note">We'll email you a one-time link valid for 24 hours. The link only works from the inbox we already have on file.</div>
+        <p class="lookup-msg" id="lookupMsg" hidden></p>
+        <div style="margin-top:14px">
+          <button type="button" class="rsvp-jump-btn" id="lookupSubmit">Send me my edit link</button>
+          <button type="button" class="cancel-btn" id="lookupCancel">Cancel</button>
+        </div>
+      </div>
+    </div>
     <div class="rsvp-h">
       <h3>Will you join us?</h3>
       <p>Please respond by <strong>July 31, 2026</strong></p>
       <p class="rsvp-contact">Questions? <a href="mailto:LyonsHuynh@gmail.com">LyonsHuynh@gmail.com</a> · <a href="tel:9526882363">952-688-2363</a></p>
     </div>
     <form id="rsvpForm" onsubmit="handleRSVP(event)">
+      <div class="edit-banner" id="editBanner" hidden>
+        <p><strong>You're editing your previous RSVP.</strong> Make your changes below and submit to update — your earlier response will be replaced.</p>
+        <p id="editDeadlineNote" hidden>The RSVP deadline (July 31, 2026) has passed — please email us about any attendance or meal changes so we can confirm with the caterer.</p>
+      </div>
       <div class="req-note"><span class="req">*</span> required</div>
       <div class="hp" aria-hidden="true"><label>Do not fill this in<input type="text" name="company" tabindex="-1" autocomplete="off"/></label></div>
+      <input type="hidden" id="prevEmailInput" name="prevEmail"/>
       <div class="row"><label class="lbl" for="f-email">Email <span class="req">*</span></label><input class="inp" id="f-email" type="email" name="email" placeholder="your@email.com" autocomplete="email" required/></div>
       <div class="row"><label class="lbl" for="f-phone">Phone <span class="optional">(optional)</span></label><input class="inp" id="f-phone" type="tel" name="phone" placeholder="(000) 000-0000" autocomplete="tel"/></div>
       <div class="row"><label class="lbl" for="f-address">Mailing Address <span class="optional">(if attending)</span></label><input class="inp" id="f-address" type="text" name="address" placeholder="Street, City, State, ZIP" autocomplete="street-address"/><div class="sub-note">So we can send you a thank-you card. Not needed if you can't make it.</div></div>
@@ -783,12 +823,17 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
     const phone   = form.phone.value.trim();
     const address = form.address.value.trim();
     const notes   = form.notes.value.trim();
+    // If we're editing a previous RSVP, the original email is the dedupe key
+    // server-side. Passing it explicitly lets a guest update other fields
+    // (even theoretically the email itself) without orphaning prior rows.
+    const prevEmail = document.getElementById('prevEmailInput')?.value || '';
 
     sessionStorage.setItem('rsvp', JSON.stringify({ email, phone, address, guests: guestList, notes }));
 
     const payload = {
       name:       guestNames[0],
       email,
+      prevEmail,
       phone,
       address,
       guests:     guestCount,
@@ -825,6 +870,111 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
       errEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
   }
+
+  // ── Lookup / edit-existing-RSVP ──
+  // Aug 1 2026 06:00 UTC is the moment Jul 31 ends in Mountain Time (UTC-6 in Sep, UTC-6 in Aug DST).
+  const RSVP_DEADLINE_UTC = Date.UTC(2026, 7, 1, 6, 0, 0);
+
+  function $(id) { return document.getElementById(id); }
+
+  $('lookupOpen')?.addEventListener('click', e => {
+    e.preventDefault();
+    $('lookupTrigger').hidden = true;
+    $('lookupForm').hidden    = false;
+    $('lookupEmail').focus();
+  });
+  $('lookupCancel')?.addEventListener('click', () => {
+    $('lookupForm').hidden    = true;
+    $('lookupTrigger').hidden = false;
+    $('lookupMsg').hidden     = true;
+  });
+
+  $('lookupSubmit')?.addEventListener('click', async () => {
+    const inp = $('lookupEmail');
+    const msg = $('lookupMsg');
+    const email = inp.value.trim();
+    if (!email || !/.+@.+\..+/.test(email)) {
+      msg.textContent = 'Please enter a valid email address.';
+      msg.hidden = false;
+      return;
+    }
+    msg.hidden = true;
+    const btn  = $('lookupSubmit');
+    const orig = btn.textContent;
+    btn.disabled = true; btn.textContent = 'Sending…';
+    try {
+      await fetch(APPS_SCRIPT_URL, {
+        method:  'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body:    JSON.stringify({ action: 'lookup', email }),
+      });
+    } catch (_) { /* same response either way — don't leak which addresses exist */ }
+    btn.disabled = false; btn.textContent = orig;
+    $('lookupPanel').hidden = true;
+    $('lookupOk').hidden    = false;
+  });
+
+  function showEditBanner() {
+    $('editBanner').hidden = false;
+    if (Date.now() > RSVP_DEADLINE_UTC) $('editDeadlineNote').hidden = false;
+  }
+
+  function prefillFromLookup(d) {
+    const form = $('rsvpForm');
+    form.email.value     = d.email   || '';
+    form.phone.value     = d.phone   || '';
+    form.address.value   = d.address || '';
+    form.notes.value     = d.notes   || '';
+    form.prevEmail.value = d.email   || '';
+    const n = Math.max(1, Math.min(10, (d.guests && d.guests.length) || 1));
+    $('guestCount').value          = n;
+    $('guestMinus').disabled       = n === 1;
+    $('guestPlus').disabled        = n === 10;
+    renderGuestCards(n);
+    (d.guests || []).forEach((g, idx) => {
+      const i = idx + 1;
+      const card = document.querySelector(`.guest-card[data-guest="${i}"]`);
+      if (!card) return;
+      const nameInp = card.querySelector(`input[name="guest_name_${i}"]`);
+      if (nameInp) {
+        nameInp.value = g.name || '';
+        const hdr = $(`guest-hdr-${i}`);
+        if (hdr) hdr.textContent = (g.name || '').trim() || (i === 1 ? 'Guest 1 — You' : `Guest ${i}`);
+      }
+      if (g.attendance) {
+        const r = card.querySelector(`input[name="attendance_${i}"][value="${g.attendance}"]`);
+        if (r) { r.checked = true; r.dispatchEvent(new Event('change', { bubbles: true })); }
+      }
+      if (g.meal) {
+        const r = card.querySelector(`input[name="meal_${i}"][value="${g.meal}"]`);
+        if (r) r.checked = true;
+      }
+      const dietary = card.querySelector(`input[name="dietary_${i}"]`);
+      if (dietary) dietary.value = g.dietary || '';
+    });
+  }
+
+  // Magic-link landing: detect ?token=, fetch the RSVP, prefill the form.
+  (function() {
+    const token = new URLSearchParams(location.search).get('token');
+    if (!token) return;
+    showTab('tab-rsvp');
+    fetch(APPS_SCRIPT_URL + '?action=fetch&token=' + encodeURIComponent(token))
+      .then(r => r.json())
+      .then(out => {
+        // Strip the token from the URL so refreshes don't trigger a second fetch.
+        history.replaceState(null, '', location.pathname + location.hash);
+        if (out && out.result === 'ok' && out.data) {
+          $('lookupPanel').hidden = true;
+          prefillFromLookup(out.data);
+          showEditBanner();
+          $('editBanner').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        } else {
+          $('tokenError').hidden = false;
+        }
+      })
+      .catch(() => { $('tokenError').hidden = false; });
+  })();
 </script>
 </body>
 </html>

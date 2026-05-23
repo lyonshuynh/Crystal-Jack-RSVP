@@ -9,8 +9,16 @@ const NOTIFICATION_EMAIL = "lyonshuynh@gmail.com"; // where RSVP emails go
 const SHEET_NAME         = "RSVPs";                // tab name in your spreadsheet
 // ─────────────────────────────────────────────────────────────
 
-// Health check — open the /exec URL in a browser to confirm the deploy is live.
-function doGet() {
+// ── CONFIG (lookup) ──────────────────────────────────────────
+const SITE_URL          = "https://lyonshuynh.github.io/Crystal-Jack-RSVP/";
+const TOKEN_TTL_MS      = 24 * 60 * 60 * 1000;   // magic-link valid for 24h, reusable until expiry
+const LOOKUP_MAX_PER_HR = 5;                     // lookup-link requests per email per hour
+// ─────────────────────────────────────────────────────────────
+
+// Health check (GET /exec) — or, with ?action=fetch&token=..., return RSVP data.
+function doGet(e) {
+  const params = (e && e.parameter) || {};
+  if (params.action === "fetch" && params.token) return fetchByToken(params.token);
   return jsonResp({ result: "ok", message: "RSVP endpoint is live." });
 }
 
@@ -27,6 +35,16 @@ function doPost(e) {
 
     // Spam honeypot: legitimate guests never populate this field.
     if (data.company) return jsonResp({ result: "ok" });
+
+    // Lookup flow: a guest is asking us to email them a magic link to edit
+    // their RSVP. ALWAYS return ok — we don't leak which addresses are on
+    // the guest list, regardless of whether a match exists.
+    if (data.action === "lookup") {
+      const lkEmail = String(data.email || "").trim().toLowerCase();
+      sweepExpiredTokens();
+      if (lkEmail && checkLookupRate(lkEmail)) startLookup(lkEmail);
+      return jsonResp({ result: "ok" });
+    }
 
     const emailRaw = String(data.email || "").trim();
     const emailKey = emailRaw.toLowerCase();
@@ -50,14 +68,16 @@ function doPost(e) {
       : [{ name: data.name, attendance: data.attendance, meal: data.meals, dietary: data.dietary }];
 
     // Latest-wins idempotency: drop any prior rows for this email before writing
-    // the new set. Without this, a guest who edits their RSVP creates duplicates.
-    if (emailKey) {
+    // the new set. If the guest is editing via magic link and changed the
+    // email field, `prevEmail` carries the original key so we still find them.
+    const dedupeKey = String(data.prevEmail || "").trim().toLowerCase() || emailKey;
+    if (dedupeKey) {
       const lastRow = sheet.getLastRow();
       if (lastRow > 1) {
         const values = sheet.getRange(2, 2, lastRow - 1, 1).getValues(); // column B = Email
         const toDelete = [];
         for (let i = 0; i < values.length; i++) {
-          if (String(values[i][0] || "").trim().toLowerCase() === emailKey) toDelete.push(i + 2);
+          if (String(values[i][0] || "").trim().toLowerCase() === dedupeKey) toDelete.push(i + 2);
         }
         for (let i = toDelete.length - 1; i >= 0; i--) sheet.deleteRow(toDelete[i]);
       }
@@ -286,6 +306,156 @@ function sendConfirmation(data, guests) {
     "Your RSVP — Jackson & Crystal · September 2026",
     body
   );
+}
+
+// ── LOOKUP / MAGIC-LINK ──────────────────────────────────────
+
+// Build a guestList payload for the form to pre-fill, by scanning the sheet
+// for rows matching this email. Returns null if no match.
+function lookupRsvp(emailKey) {
+  const sheet   = getOrCreateSheet();
+  const lastRow = sheet.getLastRow();
+  if (lastRow < 2) return null;
+  const rows = sheet.getRange(2, 1, lastRow - 1, 9).getValues();
+  const matched = rows.filter(function(r) {
+    return String(r[1] || "").trim().toLowerCase() === emailKey;
+  });
+  if (matched.length === 0) return null;
+  // After latest-wins idempotency all rows for an email share the same
+  // submission timestamp, phone, address, and notes — use the first.
+  const head = matched[0];
+  return {
+    email:   head[1] || "",
+    phone:   head[2] || "",
+    address: head[3] || "",
+    notes:   head[8] || "",
+    guests:  matched.map(function(r) {
+      return {
+        name:       r[4] || "",
+        attendance: attendanceValueFromLabel(r[5]),
+        meal:       mealValueFromLabel(r[6]),
+        mealName:   r[6] || "",
+        dietary:    r[7] || "",
+      };
+    }),
+  };
+}
+
+// Inverse of attendanceLabel() — the sheet stores labels, but the form pre-fill
+// needs the value codes ("hike", "dinner", "both", "cannot-attend").
+function attendanceValueFromLabel(label) {
+  if (!label) return "";
+  const s = String(label);
+  if (s.indexOf("Summit")        !== -1) return "hike";
+  if (s.indexOf("Celebration")   !== -1) return "dinner";
+  if (s.indexOf("Both")          !== -1) return "both";
+  if (s.indexOf("Cannot Attend") !== -1) return "cannot-attend";
+  return "";
+}
+
+function mealValueFromLabel(label) {
+  if (!label) return "";
+  const s = String(label);
+  if (s.indexOf("Piccata")  !== -1) return "chicken";
+  if (s.indexOf("Bass")     !== -1) return "bass";
+  if (s.indexOf("NY Strip") !== -1) return "strip";
+  if (s.indexOf("Special")  !== -1) return "special";
+  return "";
+}
+
+// Always returns 200 with the same shape — the *only* signal of a hit is whether
+// the guest receives an email at the address they entered.
+function startLookup(emailKey) {
+  const sheet   = getOrCreateSheet();
+  const lastRow = sheet.getLastRow();
+  if (lastRow < 2) return;
+
+  // Find canonical (original-case) email + check existence in one pass.
+  const range = sheet.getRange(2, 2, lastRow - 1, 1).getValues();
+  let canonical = "";
+  for (let i = 0; i < range.length; i++) {
+    const v = String(range[i][0] || "").trim();
+    if (v.toLowerCase() === emailKey) { canonical = v; break; }
+  }
+  if (!canonical) return; // silent — no email sent, response to client unchanged
+
+  const token = Utilities.getUuid().replace(/-/g, "") + Utilities.getUuid().replace(/-/g, "");
+  const exp   = Date.now() + TOKEN_TTL_MS;
+  PropertiesService.getScriptProperties()
+    .setProperty("tok_" + token, JSON.stringify({ email: canonical, exp: exp }));
+
+  const link = SITE_URL + "?token=" + token;
+  const body = [
+    "Hi,",
+    "",
+    "You asked to edit your RSVP for Jackson & Crystal's wedding.",
+    "Open this link to view and update your response:",
+    "",
+    link,
+    "",
+    "The link is good for 24 hours. If you didn't request it, just ignore this email — your RSVP hasn't changed.",
+    "",
+    "With love,",
+    "Jackson & Crystal",
+  ].join("\n");
+
+  safeSend(function() {
+    GmailApp.sendEmail(canonical, "Edit your RSVP — Jackson & Crystal", body);
+  }, "lookup-link");
+}
+
+function fetchByToken(token) {
+  const props = PropertiesService.getScriptProperties();
+  const raw   = props.getProperty("tok_" + token);
+  if (!raw) return jsonResp({ result: "error", message: "expired" });
+  let info;
+  try { info = JSON.parse(raw); }
+  catch (_) { props.deleteProperty("tok_" + token); return jsonResp({ result: "error", message: "expired" }); }
+  if (!info.exp || info.exp < Date.now()) {
+    props.deleteProperty("tok_" + token);
+    return jsonResp({ result: "error", message: "expired" });
+  }
+  const data = lookupRsvp(String(info.email || "").toLowerCase());
+  if (!data) return jsonResp({ result: "error", message: "expired" });
+  // Token is REUSABLE until expiry — same email channel authorizes either way,
+  // and reusable tokens survive page refreshes / accidental tab closes.
+  return jsonResp({ result: "ok", data: data });
+}
+
+// Allow N lookup-link requests per email per hour, then quietly stop sending
+// (the response shape doesn't change — still {result:"ok"}).
+function checkLookupRate(emailKey) {
+  const props = PropertiesService.getScriptProperties();
+  const key   = "lk_" + emailKey;
+  const raw   = props.getProperty(key);
+  const now   = Date.now();
+  let times = [];
+  try { times = raw ? JSON.parse(raw) : []; } catch (_) {}
+  times = times.filter(function(t) { return now - t < 60 * 60 * 1000; });
+  if (times.length >= LOOKUP_MAX_PER_HR) {
+    props.setProperty(key, JSON.stringify(times));
+    return false;
+  }
+  times.push(now);
+  props.setProperty(key, JSON.stringify(times));
+  return true;
+}
+
+// Lazy sweep — expired tokens are dropped opportunistically when a new lookup
+// arrives. PropertiesService is fine for a few hundred entries.
+function sweepExpiredTokens() {
+  const props = PropertiesService.getScriptProperties();
+  const all   = props.getProperties();
+  const now   = Date.now();
+  Object.keys(all).forEach(function(k) {
+    if (k.indexOf("tok_") !== 0) return;
+    try {
+      const info = JSON.parse(all[k]);
+      if (!info.exp || info.exp < now) props.deleteProperty(k);
+    } catch (_) {
+      props.deleteProperty(k);
+    }
+  });
 }
 
 // ── OPTIONAL: run this once manually to test the sheet setup ──
