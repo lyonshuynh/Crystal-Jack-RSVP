@@ -11,56 +11,100 @@ const SHEET_NAME         = "RSVPs";                // tab name in your spreadshe
 
 // Health check — open the /exec URL in a browser to confirm the deploy is live.
 function doGet() {
-  return ContentService
-    .createTextOutput(JSON.stringify({ result: "ok", message: "RSVP endpoint is live." }))
-    .setMimeType(ContentService.MimeType.JSON);
+  return jsonResp({ result: "ok", message: "RSVP endpoint is live." });
 }
 
 function doPost(e) {
+  // Serialize submissions so concurrent writes can't interleave the
+  // delete-old + append-new pair below.
+  const lock = LockService.getScriptLock();
+  try { lock.waitLock(20000); } catch (_) {
+    return jsonResp({ result: "error", message: "Server busy, please try again." });
+  }
+
   try {
-    const data   = JSON.parse(e.postData.contents);
+    const data = JSON.parse(e.postData.contents);
 
     // Spam honeypot: legitimate guests never populate this field.
-    if (data.company) {
-      return ContentService
-        .createTextOutput(JSON.stringify({ result: "ok" }))
-        .setMimeType(ContentService.MimeType.JSON);
+    if (data.company) return jsonResp({ result: "ok" });
+
+    const emailRaw = String(data.email || "").trim();
+    const emailKey = emailRaw.toLowerCase();
+
+    // Rate limit: 5-second floor between submissions from the same email.
+    if (emailKey) {
+      const props = PropertiesService.getScriptProperties();
+      const pkey  = "ts_" + emailKey;
+      const last  = Number(props.getProperty(pkey) || 0);
+      const now   = Date.now();
+      if (now - last < 5000) {
+        return jsonResp({ result: "error", message: "We just received your RSVP — please wait a few seconds before resubmitting." });
+      }
+      props.setProperty(pkey, String(now));
     }
 
     const sheet  = getOrCreateSheet();
-    const now    = new Date();
+    const stamp  = new Date();
     const guests = data.guestData
       ? JSON.parse(data.guestData)
       : [{ name: data.name, attendance: data.attendance, meal: data.meals, dietary: data.dietary }];
 
-    // One row per guest
+    // Latest-wins idempotency: drop any prior rows for this email before writing
+    // the new set. Without this, a guest who edits their RSVP creates duplicates.
+    if (emailKey) {
+      const lastRow = sheet.getLastRow();
+      if (lastRow > 1) {
+        const values = sheet.getRange(2, 2, lastRow - 1, 1).getValues(); // column B = Email
+        const toDelete = [];
+        for (let i = 0; i < values.length; i++) {
+          if (String(values[i][0] || "").trim().toLowerCase() === emailKey) toDelete.push(i + 2);
+        }
+        for (let i = toDelete.length - 1; i >= 0; i--) sheet.deleteRow(toDelete[i]);
+      }
+    }
+
+    // One row per guest.
     guests.forEach(function(g) {
       sheet.appendRow([
-        now,
-        data.email             || "",
-        data.phone             || "",
-        data.address           || "",
-        g.name                 || "",
+        stamp,
+        data.email   || "",
+        data.phone   || "",
+        data.address || "",
+        g.name       || "",
         attendanceLabel(g.attendance),
         mealLabel(g.meal),
-        g.dietary              || "",
-        data.notes             || "",
+        g.dietary    || "",
+        data.notes   || "",
       ]);
     });
 
-    // One notification email per submission (not per guest)
-    sendNotification(data, guests, now);
-    // One confirmation email to guest per submission
-    sendConfirmation(data, guests);
+    // Mail sends are independent — a quota or transient failure must not lose
+    // a successful sheet write or mislead the guest about their RSVP status.
+    safeSend(function() { sendNotification(data, guests, stamp); }, "notify");
+    safeSend(function() { sendConfirmation(data, guests); },        "confirm");
 
-    return ContentService
-      .createTextOutput(JSON.stringify({ result: "ok" }))
-      .setMimeType(ContentService.MimeType.JSON);
+    return jsonResp({ result: "ok" });
 
   } catch (err) {
-    return ContentService
-      .createTextOutput(JSON.stringify({ result: "error", message: err.toString() }))
-      .setMimeType(ContentService.MimeType.JSON);
+    return jsonResp({ result: "error", message: err.toString() });
+  } finally {
+    try { lock.releaseLock(); } catch (_) {}
+  }
+}
+
+function jsonResp(obj) {
+  return ContentService
+    .createTextOutput(JSON.stringify(obj))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+
+function safeSend(fn, label) {
+  try { fn(); }
+  catch (err) {
+    try {
+      Logger.log("[" + label + "] mail failed: " + err);
+      SpreadsheetApp.getActiveSpreadsheet().toast(label + " email failed: " + err, "RSVP", 8);
+    } catch (_) {}
   }
 }
 
@@ -138,11 +182,12 @@ function sendNotification(data, guests, timestamp) {
     SpreadsheetApp.getActiveSpreadsheet().getUrl(),
   ].join("\n").trim();
 
-  MailApp.sendEmail({
-    to:      NOTIFICATION_EMAIL,
-    subject: "New RSVP from " + (data.name || "a guest"),
-    body:    body,
-  });
+  // GmailApp uses the user's ~1500/day quota rather than MailApp's ~100/day.
+  GmailApp.sendEmail(
+    NOTIFICATION_EMAIL,
+    "New RSVP from " + (data.name || "a guest"),
+    body
+  );
 }
 
 function sendConfirmation(data, guests) {
@@ -209,7 +254,9 @@ function sendConfirmation(data, guests) {
       "Attire: Semi-formal\n\n" +
       "Lodging: Aloft by Marriott Denver Downtown\n" +
       "800 15th St, Denver, CO 80202 · 3 blocks from The Wright Room\n" +
-      "Booking link coming soon\n";
+      "Book the group rate: https://app.marriott.com/reslink?id=1779477866112&key=GRP&app=resvlink\n" +
+      "The group rate is available 2 days before and 2 days after the contracted dates — choose your preferred arrival and departure when checking availability.\n" +
+      "Reservation questions? Glenn Wentzel at Aloft: 720-240-5101\n";
   }
 
   const opening = allOut
@@ -234,11 +281,11 @@ function sendConfirmation(data, guests) {
     "Jackson & Crystal",
   ].join("\n").trim();
 
-  MailApp.sendEmail({
-    to:      data.email,
-    subject: "Your RSVP — Jackson & Crystal · September 2026",
-    body:    body,
-  });
+  GmailApp.sendEmail(
+    data.email,
+    "Your RSVP — Jackson & Crystal · September 2026",
+    body
+  );
 }
 
 // ── OPTIONAL: run this once manually to test the sheet setup ──

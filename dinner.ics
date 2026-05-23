@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Jackson & Crystal//RSVP//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+BEGIN:VEVENT
+UID:dinner-2026-09-06@jacksoncrystal
+DTSTAMP:20260101T000000Z
+DTSTART:20260906T230000Z
+DTEND:20260907T030000Z
+SUMMARY:Jackson & Crystal — The Celebration
+LOCATION:The Wright Room\, 535 16th St Mall\, Suite 240\, Denver\, CO 80202
+DESCRIPTION:Cocktails 5:00 PM MT\, dinner 6:00 PM MT. Semi-formal. Parking covered at the Denver Pavilion. Questions: LyonsHuynh@gmail.com
+END:VEVENT
+END:VCALENDAR

@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Jackson & Crystal//RSVP//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+BEGIN:VEVENT
+UID:summit-2026-09-04@jacksoncrystal
+DTSTAMP:20260101T000000Z
+DTSTART:20260904T100000Z
+DTEND:20260904T200000Z
+SUMMARY:Jackson & Crystal — The Summit (Mount Elbert)
+LOCATION:North Mt. Elbert Trailhead\, Forest Service Road 110\, Leadville\, CO 80461
+DESCRIPTION:Depart trailhead 4:00 AM MT\, summit by sunrise. Rain-check: Saturday Sep 5. Bring hiking layers\, headlamp\, water. Questions: LyonsHuynh@gmail.com
+END:VEVENT
+END:VCALENDAR
